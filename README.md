@@ -11,10 +11,10 @@ A fully open-source PHP package for seamless integration with **Satim.dz**, the 
 
 This package enables merchants and developers to generate secure payment links and retrieve payment statuses directly via the Satim API, facilitating transactions through both **CIB** and **Edahabia** cards.
 
-## Requirements
-
-- PHP 8.1 or higher
-- Satim.dz API credentials (username, password, terminal ID) via [CIBWeb.dz](https://www.cibweb.dz/).
+> ### Requirements
+>  PHP 8.1 or higher
+> 
+>  Satim.dz API credentials (username, password, terminal ID) via [CIBWeb.dz](https://www.cibweb.dz/).
 
 ## Installation
 
