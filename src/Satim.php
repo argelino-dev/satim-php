@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace PiteurStudio;
@@ -75,8 +76,6 @@ class Satim extends SatimConfig
 
     /**
      * Build the request data for payment registration.
-     *
-     * @return array
      */
     private function buildPaymentData(): array
     {
@@ -116,7 +115,6 @@ class Satim extends SatimConfig
     /**
      * Register a payment with Satim API.
      *
-     * @return array
      * @throws SatimInvalidDataException
      * @throws SatimMissingDataException|RandomException
      * @throws SatimApiException
@@ -146,8 +144,6 @@ class Satim extends SatimConfig
     /**
      * Confirm the payment with Satim API.
      *
-     * @param string $orderId
-     * @return static
      * @throws SatimApiException
      */
     public function confirmPayment(string $orderId): static
@@ -167,8 +163,6 @@ class Satim extends SatimConfig
     /**
      * Get the status of a payment from Satim API.
      *
-     * @param string $orderId
-     * @return static
      * @throws SatimApiException
      */
     public function checkPaymentStatus(string $orderId): static
@@ -188,9 +182,6 @@ class Satim extends SatimConfig
     /**
      * Refund a payment with Satim API.
      *
-     * @param string $orderId
-     * @param int $amount
-     * @return array
      * @throws SatimApiException
      */
     public function refundPayment(string $orderId, int $amount): array
@@ -205,5 +196,4 @@ class Satim extends SatimConfig
 
         return $this->httpClientService->handleApiRequest('/refund.do', $data);
     }
-
 }

@@ -11,7 +11,6 @@ trait SatimStatusChecker
     /**
      * Get the order status success message
      *
-     * @return string
      * @throws SatimInvalidDataException
      */
     public function getSuccessMessage(): string
@@ -21,7 +20,7 @@ trait SatimStatusChecker
 
     /**
      * Get the order status error message
-     * @return string
+     *
      * @throws SatimInvalidDataException
      */
     public function getErrorMessage(): string
@@ -40,10 +39,8 @@ trait SatimStatusChecker
     /**
      * Get the response data from the last request.
      *
-     * @return array
      * @throws SatimInvalidDataException
      */
-
     public function getData(): array
     {
         if (! isset($this->response_data)) {
@@ -56,7 +53,6 @@ trait SatimStatusChecker
     /**
      * Check if the response data is available before any status checks.
      *
-     * @return void
      * @throws SatimInvalidDataException
      */
     protected function ensureDataIsAvailable(): void
@@ -69,7 +65,6 @@ trait SatimStatusChecker
     /**
      * Check if the transaction was rejected.
      *
-     * @return bool
      * @throws SatimInvalidDataException
      */
     public function isRejected(): bool
@@ -84,7 +79,6 @@ trait SatimStatusChecker
     /**
      * Check if the transaction was successful.
      *
-     * @return bool
      * @throws SatimInvalidDataException
      */
     public function isSuccessful(): bool
@@ -98,7 +92,6 @@ trait SatimStatusChecker
     /**
      * Check if the transaction failed.
      *
-     * @return bool
      * @throws SatimInvalidDataException
      */
     public function isFailed(): bool
@@ -111,7 +104,6 @@ trait SatimStatusChecker
     /**
      * Check if the transaction was refunded.
      *
-     * @return bool
      * @throws SatimInvalidDataException
      */
     public function isRefunded(): bool
@@ -124,7 +116,6 @@ trait SatimStatusChecker
     /**
      * Check if the transaction was cancelled.
      *
-     * @return bool
      * @throws SatimInvalidDataException
      */
     public function isCancelled(): bool
@@ -137,7 +128,6 @@ trait SatimStatusChecker
     /**
      * Check if the transaction expired.
      *
-     * @return bool
      * @throws SatimInvalidDataException
      */
     public function isExpired(): bool

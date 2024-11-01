@@ -28,10 +28,7 @@ class HttpClientService
 
     /**
      * HttpClientService constructor.
-     *
-     * @param bool $test_mode
      */
-
     public function __construct(bool $test_mode = false)
     {
         $this->test_mode = $test_mode;
@@ -40,9 +37,6 @@ class HttpClientService
     /**
      * Handles the API request and checks for basic errors in the response.
      *
-     * @param string $endpoint
-     * @param array $data
-     * @return array
      * @throws SatimApiException
      */
     public function handleApiRequest(string $endpoint, array $data): array
@@ -58,14 +52,11 @@ class HttpClientService
     /**
      * Sends the request to the Satim API.
      *
-     * @param string $endpoint
-     * @param array $data
-     * @return array
      * @throws SatimApiException
      */
     public function sendRequest(string $endpoint, array $data): array
     {
-        $url = $this->getApiUrl() . $endpoint;
+        $url = $this->getApiUrl().$endpoint;
 
         $clientOptions = $this->getClientOptions();
 
@@ -77,7 +68,7 @@ class HttpClientService
 
             // Try to decode the response to an array
             return $response->toArray(); // This will throw various exceptions if the response is not valid or there's an error
-        } catch (DecodingExceptionInterface | ClientExceptionInterface | RedirectionExceptionInterface | ServerExceptionInterface $e) {
+        } catch (DecodingExceptionInterface|ClientExceptionInterface|RedirectionExceptionInterface|ServerExceptionInterface $e) {
             // Handle all possible exceptions related to decoding, client, server, or redirection errors
             $exceptionMessage = match (true) {
                 $e instanceof DecodingExceptionInterface => 'Invalid JSON response from the server',
@@ -87,17 +78,15 @@ class HttpClientService
                 default => 'Unknown error',
             };
 
-            throw new SatimApiException($exceptionMessage . ': ' . $e->getMessage(), 0, $e);
+            throw new SatimApiException($exceptionMessage.': '.$e->getMessage(), 0, $e);
         } catch (TransportExceptionInterface $e) {
-            throw new TransportException('Network error occurred: ' . $e->getMessage());
+            throw new TransportException('Network error occurred: '.$e->getMessage());
         }
 
     }
 
     /**
      * Get the appropriate API URL based on the test mode.
-     *
-     * @return string
      */
     private function getApiUrl(): string
     {
@@ -106,8 +95,6 @@ class HttpClientService
 
     /**
      * Get client options for the HTTP request.
-     *
-     * @return array
      */
     private function getClientOptions(): array
     {
@@ -121,7 +108,6 @@ class HttpClientService
     /**
      * Validates the API response and checks for error codes.
      *
-     * @param array $response
      * @throws SatimApiException
      */
     private function validateApiResponse(array $response): void
@@ -131,7 +117,7 @@ class HttpClientService
 
             $errorMessage = $response['errorMessage'] ?? 'Unknown error';
 
-            throw new SatimApiException('API Error { errorCode: ' . $response['errorCode'] . ', errorMessage: ' . $errorMessage . ' }');
+            throw new SatimApiException('API Error { errorCode: '.$response['errorCode'].', errorMessage: '.$errorMessage.' }');
         }
     }
 }

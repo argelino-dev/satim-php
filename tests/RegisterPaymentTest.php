@@ -30,7 +30,7 @@ it('can not register payment without a valid returnUrl', function () {
 
 })->throws(SatimInvalidDataException::class);
 
-it( 'can not register payment without amount', function () {
+it('can not register payment without amount', function () {
 
     $satim = new Satim([
         'username' => '123456',
@@ -44,7 +44,7 @@ it( 'can not register payment without amount', function () {
 
 })->throws(SatimMissingDataException::class);
 
-it( 'can not register payment without valid positive amount', function () {
+it('can not register payment without valid positive amount', function () {
 
     $satim = new Satim([
         'username' => '123456',
