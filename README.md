@@ -11,32 +11,10 @@ A fully open-source PHP package for seamless integration with **Satim.dz**, the 
 
 This package enables merchants and developers to generate secure payment links and retrieve payment statuses directly via the Satim API, facilitating transactions through both **CIB** and **Edahabia** cards.
 
-
-## Features
-- Generate payment links using the Satim.dz API
-- Retrieve and validate payment statuses
-- Supports test and production environments
-- Fluent API for easy integration
-- Built-in error handling for invalid credentials and other common issues
-
-## About Satim.dz
-**Satim.dz** is the leading interbank electronic payment operator in Algeria, enabling online payments through both **CIB** and **Edahabia** cards. 
-
-The payment system operates using the robust banking technologies provided by **BPC Group**.
-
-To learn more about Satim's API, visit the official [BPC Payment Documentation](https://dev.bpcbt.com/en/integration/api/rest/rest.html#api_overview). 
-
-Note that many functions are restricted for public use.
-
-### How to Get Access
-To start using the Satim.dz API, you’ll need to create an account via the [CIB Web Portal](https://www.cibweb.dz/). 
-
-Once registered, you will receive your API credentials and a list of the permitted functions available for your integration.
-
 ## Requirements
 
 - PHP 8.1 or higher
-- Satim.dz API credentials (username, password, terminal ID)
+- Satim.dz API credentials (username, password, terminal ID) via [CIBWeb.dz](https://www.cibweb.dz/).
 
 ## Installation
 
@@ -47,6 +25,17 @@ composer require piteurstudio/satim
 ```
 
 ## Usage
+
+### Configuration
+
+Before using the package, you'll need to set your Satim.dz API credentials in your `.env` or `config.php` file.
+
+```bash
+SATIM_USERNAME=your-satim-username
+SATIM_PASSWORD=your-satim-password
+SATIM_TERMINAL_ID=your-satim-terminal-id
+```
+
 
 ### Generate a Payment Link
 
@@ -79,22 +68,6 @@ $formUrl = $payment['formUrl'];
 To check the status of a payment, you can use the `confirmOrder` method with the order ID returned from the payment link generation.
 
 ```php
-    
-use PiteurStudio\Satim;
-
-/**
- * Create a new instance of the Satim class with API credentials.
- *
- * @param array $credentials An array containing 'username', 'password', and 'terminal_id'.
- */
-
-$satim = new Satim([
-    'username' => env('SATIM_USERNAME'),
-    'password' => env('SATIM_PASSWORD'),
-    'terminal_id' => env('SATIM_TERMINAL_ID'),
-]);
-
-
 $payment = $satim->confirmOrder($orderId);
 
 if ($payment->isSuccessful()) {
@@ -106,12 +79,6 @@ if ($payment->isSuccessful()) {
     echo 'Payment was not successful' : $payment->getErrorMessage();
     
 }
-```
-
-## Testing
-
-```bash
-composer test
 ```
 
 ## Changelog
@@ -144,6 +111,18 @@ Your support is greatly appreciated!
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
 
+---
+
+## Extra Notes
+
+Satim.dz system operates using the robust banking technologies provided by **BPC Group**.
+
+Note that many functions in BPC Payment System are restricted for public use by Satim.dz
+
+- the official [BPC Payment Documentation](https://dev.bpcbt.com/en/integration/api/rest/rest.html#api_overview).
+
+
 ## Disclaimer
+
 This package is not officially affiliated with or endorsed by **Satim.dz**. The Satim name, logo, and trademarks are the property of **Satim.dz**, Algeria's interbank electronic payment operator.
 
