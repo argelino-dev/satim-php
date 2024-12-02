@@ -59,8 +59,8 @@ Create a payment link with a few simple method calls:
 
 ```php
 $payment = $satim
-        ->setAmount(1000) // Set payment amount in DZD dinars
-        ->setDescription('Product purchase') // Optional: Add a description
+        ->setAmount(1000) /* Set payment amount in DZD dinars*/
+        ->setDescription('Product purchase') /* Optional: Add a description*/
         ->setReturnUrl('https://example.com/success')
         ->setFailUrl('https://example.com/fail') // Optional: Specify a different fail URL
         ->setOrderNumber(1234567890) // Optional: Use custom order number
