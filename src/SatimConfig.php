@@ -112,13 +112,13 @@ abstract class SatimConfig
      *
      * @throws SatimInvalidDataException
      */
-    public function setFailUrl(string $string): static
+    public function setFailUrl(string $url): static
     {
-        if (! filter_var($string, FILTER_VALIDATE_URL)) {
+        if (! filter_var($url, FILTER_VALIDATE_URL)) {
             throw new SatimInvalidDataException('Invalid fail URL.');
         }
 
-        $this->failUrl = $string;
+        $this->failUrl = $url;
 
         return $this;
     }
@@ -128,13 +128,13 @@ abstract class SatimConfig
      *
      * @throws SatimInvalidDataException
      */
-    public function setReturnUrl(string $string): static
+    public function setReturnUrl(string $url): static
     {
-        if (! filter_var($string, FILTER_VALIDATE_URL)) {
+        if (! filter_var($url, FILTER_VALIDATE_URL)) {
             throw new SatimInvalidDataException('Invalid return URL.');
         }
 
-        $this->returnUrl = $string;
+        $this->returnUrl = $url;
 
         return $this;
     }
@@ -161,9 +161,9 @@ abstract class SatimConfig
     /**
      * Set the test mode for the payment.
      */
-    public function setTestMode(bool $true): static
+    public function setTestMode(bool $isEnabled): static
     {
-        $this->test_mode = $true;
+        $this->test_mode = $isEnabled;
 
         return $this;
     }
