@@ -81,7 +81,7 @@ $paymentUrl = $payment->url();
 // Redirect user to payment page
 $payment->pay();
 ```
-#### Available configuration methods:
+#### Optional configuration methods:
 
 
 | Method | Parameters | Description | Default Behavior |
