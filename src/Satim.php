@@ -12,6 +12,7 @@ use PiteurStudio\Exception\SatimMissingDataException;
 class Satim extends SatimConfig
 {
     use SatimStatusChecker;
+    use SatimPayHelper;
 
     protected HttpClientService $httpClientService;
 
@@ -116,10 +117,10 @@ class Satim extends SatimConfig
      * Register a payment with Satim API.
      *
      * @throws SatimInvalidDataException
-     * @throws SatimMissingDataException|RandomException
+     * @throws SatimMissingDataException
      * @throws SatimApiException
      */
-    public function registerPayment(): array
+    public function registerPayment(): static
     {
 
         // Perform validation
@@ -137,7 +138,9 @@ class Satim extends SatimConfig
             throw new SatimInvalidDataException('registerPayment Error {errorCode: '.$result['errorCode'].' , errorMessage: '.$errorMessage.'}');
         }
 
-        return $result;
+        $this->registerPaymentData = $result;
+
+        return $this;
 
     }
 
@@ -155,7 +158,7 @@ class Satim extends SatimConfig
             'language' => $this->language,
         ];
 
-        $this->response_data = $this->httpClientService->handleApiRequest('/confirmOrder.do', $data);
+        $this->confirmPaymentData = $this->httpClientService->handleApiRequest('/confirmOrder.do', $data);
 
         return $this;
     }
@@ -174,7 +177,7 @@ class Satim extends SatimConfig
             'language' => $this->language,
         ];
 
-        $this->response_data = $this->httpClientService->handleApiRequest('/getOrderStatus.do', $data);
+        $this->confirmPaymentData = $this->httpClientService->handleApiRequest('/getOrderStatus.do', $data);
 
         return $this;
     }
