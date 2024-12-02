@@ -30,21 +30,20 @@ composer require piteurstudio/satim
 
 ### Configuration
 
-Before using the package, you'll need to set your Satim.dz API credentials in your `.env` or `config.php` file.
+Configure your Satim.dz API credentials using your project's preferred method of storing sensitive information.
 
+Credentials example:
 ```bash
 SATIM_USERNAME=your-satim-username
 SATIM_PASSWORD=your-satim-password
 SATIM_TERMINAL_ID=your-satim-terminal-id
 ```
 
+### Initialization
 
-### Generate a Payment Link
-
-To generate a payment link, you'll need to create a new instance of the `Satim` class and provide your Satim.dz API credentials.
+Create a new Satim client by passing your API credentials:
 
 ```php
-    
 use PiteurStudio\Satim;
 
 $satim = new Satim([
@@ -52,18 +51,50 @@ $satim = new Satim([
     'password' => env('SATIM_PASSWORD'),
     'terminal_id' => env('SATIM_TERMINAL_ID'),
 ]);
+```
 
+### Generate a Payment Link
+
+Create a payment link with a few simple method calls:
+
+```php
 $payment = $satim
-        ->setAmount(1000)
+        ->setAmount(1000) // Set payment amount in DZD dinars
+        ->setDescription('Product purchase') // Optional: Add a description
         ->setReturnUrl('https://example.com/success')
+        ->setFailUrl('https://example.com/fail') // Optional: Specify a different fail URL
+        ->setOrderNumber(1234567890) // Optional: Use custom order number
+        ->setTestMode(true) // Optional: Enable test mode
+        ->setLanguage('AR') // Optional: Set payment page language (EN, AR, FR - default is FR)
+        ->setPaymentTimeout(600) // Optional: Set payment timeout in seconds
+        ->setUserDefinedFields([
+           'customer_id' => '12345',
+           'order_type' => 'premium'
+       ]) // Optional: Add custom user-defined fields
         ->generatePayment();
 
-// Store this ID to check the payment status later
-$orderId = $payment['orderId']; 
+// Retrieve payment information
+$paymentDetails = $payment->data();
+$orderId = $payment->orderId();
+$paymentUrl = $payment->url();
 
-// Redirect your user to this URL to complete the payment
-$formUrl = $payment['formUrl'];
+// Redirect user to payment page
+$payment->pay();
 ```
+#### Available configuration methods:
+
+
+| Method | Parameters | Description | Default Behavior |
+|--------|------------|-------------|-----------------|
+| `setDescription` | `string $description` | Add a description to the payment | Not set |
+| `setFailUrl` | `string $url` | Set a custom fail redirect URL | Uses `setReturnUrl()` |
+| `setOrderNumber` | `int $orderNumber` | Use a custom 10-digit order number | Randomly generated |
+| `setTestMode` | `bool $isEnabled` | Enable Satim test APIs | Disabled |
+| `setLanguage` | `string $language` | Set payment page language | 'FR' (Accepts 'EN', 'AR', 'FR') |
+| `setPaymentTimeout` | `int $seconds` | Set payment timeout | 600 seconds (10 minutes) |
+| `setUserDefinedFields` | `array $fields` | Add multiple custom user-defined fields | Not set |
+
+- Customize the payment process as needed for your specific use case
 
 ### Confirm Payment Status
 
@@ -83,15 +114,31 @@ if ($payment->isSuccessful()) {
 }
 ```
 
+### Refund a Payment
+
+To refund a payment, you can use the `refundOrder` method with the order ID returned from the payment link generation.
+
+```php
+$refund = $satim->refundOrder($orderId);
+```
+
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
 
-## Contributing
+## Contribution
 
-Contributions are welcome! Feel free to submit a pull request or open an issue on GitHub. 
+We welcome all contributions! Please follow these guidelines:
 
-Together, we can improve and expand this package to better serve the Algerian developer community.
+1. Document any changes in behavior — ensure `README.md` updated accordingly.
+2. Write tests to cover any new functionality.
+3. Please ensure that your pull request passes all tests.
+
+## Issues & Suggesting Features
+
+If you encounter any issues or have ideas for new features, please open an issue.
+
+We appreciate your feedback and contributions to help improve this package.
 
 ## Security Vulnerabilities
 
@@ -102,12 +149,11 @@ Please review [our security policy](../../security/policy) on how to report secu
 - [Nassim](https://github.com/n4ss1m) / [PiteurStudio](https://github.com/PiteurStudio)
 - [All Contributors](../../contributors)
 
-## Support Us
+## ⭐ Support Us
 
-If you find this package helpful and would like to support its development, please consider buying me a coffee. 
-
-Your support is greatly appreciated!
-
+If you find this package helpful, please consider giving it a ⭐ on GitHub!
+Your support encourages us to keep improving the project.
+Thank you!
 
 ## License
 
