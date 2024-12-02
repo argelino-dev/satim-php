@@ -6,7 +6,7 @@ use PiteurStudio\Exception\SatimInvalidDataException;
 
 trait SatimStatusChecker
 {
-    protected ?array $response_data = null;
+    protected ?array $confirmPaymentData = null;
 
     /**
      * Get the order status success message
@@ -15,7 +15,7 @@ trait SatimStatusChecker
      */
     public function getSuccessMessage(): string
     {
-        return $this->getData()['params']['respCode_desc'] ?? ($this->getData()['actionCodeDescription'] ?? 'Payment was successful');
+        return $this->getConfirmPaymentData()['params']['respCode_desc'] ?? ($this->getConfirmPaymentData()['actionCodeDescription'] ?? 'Payment was successful');
     }
 
     /**
@@ -33,7 +33,7 @@ trait SatimStatusChecker
             return 'Payment was refunded';
         }
 
-        return $this->getData()['params']['respCode_desc'] ?? ($this->getData()['actionCodeDescription'] ?? 'Payment failed');
+        return $this->getConfirmPaymentData()['params']['respCode_desc'] ?? ($this->getConfirmPaymentData()['actionCodeDescription'] ?? 'Payment failed');
     }
 
     /**
@@ -41,13 +41,13 @@ trait SatimStatusChecker
      *
      * @throws SatimInvalidDataException
      */
-    public function getData(): array
+    public function getConfirmPaymentData(): array
     {
-        if (! isset($this->response_data)) {
+        if (! isset($this->confirmPaymentData)) {
             throw new SatimInvalidDataException('No data available : call getOrderStatus() or confirmOrder() first.');
         }
 
-        return $this->response_data;
+        return $this->confirmPaymentData;
     }
 
     /**
