@@ -11,8 +11,8 @@ use PiteurStudio\Exception\SatimMissingDataException;
 
 class Satim extends SatimConfig
 {
-    use SatimStatusChecker;
     use SatimPayHelper;
+    use SatimStatusChecker;
 
     protected HttpClientService $httpClientService;
 

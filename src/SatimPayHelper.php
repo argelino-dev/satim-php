@@ -9,17 +9,16 @@ use PiteurStudio\Exception\SatimMissingDataException;
 
 trait SatimPayHelper
 {
-
     private ?array $registerPaymentData = null;
 
     /**
      * Get payment data from generated payment
-     * @return array
+     *
      * @throws SatimMissingDataException
      */
     public function data(): array
     {
-        if(empty($this->registerPaymentData)) {
+        if (empty($this->registerPaymentData)) {
             throw new SatimMissingDataException('No payment data found. Call generatePayment() first.');
         }
 
@@ -48,7 +47,7 @@ trait SatimPayHelper
     #[NoReturn]
     public function pay(): void
     {
-        header('Location: '. $this->data()['formUrl']);
+        header('Location: '.$this->data()['formUrl']);
         exit;
     }
 
@@ -66,7 +65,7 @@ trait SatimPayHelper
 
     /**
      * Register payment
-     * @return static
+     *
      * @throws SatimInvalidDataException
      * @throws SatimApiException
      * @throws SatimMissingDataException
@@ -75,5 +74,4 @@ trait SatimPayHelper
     {
         return $this->registerPayment();
     }
-
 }
