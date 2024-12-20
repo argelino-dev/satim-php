@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace PiteurStudio;
 
 use PiteurStudio\Client\HttpClientService;
-use PiteurStudio\Exception\SatimApiException;
 use PiteurStudio\Exception\SatimInvalidDataException;
 use PiteurStudio\Exception\SatimMissingDataException;
+use PiteurStudio\Exception\SatimUnexpectedResponseException;
 
 class Satim extends SatimConfig
 {
@@ -17,7 +17,18 @@ class Satim extends SatimConfig
     protected HttpClientService $httpClientService;
 
     /**
-     * @throws SatimMissingDataException
+     * Create a new Satim instance.
+     *
+     * This method will create a new Satim instance with the provided configuration data.
+     * If the required data is missing, it will throw a SatimMissingDataException.
+     *
+     * @param array $data The configuration data for the Satim client. This should contain the following keys:
+     *     - username: The username for the Satim API.
+     *     - password: The password for the Satim API.
+     *     - terminal_id: The terminal ID for the Satim API.
+     * @param HttpClientService|null $httpClientService The HTTP client service to use for making requests to the Satim API. If not provided, a new instance will be created.
+     *
+     * @throws SatimMissingDataException Thrown if the required data is missing.
      */
     public function __construct(array $data, ?HttpClientService $httpClientService = null)
     {
@@ -28,67 +39,49 @@ class Satim extends SatimConfig
     /**
      * Validate payment data before making a request.
      *
-     * @throws SatimMissingDataException
-     * @throws SatimInvalidDataException
+     * This method checks if the required data is set and performs necessary actions.
+     * If the required data is missing, it throws a SatimMissingDataException.
+     *
+     * @throws SatimMissingDataException Thrown if the required data is missing.
      */
-    private function validatePaymentData(): void
+    private function validateData(): void
     {
-
+        // Check if the return URL is set, throw an exception if missing
         if (! $this->returnUrl) {
-            throw new SatimMissingDataException('Return URL missing. Call setReturnUrl().');
+            throw new SatimMissingDataException('Return URL missing. Call returnUrl() to set it.');
         }
 
+        // Check if the order number is set; if not, generate a random one
         if (! $this->orderNumber) {
-
-            $this->setOrderNumber(mt_rand(1000000000, 9999999999));
-
+            $this->orderNumber(mt_rand(1000000000, 9999999999));
         }
 
-        if (strlen((string) $this->orderNumber) !== 10) {
-
-            throw new SatimInvalidDataException('Order number must be exactly 10 digits ( Satim requirement ) .');
-        }
-
+        // Check if the amount is set, throw an exception if missing
         if (! $this->amount) {
-            throw new SatimMissingDataException('Amount missing. Call setAmount().');
-        }
-
-        if ($this->amount < 0) {
-            throw new SatimInvalidDataException('Amount must be positive.');
-        }
-
-        if ($this->description) {
-
-            if (strlen($this->description) > 598) {
-                throw new SatimInvalidDataException('Description must be less than 598 characters.');
-            }
-
-        }
-
-        if ($this->sessionTimeoutSecs) {
-
-            if ($this->sessionTimeoutSecs < 600 || $this->sessionTimeoutSecs > 86400) {
-                throw new SatimInvalidDataException('Session timeout must be between 600 and 86400 seconds.');
-            }
-
+            throw new SatimMissingDataException('Amount missing. Call the amount() method to set it.');
         }
 
     }
 
     /**
      * Build the request data for payment registration.
+     *
+     * This method will create the data array to be sent to the Satim API
+     * for payment registration.
      */
-    private function buildPaymentData(): array
+    private function buildData(): array
     {
-
+        // Add force_terminal_id that will be sent in the request
         $additionalData = [
             'force_terminal_id' => $this->terminal_id,
         ];
 
+        // If user-defined fields are set, add them to the additional data
         if ($this->userDefinedFields) {
             $additionalData = array_merge($additionalData, $this->userDefinedFields);
         }
 
+        // Create the main request data array
         $data = [
             'userName' => $this->username,
             'password' => $this->password,
@@ -101,44 +94,51 @@ class Satim extends SatimConfig
             'jsonParams' => json_encode($additionalData),
         ];
 
+        // If a description is set, add it to the request data
         if ($this->description) {
             $data['description'] = $this->description;
         }
 
+        // If a session timeout is set, add it to the request data
         if ($this->sessionTimeoutSecs) {
             $data['sessionTimeoutSecs'] = $this->sessionTimeoutSecs;
         }
 
+        // Return the request data
         return $data;
-
     }
 
     /**
      * Register a payment with Satim API.
      *
-     * @throws SatimInvalidDataException
-     * @throws SatimMissingDataException
-     * @throws SatimApiException
+     * This method will register a payment on the Satim API and store the response data in the registerOrderResponse property.
+     *
+     * @throws SatimInvalidDataException Thrown if the request data is invalid.
+     * @throws SatimMissingDataException Thrown if the required data is missing.
+     * @throws SatimUnexpectedResponseException Thrown if the API response is unexpected.
      */
-    public function registerPayment(): static
+    public function registerOrder(): static
     {
 
-        // Perform validation
-        $this->validatePaymentData();
+        // Validate the data before sending the request
+        $this->validateData();
 
-        // Build request data
-        $data = $this->buildPaymentData();
+        // Build the request data
+        $data = $this->buildData();
 
+        // Send the request and store the response
         $result = $this->httpClientService->handleApiRequest('/register.do', $data);
 
+        // Check the response and throw an exception if the error code is not 0
         if ($result['errorCode'] !== '0') {
 
             $errorMessage = $result['errorMessage'] ?? 'Unknown error';
 
-            throw new SatimInvalidDataException('registerPayment Error {errorCode: '.$result['errorCode'].' , errorMessage: '.$errorMessage.'}');
+            throw new SatimUnexpectedResponseException('registerPayment Error {errorCode: '.$result['errorCode'].' , errorMessage: '.$errorMessage.'}');
         }
 
-        $this->registerPaymentData = $result;
+        // Store the response data
+        $this->registerOrderResponse = $result;
 
         return $this;
 
@@ -147,10 +147,18 @@ class Satim extends SatimConfig
     /**
      * Confirm the payment with Satim API.
      *
-     * @throws SatimApiException
+     * This method sends a request to the Satim API to confirm the payment
+     * using the given order ID. The response is stored in the confirmOrderResponse property.
+     *
+     * @param string $orderId The ID of the order to be confirmed.
+     *
+     * @return static The current instance for method chaining.
+     *
+     * @throws SatimUnexpectedResponseException Thrown if the API response is unexpected.
      */
-    public function confirmPayment(string $orderId): static
+    public function confirmOrder(string $orderId): static
     {
+        // Prepare the data for the confirmation request
         $data = [
             'userName' => $this->username,
             'password' => $this->password,
@@ -158,18 +166,27 @@ class Satim extends SatimConfig
             'language' => $this->language,
         ];
 
-        $this->confirmPaymentData = $this->httpClientService->handleApiRequest('/confirmOrder.do', $data);
+        // Send the request and store the response
+        $this->confirmOrderResponse = $this->httpClientService->handleApiRequest('/confirmOrder.do', $data);
 
         return $this;
     }
 
     /**
-     * Get the status of a payment from Satim API.
+     * Retrieve the status of a payment from Satim API.
      *
-     * @throws SatimApiException
+     * This method sends a request to the Satim API to check the status of a payment
+     * using the given order ID. The response is stored in the confirmPaymentData property.
+     *
+     * @param string $orderId The ID of the order for which the status is to be checked.
+     *
+     * @return static The current instance for method chaining.
+     *
+     * @throws SatimUnexpectedResponseException Thrown if the API response is unexpected.
      */
-    public function checkPaymentStatus(string $orderId): static
+    public function checkOrderStatus(string $orderId): static
     {
+        // Prepare the data for the status request
         $data = [
             'userName' => $this->username,
             'password' => $this->password,
@@ -177,7 +194,8 @@ class Satim extends SatimConfig
             'language' => $this->language,
         ];
 
-        $this->confirmPaymentData = $this->httpClientService->handleApiRequest('/getOrderStatus.do', $data);
+        // Send request to Satim API and store the response
+        $this->confirmOrderResponse = $this->httpClientService->handleApiRequest('/getOrderStatus.do', $data);
 
         return $this;
     }
@@ -185,10 +203,20 @@ class Satim extends SatimConfig
     /**
      * Refund a payment with Satim API.
      *
-     * @throws SatimApiException
+     * This method sends a refund request for a specified order ID and amount.
+     * The amount should be specified in the major currency unit and will be
+     * converted to minor units in the request.
+     *
+     * @param string $orderId The ID of the order to be refunded.
+     * @param int $amount The amount to refund in major currency units.
+     *
+     * @return array The response from the Satim API.
+     *
+     * @throws SatimUnexpectedResponseException Thrown if the API response is unexpected.
      */
     public function refundPayment(string $orderId, int $amount): array
     {
+        // Prepare the data for the refund request
         $data = [
             'userName' => $this->username,
             'password' => $this->password,
