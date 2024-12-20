@@ -59,40 +59,40 @@ Create a payment link with a few simple method calls:
 
 ```php
 $payment = $satim
-        ->setAmount(1000) /* Set payment amount in DZD dinars*/
-        ->setDescription('Product purchase') /* Optional: Add a description*/
-        ->setReturnUrl('https://example.com/success')
-        ->setFailUrl('https://example.com/fail') // Optional: Specify a different fail URL
-        ->setOrderNumber(1234567890) // Optional: Use custom order number
-        ->setTestMode(true) // Optional: Enable test mode
-        ->setLanguage('AR') // Optional: Set payment page language (EN, AR, FR - default is FR)
-        ->setPaymentTimeout(600) // Optional: Set payment timeout in seconds
-        ->setUserDefinedFields([
+        ->amount(1000) /* Set payment amount in DZD dinars*/
+        ->description('Product purchase') /* Optional: Add a description*/
+        ->returnUrl('https://example.com/success')
+        ->failUrl('https://example.com/fail') // Optional: Specify a different fail URL
+        ->orderNumber(1234567890) // Optional: Use custom order number
+        ->testMode(true) // Optional: Enable test mode
+        ->language('AR') // Optional: Set payment page language (EN, AR, FR - default is FR)
+        ->timeout(600) // Optional: Set payment timeout in seconds
+        ->userDefinedFields([
            'customer_id' => '12345',
            'order_type' => 'premium'
        ]) // Optional: Add custom user-defined fields
-        ->generatePayment();
+        ->registerOrder();
 
 // Retrieve payment information
-$paymentDetails = $payment->data();
-$orderId = $payment->orderId();
-$paymentUrl = $payment->url();
+$paymentDetails = $payment->getResponse();
+$orderId = $payment->getOrderId();
+$paymentUrl = $payment->getUrl();
 
 // Redirect user to payment page
-$payment->pay();
+$payment->redirect();
 ```
 #### Optional configuration methods:
 
 
-| Method | Parameters | Description | Default Behavior |
-|--------|------------|-------------|-----------------|
-| `setDescription` | `string $description` | Add a description to the payment | Not set |
-| `setFailUrl` | `string $url` | Set a custom fail redirect URL | Uses `setReturnUrl()` |
-| `setOrderNumber` | `int $orderNumber` | Use a custom 10-digit order number | Randomly generated |
-| `setTestMode` | `bool $isEnabled` | Enable Satim test APIs | Disabled |
-| `setLanguage` | `string $language` | Set payment page language | 'FR' (Accepts 'EN', 'AR', 'FR') |
-| `setPaymentTimeout` | `int $seconds` | Set payment timeout | 600 seconds (10 minutes) |
-| `setUserDefinedFields` | `array $fields` | Add multiple custom user-defined fields | Not set |
+| Method              | Parameters | Description | Default Behavior |
+|---------------------|------------|-------------|-----------------|
+| `description`       | `string $description` | Add a description to the payment | Not set |
+| `failUrl`           | `string $url` | Set a custom fail redirect URL | Uses `setReturnUrl()` |
+| `orderNumber`       | `int $orderNumber` | Use a custom 10-digit order number | Randomly generated |
+| `testMode`          | `bool $isEnabled` | Enable Satim test APIs | Disabled |
+| `language`          | `string $language` | Set payment page language | 'FR' (Accepts 'EN', 'AR', 'FR') |
+| `timeout`           | `int $seconds` | Set payment timeout | 600 seconds (10 minutes) |
+| `userDefinedFields` | `array $fields` | Add multiple custom user-defined fields | Not set |
 
 - Customize the payment process as needed for your specific use case
 
