@@ -2,8 +2,9 @@
 
 namespace PiteurStudio;
 
-use PiteurStudio\Exception\SatimInvalidDataException;
+use PiteurStudio\Exception\SatimInvalidArgumentException;
 use PiteurStudio\Exception\SatimMissingDataException;
+use PiteurStudio\Exception\SatimUnexpectedValueException;
 
 abstract class SatimConfig
 {
@@ -35,29 +36,40 @@ abstract class SatimConfig
 
     protected string $currency = '012';
 
+    protected array $currencies = [
+        'DZD' => '012',
+        'USD' => '840',
+        'EUR' => '978',
+    ];
+
     /**
      * Satim constructor.
      *
-     * @throws SatimMissingDataException
+     * @param array $data
+     * @throws SatimMissingDataException|SatimInvalidArgumentException|SatimUnexpectedValueException
      */
     protected function initFromArray(array $data): void
     {
         $requiredData = ['username', 'password', 'terminal_id'];
 
+        // Check if all required data are present
         foreach ($requiredData as $key) {
 
             if (! isset($data[$key])) {
-                throw new SatimMissingDataException('Missing data '.$key.'.');
+                throw new SatimMissingDataException('Missing required data: '.$key.'.');
             }
 
+            // Validate the value type
             if (! is_string($data[$key])) {
-                throw new SatimMissingDataException('Data '.$key.' must be a string.');
+                throw new SatimInvalidArgumentException('The value for ' . $key . ' must be a string.');
             }
 
+            // Validate the value itself
             if (empty($data[$key])) {
-                throw new SatimMissingDataException('Data '.$key.' can not be empty.');
+                throw new SatimUnexpectedValueException('The value for ' . $key . ' cannot be empty.');
             }
 
+            // Set the value to the object
             $this->$key = $data[$key];
 
         }
@@ -65,9 +77,22 @@ abstract class SatimConfig
 
     /**
      * Set the amount for the payment.
+     *
+     * The amount must be a positive integer.
+     *
+     * @param int $amount The amount of the payment in cents.
+     *
+     * @return static
+     *
+     * @throws SatimUnexpectedValueException If the amount is negative.
      */
-    public function setAmount(int $amount): static
+    public function amount(int $amount): static
     {
+
+        if ($amount < 0) {
+            throw new SatimUnexpectedValueException('Amount must be positive.');
+        }
+
         $this->amount = $amount;
 
         return $this;
@@ -75,9 +100,22 @@ abstract class SatimConfig
 
     /**
      * Set the description for the payment.
+     *
+     * The description must be less than 598 characters.
+     *
+     * @param string $description The description of the payment.
+     *
+     * @return static
+     *
+     * @throws SatimUnexpectedValueException If the description is too long.
      */
-    public function setDescription(string $description): static
+    public function description(string $description): static
     {
+        // The description must be less than 598 characters.
+        if (strlen($description) > 598) {
+            throw new SatimUnexpectedValueException('Description must be less than 598 characters.');
+        }
+
         $this->description = $description;
 
         return $this;
@@ -88,21 +126,21 @@ abstract class SatimConfig
      * Satim planned to support Mastercard and Visa in the future.
      * https://bitakati.dz/fr/actualite/la-satim-certifiee-par-mastercard-et-visa-avant-la-fin-2017-n-3
      *
-     * @throws SatimInvalidDataException
+     * @param string $currency The currency code (e.g., 'DZD', 'USD', 'EUR').
+     *
+     * @return static
+     *
+     * @throws SatimUnexpectedValueException If the currency is invalid.
      */
-    public function setCurrency(string $string): static
+    public function currency(string $currency): static
     {
-        $currencies = [
-            'DZD' => '012',
-            'USD' => '840',
-            'EUR' => '978',
-        ];
-
-        if (! array_key_exists($string, $currencies)) {
-            throw new SatimInvalidDataException('Invalid currency : Allowed currencies [ DZD , USD , EUR ].');
+        // Check if the provided currency exists in the allowed currencies list
+        if (! array_key_exists($currency, $this->currencies)) {
+            throw new SatimUnexpectedValueException('Invalid currency: Allowed currencies are [DZD, USD, EUR].');
         }
 
-        $this->currency = $currencies[$string];
+        // Set the currency for the payment
+        $this->currency = $this->currencies[$currency];
 
         return $this;
     }
@@ -110,12 +148,17 @@ abstract class SatimConfig
     /**
      * Set the fail URL for the payment.
      *
-     * @throws SatimInvalidDataException
+     * The fail URL is the URL that the client will be redirected to
+     * if the payment fails.
+     *
+     * @param string $url The URL to redirect to if the payment fails.
+     *
+     * @throws SatimInvalidArgumentException If the URL is invalid.
      */
-    public function setFailUrl(string $url): static
+    public function failUrl(string $url): static
     {
         if (! filter_var($url, FILTER_VALIDATE_URL)) {
-            throw new SatimInvalidDataException('Invalid fail URL.');
+            throw new SatimInvalidArgumentException('Invalid fail URL.');
         }
 
         $this->failUrl = $url;
@@ -126,12 +169,17 @@ abstract class SatimConfig
     /**
      * Set the return URL for the payment.
      *
-     * @throws SatimInvalidDataException
+     * The return URL is the URL that the client will be redirected to
+     * after the payment is processed.
+     *
+     * @param string $url The URL to redirect to after the payment is processed.
+     *
+     * @throws SatimInvalidArgumentException If the URL is invalid.
      */
-    public function setReturnUrl(string $url): static
+    public function returnUrl(string $url): static
     {
         if (! filter_var($url, FILTER_VALIDATE_URL)) {
-            throw new SatimInvalidDataException('Invalid return URL.');
+            throw new SatimInvalidArgumentException('Invalid return URL. The URL must be a valid URL.');
         }
 
         $this->returnUrl = $url;
@@ -141,16 +189,21 @@ abstract class SatimConfig
 
     /**
      * Set the order number for the payment.
-     * The order number must be exactly 10 digits.
+     * The order number must be exactly 10 digits (Satim requirement).
+     * You can use a random number or a unique identifier from your database.
      *
-     * @throws SatimInvalidDataException
+     * @param int $orderNumber The order number for the payment.
+     *
+     * @return static
+     *
+     * @throws SatimUnexpectedValueException If the order number is not exactly 10 digits.
      */
-    public function setOrderNumber(int $orderNumber): static
+    public function orderNumber(int $orderNumber): static
     {
 
         if (strlen((string) $orderNumber) !== 10) {
 
-            throw new SatimInvalidDataException('Order number must be exactly 10 digits.');
+            throw new SatimUnexpectedValueException('Order number must be exactly 10 digits (Satim requirement).');
         }
 
         $this->orderNumber = $orderNumber;
@@ -160,8 +213,12 @@ abstract class SatimConfig
 
     /**
      * Set the test mode for the payment.
+     *
+     * @param bool $isEnabled Whether to enable test mode.
+     *
+     * @return static
      */
-    public function setTestMode(bool $isEnabled): static
+    public function testMode(bool $isEnabled): static
     {
         $this->test_mode = $isEnabled;
 
@@ -170,16 +227,25 @@ abstract class SatimConfig
 
     /**
      * Set the language for the payment.
-     * The language must be FR, AR, or EN.
      *
-     * @throws SatimInvalidDataException
+     * The language must be one of the following:
+     *
+     *  - FR (French)
+     *  - AR (Arabic)
+     *  - EN (English)
+     *
+     * @param string $language The language to use for the payment.
+     *
+     * @return static
+     *
+     * @throws SatimUnexpectedValueException If the language is invalid.
      */
-    public function setLanguage(string $language): static
+    public function language(string $language): static
     {
         $language = strtoupper($language);
 
         if (! in_array($language, ['FR', 'AR', 'EN'])) {
-            throw new SatimInvalidDataException('Language must be FR, AR, or EN.');
+            throw new SatimUnexpectedValueException('Language must be FR, AR, or EN.');
         }
 
         $this->language = $language;
@@ -190,13 +256,21 @@ abstract class SatimConfig
     /**
      * Set the user defined field for the payment.
      *
-     * @throws SatimInvalidDataException
+     * This method allows you to set a user defined field for the payment.
+     * The key must be a string and the value must be a string.
+     *
+     * @param string $key The key of the user defined field.
+     * @param string $value The value of the user defined field.
+     *
+     * @return static
+     *
+     * @throws SatimInvalidArgumentException If the key is a numeric string.
      */
-    public function setUserDefinedField(string $key, string $value): static
+    public function userDefinedField(string $key, string $value): static
     {
 
         if (is_numeric($key)) {
-            throw new SatimInvalidDataException('User defined field key must be a string.');
+            throw new SatimInvalidArgumentException('User defined field key must be a string.');
         }
 
         $this->userDefinedFields[$key] = $value;
@@ -207,22 +281,41 @@ abstract class SatimConfig
     /**
      * Set the user defined fields for the payment.
      *
-     * @throws SatimInvalidDataException
+     * @param array $data The user defined fields to set.
+     *
+     * @throws SatimInvalidArgumentException If any of the keys in the $data array are numeric strings.
+     *
+     * @return static
      */
-    public function setUserDefinedFields(array $data): static
+    public function userDefinedFields(array $data): static
     {
         foreach ($data as $variable => $value) {
-            $this->setUserDefinedField($variable, $value);
+            $this->userDefinedField($variable, $value);
         }
 
         return $this;
     }
 
     /**
-     * Set the payment timeout for the payment.
+     * Set the payment session timeout.
+     *
+     * This method sets the session timeout for the payment process.
+     * The timeout must be between 600 seconds (10 minutes) and 86400 seconds (24 hours).
+     *
+     * @param int $seconds The session timeout in seconds.
+     *
+     * @return static
+     *
+     * @throws SatimUnexpectedValueException If the timeout is not within the allowed range.
      */
-    public function setPaymentTimeout(int $seconds): static
+    public function timeout(int $seconds): static
     {
+        // Validate that the timeout is within the allowed range
+        if ($seconds < 600 || $seconds > 86400) {
+            throw new SatimUnexpectedValueException('Session timeout must be between 600 and 86400 seconds.');
+        }
+
+        // Set the session timeout
         $this->sessionTimeoutSecs = $seconds;
 
         return $this;
