@@ -113,7 +113,6 @@ class Satim extends SatimConfig
      *
      * This method will register a payment on the Satim API and store the response data in the registerOrderResponse property.
      *
-     * @throws SatimInvalidDataException Thrown if the request data is invalid.
      * @throws SatimMissingDataException Thrown if the required data is missing.
      * @throws SatimUnexpectedResponseException Thrown if the API response is unexpected.
      */
@@ -184,7 +183,7 @@ class Satim extends SatimConfig
      *
      * @throws SatimUnexpectedResponseException Thrown if the API response is unexpected.
      */
-    public function checkOrderStatus(string $orderId): static
+    public function getOrderStatus(string $orderId): static
     {
         // Prepare the data for the status request
         $data = [
