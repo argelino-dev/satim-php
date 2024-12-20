@@ -17,6 +17,7 @@ trait SatimPayHelper
      * If registerOrder() was not called before calling this method, a SatimMissingDataException is thrown.
      *
      * @return array The response data associated with the registered order.
+     *
      * @throws SatimMissingDataException If the registerOrder() was not called first.
      */
     public function getResponse(): array
@@ -37,6 +38,7 @@ trait SatimPayHelper
      * It relies on the getResponse() method to retrieve the response data.
      *
      * @return int The order ID extracted from the response data.
+     *
      * @throws SatimMissingDataException If the registerOrder() was not called first.
      */
     public function getOrderId(): int
@@ -55,7 +57,6 @@ trait SatimPayHelper
      * This method should be used after the registerOrder() method has been called to redirect the user to the
      * payment form.
      *
-     * @return void
      * @throws SatimMissingDataException If the registerOrder() was not called first.
      */
     #[NoReturn]
@@ -75,6 +76,7 @@ trait SatimPayHelper
      * Retrieves the URL of the payment form from the response data.
      *
      * @return string The URL of the payment form associated with the response data.
+     *
      * @throws SatimMissingDataException If the registerOrder() was not called first.
      */
     public function getUrl(): string

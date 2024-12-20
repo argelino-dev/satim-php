@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace PiteurStudio;
 
 use PiteurStudio\Client\HttpClientService;
-use PiteurStudio\Exception\SatimInvalidDataException;
 use PiteurStudio\Exception\SatimMissingDataException;
 use PiteurStudio\Exception\SatimUnexpectedResponseException;
 
@@ -22,11 +21,11 @@ class Satim extends SatimConfig
      * This method will create a new Satim instance with the provided configuration data.
      * If the required data is missing, it will throw a SatimMissingDataException.
      *
-     * @param array $data The configuration data for the Satim client. This should contain the following keys:
-     *     - username: The username for the Satim API.
-     *     - password: The password for the Satim API.
-     *     - terminal_id: The terminal ID for the Satim API.
-     * @param HttpClientService|null $httpClientService The HTTP client service to use for making requests to the Satim API. If not provided, a new instance will be created.
+     * @param  array  $data  The configuration data for the Satim client. This should contain the following keys:
+     *                       - username: The username for the Satim API.
+     *                       - password: The password for the Satim API.
+     *                       - terminal_id: The terminal ID for the Satim API.
+     * @param  HttpClientService|null  $httpClientService  The HTTP client service to use for making requests to the Satim API. If not provided, a new instance will be created.
      *
      * @throws SatimMissingDataException Thrown if the required data is missing.
      */
@@ -149,8 +148,7 @@ class Satim extends SatimConfig
      * This method sends a request to the Satim API to confirm the payment
      * using the given order ID. The response is stored in the confirmOrderResponse property.
      *
-     * @param string $orderId The ID of the order to be confirmed.
-     *
+     * @param  string  $orderId  The ID of the order to be confirmed.
      * @return static The current instance for method chaining.
      *
      * @throws SatimUnexpectedResponseException Thrown if the API response is unexpected.
@@ -177,8 +175,7 @@ class Satim extends SatimConfig
      * This method sends a request to the Satim API to check the status of a payment
      * using the given order ID. The response is stored in the confirmPaymentData property.
      *
-     * @param string $orderId The ID of the order for which the status is to be checked.
-     *
+     * @param  string  $orderId  The ID of the order for which the status is to be checked.
      * @return static The current instance for method chaining.
      *
      * @throws SatimUnexpectedResponseException Thrown if the API response is unexpected.
@@ -206,9 +203,8 @@ class Satim extends SatimConfig
      * The amount should be specified in the major currency unit and will be
      * converted to minor units in the request.
      *
-     * @param string $orderId The ID of the order to be refunded.
-     * @param int $amount The amount to refund in major currency units.
-     *
+     * @param  string  $orderId  The ID of the order to be refunded.
+     * @param  int  $amount  The amount to refund in major currency units.
      * @return array The response from the Satim API.
      *
      * @throws SatimUnexpectedResponseException Thrown if the API response is unexpected.

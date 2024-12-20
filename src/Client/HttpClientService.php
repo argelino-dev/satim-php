@@ -27,7 +27,7 @@ class HttpClientService
     private bool $test_mode;
 
     /**
-     * @param bool $test_mode Whether to use the test API or not.
+     * @param  bool  $test_mode  Whether to use the test API or not.
      */
     public function __construct(bool $test_mode = false)
     {
@@ -48,9 +48,10 @@ class HttpClientService
      * Handles the API request by sending it to the specified endpoint with the given data.
      * Validates the response and checks for any basic errors.
      *
-     * @param string $endpoint The API endpoint to send the request to.
-     * @param array $data The data to send with the request.
+     * @param  string  $endpoint  The API endpoint to send the request to.
+     * @param  array  $data  The data to send with the request.
      * @return array The response from the API.
+     *
      * @throws SatimUnexpectedResponseException If the response contains an error.
      */
     public function handleApiRequest(string $endpoint, array $data): array
@@ -72,9 +73,10 @@ class HttpClientService
      * It handles various exceptions related to decoding, client, server, or redirection errors.
      * If an exception occurs, it throws a SatimUnexpectedResponseException with a descriptive error message.
      *
-     * @param string $endpoint The API endpoint to send the request to.
-     * @param array $data The data to send with the request.
+     * @param  string  $endpoint  The API endpoint to send the request to.
+     * @param  array  $data  The data to send with the request.
      * @return array The response from the API.
+     *
      * @throws SatimUnexpectedResponseException If an unexpected error occurs.
      */
     public function sendRequest(string $endpoint, array $data): array
@@ -137,7 +139,7 @@ class HttpClientService
      * If the response contains an error code, throw a SatimUnexpectedResponseException
      * with a descriptive error message.
      *
-     * @param array $response The API response to validate.
+     * @param  array  $response  The API response to validate.
      *
      * @throws SatimUnexpectedResponseException if the response contains an error code.
      */

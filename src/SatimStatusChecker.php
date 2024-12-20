@@ -11,8 +11,9 @@ trait SatimStatusChecker
     /**
      * Get the order status success message
      *
-     * @throws SatimInvalidDataException
      * @return string The order status success message
+     *
+     * @throws SatimInvalidDataException
      */
     public function getSuccessMessage(): string
     {
@@ -24,9 +25,9 @@ trait SatimStatusChecker
     /**
      * Get the order status error message
      *
-     * @throws SatimInvalidDataException
-     *
      * @return string The order status error message
+     *
+     * @throws SatimInvalidDataException
      */
     public function getErrorMessage(): string
     {
@@ -53,9 +54,9 @@ trait SatimStatusChecker
      * order confirmation attempt. It assumes that the data is available and
      * throws an exception if it is not.
      *
-     * @throws SatimInvalidDataException If the order confirmation response data is not available.
-     *
      * @return array The confirmation order response data.
+     *
+     * @throws SatimInvalidDataException If the order confirmation response data is not available.
      */
     public function getConfirmOrderResponse(): array
     {
@@ -88,9 +89,9 @@ trait SatimStatusChecker
     /**
      * Check if the transaction was rejected.
      *
-     * @throws SatimInvalidDataException
-     *
      * @return bool True if the transaction was rejected, false otherwise
+     *
+     * @throws SatimInvalidDataException
      */
     public function isRejected(): bool
     {
@@ -109,9 +110,9 @@ trait SatimStatusChecker
      * This method checks the response data to determine if the transaction
      * was marked as successful by verifying the 'OrderStatus' value.
      *
-     * @throws SatimInvalidDataException If the response data is not available.
-     *
      * @return bool True if the transaction was successful, false otherwise.
+     *
+     * @throws SatimInvalidDataException If the response data is not available.
      */
     public function isSuccessful(): bool
     {
@@ -128,9 +129,9 @@ trait SatimStatusChecker
      * This method will check if the transaction was not marked as
      * successful in the response data.
      *
-     * @throws SatimInvalidDataException If the response data is not available.
-     *
      * @return bool True if the transaction failed, false otherwise.
+     *
+     * @throws SatimInvalidDataException If the response data is not available.
      */
     public function isFailed(): bool
     {
@@ -145,9 +146,9 @@ trait SatimStatusChecker
      * This method will check if the transaction was refunded by verifying
      * the 'OrderStatus' value.
      *
-     * @throws SatimInvalidDataException If the response data is not available.
-     *
      * @return bool True if the transaction was refunded, false otherwise.
+     *
+     * @throws SatimInvalidDataException If the response data is not available.
      */
     public function isRefunded(): bool
     {
@@ -164,9 +165,9 @@ trait SatimStatusChecker
      * This method will check if the transaction was cancelled by verifying
      * the 'actionCode' value in the response data.
      *
-     * @throws SatimInvalidDataException If the response data is not available.
-     *
      * @return bool True if the transaction was cancelled, false otherwise.
+     *
+     * @throws SatimInvalidDataException If the response data is not available.
      */
     public function isCancelled(): bool
     {
@@ -183,9 +184,9 @@ trait SatimStatusChecker
      * This method verifies if the transaction has expired by checking
      * the 'actionCode' value in the response data.
      *
-     * @throws SatimInvalidDataException If the response data is not available.
-     *
      * @return bool True if the transaction expired, false otherwise.
+     *
+     * @throws SatimInvalidDataException If the response data is not available.
      */
     public function isExpired(): bool
     {
