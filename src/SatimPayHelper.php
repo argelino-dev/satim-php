@@ -3,8 +3,6 @@
 namespace PiteurStudio;
 
 use JetBrains\PhpStorm\NoReturn;
-use PiteurStudio\Exception\SatimApiException;
-use PiteurStudio\Exception\SatimInvalidDataException;
 use PiteurStudio\Exception\SatimMissingDataException;
 
 trait SatimPayHelper
@@ -16,10 +14,10 @@ trait SatimPayHelper
      *
      * @throws SatimMissingDataException
      */
-    public function data(): array
+    public function getResponse(): array
     {
         if (empty($this->registerPaymentData)) {
-            throw new SatimMissingDataException('No payment data found. Call generatePayment() first.');
+            throw new SatimMissingDataException('No payment data found. Call registerOrder() first.');
         }
 
         return $this->registerPaymentData;
@@ -32,9 +30,9 @@ trait SatimPayHelper
     /**
      * @throws SatimMissingDataException
      */
-    public function orderId(): int
+    public function getOrderId(): int
     {
-        return $this->data()['orderId'];
+        return $this->getResponse()['orderId'];
     }
 
     /*
@@ -45,9 +43,9 @@ trait SatimPayHelper
      * @throws SatimMissingDataException
      */
     #[NoReturn]
-    public function pay(): void
+    public function redirect(): void
     {
-        header('Location: '.$this->data()['formUrl']);
+        header('Location: '.$this->getResponse()['formUrl']);
         exit;
     }
 
@@ -58,20 +56,8 @@ trait SatimPayHelper
     /**
      * @throws SatimMissingDataException
      */
-    public function url(): string
+    public function getUrl(): string
     {
-        return $this->data()['formUrl'];
-    }
-
-    /**
-     * Register payment
-     *
-     * @throws SatimInvalidDataException
-     * @throws SatimApiException
-     * @throws SatimMissingDataException
-     */
-    public function generatePayment(): static
-    {
-        return $this->registerPayment();
+        return $this->getResponse()['formUrl'];
     }
 }
