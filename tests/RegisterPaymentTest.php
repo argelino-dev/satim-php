@@ -1,7 +1,8 @@
 <?php
 
-use PiteurStudio\Exception\SatimInvalidDataException;
+use PiteurStudio\Exception\SatimInvalidArgumentException;
 use PiteurStudio\Exception\SatimMissingDataException;
+use PiteurStudio\Exception\SatimUnexpectedValueException;
 use PiteurStudio\Satim;
 
 it('can not register payment without returnUrl', function () {
@@ -12,7 +13,7 @@ it('can not register payment without returnUrl', function () {
         'terminal_id' => '123456',
     ]);
 
-    $satim->registerPayment();
+    $satim->registerOrder();
 
 })->throws(SatimMissingDataException::class);
 
@@ -25,10 +26,9 @@ it('can not register payment without a valid returnUrl', function () {
     ]);
 
     $satim
-        ->setReturnUrl('invalid_url')
-        ->registerPayment();
+        ->returnUrl('invalid_url');
 
-})->throws(SatimInvalidDataException::class);
+})->throws(SatimInvalidArgumentException::class);
 
 it('can not register payment without amount', function () {
 
@@ -39,8 +39,8 @@ it('can not register payment without amount', function () {
     ]);
 
     $satim
-        ->setReturnUrl('https://your-return-url.com/payments')
-        ->registerPayment();
+        ->returnUrl('https://your-return-url.com/payments')
+        ->registerOrder();
 
 })->throws(SatimMissingDataException::class);
 
@@ -53,8 +53,7 @@ it('can not register payment without valid positive amount', function () {
     ]);
 
     $satim
-        ->setReturnUrl('https://your-return-url.com/payments')
-        ->setAmount(-5000)
-        ->registerPayment();
+        ->returnUrl('https://your-return-url.com/payments')
+        ->amount(-5000);
 
-})->throws(SatimInvalidDataException::class);
+})->throws(SatimUnexpectedValueException::class);
