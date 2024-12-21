@@ -3,6 +3,7 @@
 namespace PiteurStudio;
 
 use PiteurStudio\Exception\SatimInvalidDataException;
+use PiteurStudio\Exception\SatimMissingDataException;
 
 trait SatimStatusChecker
 {
@@ -13,13 +14,13 @@ trait SatimStatusChecker
      *
      * @return string The order status success message
      *
-     * @throws SatimInvalidDataException
+     * @throws SatimMissingDataException
      */
     public function getSuccessMessage(): string
     {
         // Try to get the success message from the confirmOrderResponse
         // If it doesn't exist or is empty, return a default success message
-        return $this->getConfirmOrderResponse()['params']['respCode_desc'] ?? ($this->getConfirmOrderResponse()['actionCodeDescription'] ?? 'Payment was successful');
+        return $this->getResponse()['params']['respCode_desc'] ?? ($this->getResponse()['actionCodeDescription'] ?? 'Payment was successful');
     }
 
     /**
@@ -28,6 +29,7 @@ trait SatimStatusChecker
      * @return string The order status error message
      *
      * @throws SatimInvalidDataException
+     * @throws SatimMissingDataException
      */
     public function getErrorMessage(): string
     {
@@ -44,30 +46,7 @@ trait SatimStatusChecker
 
         // Otherwise, try to get the error message from the confirmOrderResponse
         // If it doesn't exist or is empty, return a default error message
-        return $this->getConfirmOrderResponse()['params']['respCode_desc'] ?? ($this->getConfirmOrderResponse()['actionCodeDescription'] ?? 'Payment failed');
-    }
-
-    /**
-     * Retrieve the response data from the last order confirmation request.
-     *
-     * This method retrieves the response data that was stored during the last
-     * order confirmation attempt. It assumes that the data is available and
-     * throws an exception if it is not.
-     *
-     * @return array The confirmation order response data.
-     *
-     * @throws SatimInvalidDataException If the order confirmation response data is not available.
-     */
-    public function getConfirmOrderResponse(): array
-    {
-        // Check if the confirmOrderResponse has been set
-        if (! isset($this->confirmOrderResponse)) {
-            // Throw an exception if the data is not available
-            throw new SatimInvalidDataException('No data available : call getOrderStatus() or confirmOrder() first.');
-        }
-
-        // Return the stored confirmation order response data
-        return $this->confirmOrderResponse;
+        return $this->getResponse()['params']['respCode_desc'] ?? ($this->getResponse()['actionCodeDescription'] ?? 'Payment failed');
     }
 
     /**
@@ -81,7 +60,7 @@ trait SatimStatusChecker
         if (! isset($this->response_data)) {
             // If the response data is not available, throw an exception
             throw new SatimInvalidDataException(
-                'No data available: call confirmOrder() or getOrderStatus() first.'
+                'No data available: call confirm() or status() first.'
             );
         }
     }
