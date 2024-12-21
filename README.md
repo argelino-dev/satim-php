@@ -53,6 +53,15 @@ $satim = new Satim([
 ]);
 ```
 
+### Main Methods
+
+The Satim provides the following methods:
+
+- Register a new payment order: `register()`
+- Confirm the status of a payment: `confirm($orderId)`
+- Refund a payment: `refund($orderId)`
+- Retrieve payment status: `status($orderId)`
+
 ### Generate a Payment Link
 
 Create a payment link with a few simple method calls:
@@ -71,7 +80,7 @@ $payment = $satim
            'customer_id' => '12345',
            'order_type' => 'premium'
        ]) // Optional: Add custom user-defined fields
-        ->registerOrder();
+        ->register();
 
 // Retrieve payment information
 $paymentDetails = $payment->getResponse();
@@ -84,32 +93,37 @@ $payment->redirect();
 #### Optional configuration methods:
 
 
-| Method              | Parameters | Description | Default Behavior |
-|---------------------|------------|-------------|-----------------|
-| `description`       | `string $description` | Add a description to the payment | Not set |
-| `failUrl`           | `string $url` | Set a custom fail redirect URL | Uses `setReturnUrl()` |
-| `orderNumber`       | `int $orderNumber` | Use a custom 10-digit order number | Randomly generated |
-| `testMode`          | `bool $isEnabled` | Enable Satim test APIs | Disabled |
-| `language`          | `string $language` | Set payment page language | 'FR' (Accepts 'EN', 'AR', 'FR') |
-| `timeout`           | `int $seconds` | Set payment timeout | 600 seconds (10 minutes) |
-| `userDefinedFields` | `array $fields` | Add multiple custom user-defined fields | Not set |
+| Method              | Parameters            | Description                             | Default Behavior                |
+|---------------------|-----------------------|-----------------------------------------|---------------------------------|
+| `description`       | `string $description` | Add a description to the payment        | Not set                         |
+| `failUrl`           | `string $url`         | Set a custom fail redirect URL          | Uses `returnUrl()`              |
+| `orderNumber`       | `int $orderNumber`    | Use a custom 10-digit order number      | Randomly generated              |
+| `testMode`          | `bool $isEnabled`     | Enable Satim test APIs                  | Disabled                        |
+| `language`          | `string $language`    | Set payment page language               | 'FR' (Accepts 'EN', 'AR', 'FR') |
+| `timeout`           | `int $seconds`        | Set payment timeout                     | 600 seconds (10 minutes)        |
+| `userDefinedFields` | `array $fields`       | Add multiple custom user-defined fields | Not set                         |
 
 - Customize the payment process as needed for your specific use case
 
-### Confirm Payment Status
+### Confirm Payment
 
-To check the status of a payment, you can use the `confirmOrder` method with the order ID returned from the payment link generation.
+This method need to be used when the user is redirected back to your website after the payment process on return URL or fail URL.
+
+To confirm the status of a payment, you can use the `confirm` method with the order ID returned from the payment link generation.
 
 ```php
-$payment = $satim->confirmOrder($orderId);
+$orderConfirmation = $satim->confirm($orderId);
 
-if ($payment->isSuccessful()) {
+// Retrieve payment status
+$orderConfirmation->getResponse();
 
-    echo 'Payment was successful : '.$payment->getSuccessMessage();
+if ($orderConfirmation->isSuccessful()) {
+
+    echo 'Payment was successful : '.$orderConfirmation->getSuccessMessage();
     
 } else {
     // Payment was not successful
-    echo 'Payment was not successful' : $payment->getErrorMessage();
+    echo 'Payment was not successful' : $orderConfirmation->getErrorMessage();
     
 }
 ```
@@ -119,7 +133,19 @@ if ($payment->isSuccessful()) {
 To refund a payment, you can use the `refundOrder` method with the order ID returned from the payment link generation.
 
 ```php
-$refund = $satim->refundOrder($orderId);
+$refundOrder = $satim->refund($orderId);
+
+$refundOrder->getResponse();
+```
+
+### Payment Status
+
+To retrieve the payment status, you can use the `status` method with the order ID returned from the payment link generation.
+
+```php
+$orderStatus = $satim->status($orderId);
+
+$orderStatus->getResponse();
 ```
 
 ## Changelog
