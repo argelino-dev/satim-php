@@ -13,7 +13,7 @@ it('can not register payment without returnUrl', function () {
         'terminal_id' => '123456',
     ]);
 
-    $satim->registerOrder();
+    $satim->register();
 
 })->throws(SatimMissingDataException::class);
 
@@ -40,7 +40,7 @@ it('can not register payment without amount', function () {
 
     $satim
         ->returnUrl('https://your-return-url.com/payments')
-        ->registerOrder();
+        ->register();
 
 })->throws(SatimMissingDataException::class);
 

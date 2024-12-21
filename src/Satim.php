@@ -15,6 +15,8 @@ class Satim extends SatimConfig
 
     protected HttpClientService $httpClientService;
 
+    protected string $context;
+
     /**
      * Create a new Satim instance.
      *
@@ -115,7 +117,7 @@ class Satim extends SatimConfig
      * @throws SatimMissingDataException Thrown if the required data is missing.
      * @throws SatimUnexpectedResponseException Thrown if the API response is unexpected.
      */
-    public function registerOrder(): static
+    public function register(): static
     {
 
         // Validate the data before sending the request
@@ -138,6 +140,8 @@ class Satim extends SatimConfig
         // Store the response data
         $this->registerOrderResponse = $result;
 
+        $this->context = 'register';
+
         return $this;
 
     }
@@ -153,7 +157,7 @@ class Satim extends SatimConfig
      *
      * @throws SatimUnexpectedResponseException Thrown if the API response is unexpected.
      */
-    public function confirmOrder(string $orderId): static
+    public function confirm(string $orderId): static
     {
         // Prepare the data for the confirmation request
         $data = [
@@ -165,6 +169,8 @@ class Satim extends SatimConfig
 
         // Send the request and store the response
         $this->confirmOrderResponse = $this->httpClientService->handleApiRequest('/confirmOrder.do', $data);
+
+        $this->context = 'confirm';
 
         return $this;
     }
@@ -180,7 +186,7 @@ class Satim extends SatimConfig
      *
      * @throws SatimUnexpectedResponseException Thrown if the API response is unexpected.
      */
-    public function getOrderStatus(string $orderId): static
+    public function status(string $orderId): static
     {
         // Prepare the data for the status request
         $data = [
@@ -192,6 +198,8 @@ class Satim extends SatimConfig
 
         // Send request to Satim API and store the response
         $this->confirmOrderResponse = $this->httpClientService->handleApiRequest('/getOrderStatus.do', $data);
+
+        $this->context = 'status';
 
         return $this;
     }
@@ -209,7 +217,7 @@ class Satim extends SatimConfig
      *
      * @throws SatimUnexpectedResponseException Thrown if the API response is unexpected.
      */
-    public function refundPayment(string $orderId, int $amount): array
+    public function refund(string $orderId, int $amount): array
     {
         // Prepare the data for the refund request
         $data = [
@@ -219,6 +227,8 @@ class Satim extends SatimConfig
             'amount' => $amount * 100,
             'language' => $this->language,
         ];
+
+        $this->context = 'refund';
 
         return $this->httpClientService->handleApiRequest('/refund.do', $data);
     }
