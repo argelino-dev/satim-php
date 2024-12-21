@@ -8,6 +8,7 @@ use PiteurStudio\Exception\SatimMissingDataException;
 trait SatimPayHelper
 {
     private ?array $registerOrderResponse = null;
+
     private ?array $response = null;
 
     /**
@@ -24,7 +25,7 @@ trait SatimPayHelper
     public function getResponse(): array
     {
 
-        if($this->context == 'register'){
+        if ($this->context == 'register') {
 
             if (empty($this->registerOrderResponse)) {
                 throw new SatimMissingDataException(
@@ -34,7 +35,7 @@ trait SatimPayHelper
 
             return $this->registerOrderResponse;
 
-        }elseif($this->context == 'confirm'){
+        } elseif ($this->context == 'confirm') {
 
             if (empty($this->confirmOrderResponse)) {
                 throw new SatimMissingDataException(
@@ -44,7 +45,7 @@ trait SatimPayHelper
 
             return $this->confirmOrderResponse;
 
-        }elseif ($this->context == 'refund'){
+        } elseif ($this->context == 'refund') {
 
             if (empty($this->refundOrderResponse)) {
                 throw new SatimMissingDataException(
@@ -54,7 +55,7 @@ trait SatimPayHelper
 
             return $this->refundOrderResponse;
 
-        }elseif ($this->context == 'status'){
+        } elseif ($this->context == 'status') {
 
             if (empty($this->statusOrderResponse)) {
                 throw new SatimMissingDataException(
@@ -63,7 +64,7 @@ trait SatimPayHelper
             }
 
             return $this->statusOrderResponse;
-        }else{
+        } else {
             throw new SatimMissingDataException(
                 'No response data found. Call one of the methods first to obtain the response data.'
             );
