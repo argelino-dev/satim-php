@@ -8,6 +8,7 @@ use PiteurStudio\Exception\SatimMissingDataException;
 trait SatimPayHelper
 {
     private ?array $registerOrderResponse = null;
+    private ?array $response = null;
 
     /**
      * Retrieves the response data for the registered order.
@@ -18,17 +19,55 @@ trait SatimPayHelper
      *
      * @return array The response data associated with the registered order.
      *
-     * @throws SatimMissingDataException If the registerOrder() was not called first.
+     * @throws SatimMissingDataException If the register(), confirm(), refund(), or status() method  was not called first.
      */
     public function getResponse(): array
     {
-        if (empty($this->registerOrderResponse)) {
+
+        if($this->context == 'register'){
+
+            if (empty($this->registerOrderResponse)) {
+                throw new SatimMissingDataException(
+                    'No payment data found. Call register() first to register the order and obtain the response data.'
+                );
+            }
+
+            return $this->registerOrderResponse;
+
+        }elseif($this->context == 'confirm'){
+
+            if (empty($this->confirmOrderResponse)) {
+                throw new SatimMissingDataException(
+                    'No payment data found. Call confirm() first to confirm the order and obtain the response data.'
+                );
+            }
+
+            return $this->confirmOrderResponse;
+
+        }elseif ($this->context == 'refund'){
+
+            if (empty($this->refundOrderResponse)) {
+                throw new SatimMissingDataException(
+                    'No payment data found. Call refund() first to refund the order and obtain the response data.'
+                );
+            }
+
+            return $this->refundOrderResponse;
+
+        }elseif ($this->context == 'status'){
+
+            if (empty($this->statusOrderResponse)) {
+                throw new SatimMissingDataException(
+                    'No payment data found. Call status() first to get the order status and obtain the response data.'
+                );
+            }
+
+            return $this->statusOrderResponse;
+        }else{
             throw new SatimMissingDataException(
-                'No payment data found. Call registerOrder() first to register the order and obtain the response data.'
+                'No response data found. Call one of the methods first to obtain the response data.'
             );
         }
-
-        return $this->registerOrderResponse;
     }
 
     /**
@@ -37,11 +76,11 @@ trait SatimPayHelper
      * This method extracts the order ID from the response data obtained from the Satim API.
      * It relies on the getResponse() method to retrieve the response data.
      *
-     * @return int The order ID extracted from the response data.
+     * @return string The order ID extracted from the response data.
      *
      * @throws SatimMissingDataException If the registerOrder() was not called first.
      */
-    public function getOrderId(): int
+    public function getOrderId(): string
     {
         // Retrieve the response data from the getResponse() method
         $responseData = $this->getResponse();
