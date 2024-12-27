@@ -30,12 +30,20 @@ abstract class SatimConfig
 
     protected ?int $orderNumber = null;
 
+    /**
+     * The user defined fields for the payment.
+     * @var array<non-empty-string, non-empty-string>|null
+     */
     protected ?array $userDefinedFields = null;
 
     protected ?int $sessionTimeoutSecs = null;
 
     protected string $currency = '012';
 
+    /**
+     * The list of supported currencies.
+     * @var array<non-empty-string, non-empty-string>
+     */
     protected array $currencies = [
         'DZD' => '012',
         'USD' => '840',
@@ -45,32 +53,36 @@ abstract class SatimConfig
     /**
      * Satim constructor.
      *
+     * @param  array{username: non-empty-string, password: non-empty-string, terminal_id: non-empty-string}  $data  The configuration data for the Satim object.
      * @throws SatimMissingDataException|SatimInvalidArgumentException|SatimUnexpectedValueException
      */
     protected function initFromArray(array $data): void
     {
         $requiredData = ['username', 'password', 'terminal_id'];
 
-        // Check if all required data are present
+        // First validate that we have only the expected keys
+        $unexpectedKeys = array_diff(array_keys($data), $requiredData);
+        if (!empty($unexpectedKeys)) {
+            throw new SatimInvalidArgumentException('Unexpected keys found: ' . implode(', ', $unexpectedKeys));
+        }
+
+        // Then validate that all required keys exist
+        $missingKeys = array_diff($requiredData, array_keys($data));
+        if (!empty($missingKeys)) {
+            throw new SatimMissingDataException('Missing required data: ' . implode(', ', $missingKeys));
+        }
+
+        // Now validate each value
         foreach ($requiredData as $key) {
-
-            if (! isset($data[$key])) {
-                throw new SatimMissingDataException('Missing required data: '.$key.'.');
+            if (!is_string($data[$key])) {
+                throw new SatimInvalidArgumentException("The value for {$key} must be a string.");
             }
 
-            // Validate the value type
-            if (! is_string($data[$key])) {
-                throw new SatimInvalidArgumentException('The value for '.$key.' must be a string.');
-            }
-
-            // Validate the value itself
             if (empty($data[$key])) {
-                throw new SatimUnexpectedValueException('The value for '.$key.' cannot be empty.');
+                throw new SatimUnexpectedValueException("The value for {$key} cannot be empty.");
             }
 
-            // Set the value to the object
             $this->$key = $data[$key];
-
         }
     }
 
@@ -246,8 +258,8 @@ abstract class SatimConfig
      * This method allows you to set a user defined field for the payment.
      * The key must be a string and the value must be a string.
      *
-     * @param  string  $key  The key of the user defined field.
-     * @param  string  $value  The value of the user defined field.
+     * @param  non-empty-string  $key  The key of the user defined field.
+     * @param  non-empty-string  $value  The value of the user defined field.
      *
      * @throws SatimInvalidArgumentException If the key is a numeric string.
      */
@@ -266,7 +278,7 @@ abstract class SatimConfig
     /**
      * Set the user defined fields for the payment.
      *
-     * @param  array  $data  The user defined fields to set.
+     * @param  array<non-empty-string,non-empty-string>  $data  The user defined fields to set.
      *
      * @throws SatimInvalidArgumentException If any of the keys in the $data array are numeric strings.
      */
