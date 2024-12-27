@@ -2,6 +2,7 @@
 
 namespace PiteurStudio\Client;
 
+use PiteurStudio\Exception\SatimInvalidArgumentException;
 use PiteurStudio\Exception\SatimInvalidCredentials;
 use PiteurStudio\Exception\SatimUnexpectedResponseException;
 use Symfony\Component\HttpClient\Exception\TransportException;
@@ -152,7 +153,7 @@ class HttpClientService
             if($response['ErrorCode'] === '6'){
 
                 if(isset($response['ErrorMessage']) && $response['ErrorMessage'] === 'Unknown order id'){
-                    throw new SatimInvalidCredentials('Invalid order ID');
+                    throw new SatimInvalidArgumentException('Invalid order ID');
                 }
 
             }
