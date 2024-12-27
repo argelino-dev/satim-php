@@ -107,6 +107,81 @@ trait SatimPayHelper
     }
 
     /**
+     * Retrieve the IP address of the user from the response data.
+     *
+     * @return non-empty-string|null The IP address of the user extracted from the response data.
+     * @throws SatimMissingDataException
+     */
+    public function getIpAddress(): ?string
+    {
+        // Retrieve the response data from the getResponse() method
+        $responseData = $this->getResponse();
+
+        // Extract the order ID from the response data
+        return $responseData['Ip'] ?? null;
+    }
+
+    /**
+     * Retrieve the cardholder name from the response data.
+     *
+     * @return non-empty-string|null The IP address of the user extracted from the response data.
+     * @throws SatimMissingDataException
+     */
+    public function getCardHolderName(): ?string
+    {
+        // Retrieve the response data from the getResponse() method
+        $responseData = $this->getResponse();
+
+        // Extract the order ID from the response data
+        return $responseData['cardholderName'] ?? null;
+    }
+
+    /**
+     * Retrieve the card expiry date from the response data.
+     *
+     * @return non-empty-string|null The card expiry date extracted from the response data.
+     * @throws SatimMissingDataException
+     */
+    public function getCardExpiry(): ?string
+    {
+        // Retrieve the response data from the getResponse() method
+        $responseData = $this->getResponse();
+
+        // Extract the order ID from the response data
+        return $responseData['expiration'] ?? null;
+    }
+
+    /**
+     * Retrieve the card PAN from the response data.
+     *
+     * @return non-empty-string|null The card PAN extracted from the response data.
+     * @throws SatimMissingDataException
+     */
+    public function getCardPan(): ?string
+    {
+        // Retrieve the response data from the getResponse() method
+        $responseData = $this->getResponse();
+
+        // Extract the order ID from the response data
+        return $responseData['Pan'] ?? null;
+    }
+
+    /**
+     * Retrieve the approval code from the response data.
+     *
+     * @return non-empty-string|null The approval code extracted from the response data.
+     * @throws SatimMissingDataException
+     */
+    public function getApprovalCode(): ?string
+    {
+        // Retrieve the response data from the getResponse() method
+        $responseData = $this->getResponse();
+
+        // Extract the order ID from the response data
+        return $responseData['approvalCode'] ?? null;
+    }
+
+    /**
      * Redirects the user to the URL specified in the response data.
      *
      * This method sends an HTTP header to perform the redirection and terminates the script execution.
