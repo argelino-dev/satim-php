@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace PiteurStudio;
 
 use PiteurStudio\Client\HttpClientService;
+use PiteurStudio\Exception\SatimInvalidArgumentException;
+use PiteurStudio\Exception\SatimInvalidCredentials;
 use PiteurStudio\Exception\SatimMissingDataException;
 use PiteurStudio\Exception\SatimUnexpectedResponseException;
 
@@ -114,7 +116,7 @@ class Satim extends SatimConfig
      * This method will register a payment on the Satim API and store the response data in the registerOrderResponse property.
      *
      * @throws SatimMissingDataException Thrown if the required data is missing.
-     * @throws SatimUnexpectedResponseException Thrown if the API response is unexpected.
+     * @throws SatimUnexpectedResponseException|SatimInvalidCredentials Thrown if the API response is unexpected.
      */
     public function register(): static
     {
@@ -151,13 +153,16 @@ class Satim extends SatimConfig
      * This method sends a request to the Satim API to confirm the payment
      * using the given order ID. The response is stored in the confirmOrderResponse property.
      *
-     * @param  string  $orderId  The ID of the order to be confirmed.
+     * @param  non-empty-string  $orderId  The ID of the order to be confirmed.
      * @return static The current instance for method chaining.
      *
-     * @throws SatimUnexpectedResponseException Thrown if the API response is unexpected.
+     * @throws SatimUnexpectedResponseException|SatimInvalidCredentials Thrown if the API response is unexpected.
      */
     public function confirm(string $orderId): static
     {
+        if(empty($orderId)){
+            throw new SatimInvalidArgumentException('Order ID is required for confirmation');
+        }
         // Prepare the data for the confirmation request
         $data = [
             'userName' => $this->username,
@@ -183,10 +188,13 @@ class Satim extends SatimConfig
      * @param  string  $orderId  The ID of the order for which the status is to be checked.
      * @return static The current instance for method chaining.
      *
-     * @throws SatimUnexpectedResponseException Thrown if the API response is unexpected.
+     * @throws SatimUnexpectedResponseException|SatimInvalidCredentials Thrown if the API response is unexpected.
      */
     public function status(string $orderId): static
     {
+        if(empty($orderId)){
+            throw new SatimInvalidArgumentException('Order ID is required for confirmation');
+        }
         // Prepare the data for the status request
         $data = [
             'userName' => $this->username,
@@ -210,14 +218,17 @@ class Satim extends SatimConfig
      * The amount should be specified in the major currency unit and will be
      * converted to minor units in the request.
      *
-     * @param  string  $orderId  The ID of the order to be refunded.
-     * @param  int  $amount  The amount to refund in major currency units.
+     * @param  non-empty-string  $orderId  The ID of the order to be refunded.
+     * @param  positive-int  $amount  The amount to refund in major currency units.
      * @return array<string,mixed> The response from the Satim API.
      *
-     * @throws SatimUnexpectedResponseException Thrown if the API response is unexpected.
+     * @throws SatimUnexpectedResponseException|SatimInvalidCredentials Thrown if the API response is unexpected.
      */
     public function refund(string $orderId, int $amount): array
     {
+        if(empty($orderId)){
+            throw new SatimInvalidArgumentException('Order ID is required for refund');
+        }
         // Prepare the data for the refund request
         $data = [
             'userName' => $this->username,
