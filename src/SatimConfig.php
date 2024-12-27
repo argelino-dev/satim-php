@@ -10,8 +10,6 @@ abstract class SatimConfig
 {
     /**
      * The debug mode for the payment.
-     *
-     * @var bool
      */
     protected bool $debug = true;
 
@@ -38,8 +36,6 @@ abstract class SatimConfig
 
     /**
      * The test mode for the payment.
-     *
-     * @var bool
      */
     protected bool $test_mode = false;
 

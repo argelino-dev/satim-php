@@ -15,9 +15,10 @@ trait SatimStatusChecker
      */
     public function getSuccessMessage(): string
     {
-        if(! $this->isSuccessful()) {
+        if (! $this->isSuccessful()) {
             return $this->getErrorMessage();
         }
+
         // Try to get the success message from the confirmOrderResponse
         // If it doesn't exist or is empty, return a default success message
         return $this->getResponse()['params']['respCode_desc'] ?? ($this->getResponse()['actionCodeDescription'] ?? 'Payment was successful');
@@ -52,17 +53,19 @@ trait SatimStatusChecker
      * Check if the transaction was rejected.
      *
      * @return bool True if the transaction was rejected, false otherwise
+     *
      * @throws SatimMissingDataException
      */
     public function isRejected(): bool
     {
-        if(str_contains('Payment is declined',  $this->getResponse()['ErrorMessage'])){
+        if (str_contains('Payment is declined', $this->getResponse()['ErrorMessage'])) {
             return true;
         }
 
-        if($this->getResponse()['actionCode'] == '2003'){
+        if ($this->getResponse()['actionCode'] == '2003') {
             return true;
         }
+
         // Check that the response data contains the required parameters
         // and that the transaction was rejected
         return (isset($this->response_data['params']['respCode']) && $this->response_data['params']['respCode'] == '00')
@@ -109,6 +112,7 @@ trait SatimStatusChecker
      * the 'OrderStatus' value.
      *
      * @return bool True if the transaction was refunded, false otherwise.
+     *
      * @throws SatimMissingDataException
      */
     public function isRefunded(): bool
@@ -125,11 +129,12 @@ trait SatimStatusChecker
      * the 'actionCode' value in the response data.
      *
      * @return bool True if the transaction was cancelled, false otherwise.
+     *
      * @throws SatimMissingDataException
      */
     public function isCancelled(): bool
     {
-        if(str_contains('Payment is cancelled',  $this->getResponse()['ErrorMessage'])){
+        if (str_contains('Payment is cancelled', $this->getResponse()['ErrorMessage'])) {
             return true;
         }
 
@@ -145,6 +150,7 @@ trait SatimStatusChecker
      * the 'actionCode' value in the response data.
      *
      * @return bool True if the transaction expired, false otherwise.
+     *
      * @throws SatimMissingDataException
      */
     public function isExpired(): bool

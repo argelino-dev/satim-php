@@ -150,17 +150,17 @@ class HttpClientService
         if (isset($response['ErrorCode'])) {
 
             // ErrorCode: '6' - ErrorMessage: 'Unknown order id'
-            if($response['ErrorCode'] === '6'){
+            if ($response['ErrorCode'] === '6') {
 
-                if(isset($response['ErrorMessage']) && $response['ErrorMessage'] === 'Unknown order id'){
+                if (isset($response['ErrorMessage']) && $response['ErrorMessage'] === 'Unknown order id') {
                     throw new SatimInvalidArgumentException('Invalid order ID');
                 }
 
             }
 
-            if($response['ErrorCode'] === '5'){
+            if ($response['ErrorCode'] === '5') {
 
-                if(isset($response['ErrorMessage']) && $response['ErrorMessage'] === 'Access denied'){
+                if (isset($response['ErrorMessage']) && $response['ErrorMessage'] === 'Access denied') {
                     throw new SatimInvalidCredentials('Invalid username or password or terminal ID');
                 }
 
@@ -173,7 +173,6 @@ class HttpClientService
                 );
 
             }
-
 
         }
     }

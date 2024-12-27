@@ -160,7 +160,7 @@ class Satim extends SatimConfig
      */
     public function confirm(string $orderId): static
     {
-        if(empty($orderId)){
+        if (empty($orderId)) {
             throw new SatimInvalidArgumentException('Order ID is required for confirmation');
         }
         // Prepare the data for the confirmation request
@@ -192,7 +192,7 @@ class Satim extends SatimConfig
      */
     public function status(string $orderId): static
     {
-        if(empty($orderId)){
+        if (empty($orderId)) {
             throw new SatimInvalidArgumentException('Order ID is required for confirmation');
         }
         // Prepare the data for the status request
@@ -226,7 +226,7 @@ class Satim extends SatimConfig
      */
     public function refund(string $orderId, int $amount): array
     {
-        if(empty($orderId)){
+        if (empty($orderId)) {
             throw new SatimInvalidArgumentException('Order ID is required for refund');
         }
         // Prepare the data for the refund request

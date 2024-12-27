@@ -110,6 +110,7 @@ trait SatimPayHelper
      * Retrieve the IP address of the user from the response data.
      *
      * @return non-empty-string|null The IP address of the user extracted from the response data.
+     *
      * @throws SatimMissingDataException
      */
     public function getIpAddress(): ?string
@@ -125,6 +126,7 @@ trait SatimPayHelper
      * Retrieve the cardholder name from the response data.
      *
      * @return non-empty-string|null The IP address of the user extracted from the response data.
+     *
      * @throws SatimMissingDataException
      */
     public function getCardHolderName(): ?string
@@ -140,6 +142,7 @@ trait SatimPayHelper
      * Retrieve the card expiry date from the response data.
      *
      * @return non-empty-string|null The card expiry date extracted from the response data.
+     *
      * @throws SatimMissingDataException
      */
     public function getCardExpiry(): ?string
@@ -155,6 +158,7 @@ trait SatimPayHelper
      * Retrieve the card PAN from the response data.
      *
      * @return non-empty-string|null The card PAN extracted from the response data.
+     *
      * @throws SatimMissingDataException
      */
     public function getCardPan(): ?string
@@ -170,6 +174,7 @@ trait SatimPayHelper
      * Retrieve the approval code from the response data.
      *
      * @return non-empty-string|null The approval code extracted from the response data.
+     *
      * @throws SatimMissingDataException
      */
     public function getApprovalCode(): ?string
