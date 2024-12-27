@@ -49,8 +49,8 @@ class HttpClientService
      * Validates the response and checks for any basic errors.
      *
      * @param  string  $endpoint  The API endpoint to send the request to.
-     * @param  array  $data  The data to send with the request.
-     * @return array The response from the API.
+     * @param  array<string,mixed>  $data  The data to send with the request.
+     * @return array<string,mixed> The response from the API.
      *
      * @throws SatimUnexpectedResponseException If the response contains an error.
      */
@@ -74,8 +74,8 @@ class HttpClientService
      * If an exception occurs, it throws a SatimUnexpectedResponseException with a descriptive error message.
      *
      * @param  string  $endpoint  The API endpoint to send the request to.
-     * @param  array  $data  The data to send with the request.
-     * @return array The response from the API.
+     * @param  array<string,mixed>  $data  The data to send with the request.
+     * @return array<string,mixed> The response from the API.
      *
      * @throws SatimUnexpectedResponseException If an unexpected error occurs.
      */
@@ -103,8 +103,7 @@ class HttpClientService
                 $e instanceof DecodingExceptionInterface => 'Invalid JSON response from the server',
                 $e instanceof ClientExceptionInterface => 'Client error occurred (4xx)',
                 $e instanceof RedirectionExceptionInterface => 'Redirection error occurred (3xx)',
-                $e instanceof ServerExceptionInterface => 'Server error occurred (5xx)',
-                default => 'Unknown error',
+                $e instanceof ServerExceptionInterface => 'Server error occurred (5xx)'
             };
 
             throw new SatimUnexpectedResponseException($exceptionMessage.': '.$e->getMessage(), 0, $e);
@@ -122,7 +121,7 @@ class HttpClientService
      * - verify_peer: Whether to verify the SSL certificate of the server.
      * - verify_host: Whether to verify the host name of the server with the SSL certificate.
      *
-     * @return array The client options.
+     * @return array<string,mixed> The client options.
      */
     private function getClientOptions(): array
     {
@@ -139,7 +138,7 @@ class HttpClientService
      * If the response contains an error code, throw a SatimUnexpectedResponseException
      * with a descriptive error message.
      *
-     * @param  array  $response  The API response to validate.
+     * @param  array<string,mixed>  $response  The API response to validate.
      *
      * @throws SatimUnexpectedResponseException if the response contains an error code.
      */
