@@ -2,7 +2,6 @@
 
 namespace PiteurStudio;
 
-use JetBrains\PhpStorm\NoReturn;
 use PiteurStudio\Exception\SatimMissingDataException;
 
 trait SatimPayHelper
@@ -42,7 +41,7 @@ trait SatimPayHelper
     public function getResponse(): array
     {
 
-        if($this->context == 'register'){
+        if ($this->context == 'register') {
 
             if (empty($this->registerOrderResponse)) {
                 throw new SatimMissingDataException(

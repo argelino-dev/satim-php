@@ -32,6 +32,7 @@ abstract class SatimConfig
 
     /**
      * The user defined fields for the payment.
+     *
      * @var array<non-empty-string, non-empty-string>|null
      */
     protected ?array $userDefinedFields = null;
@@ -42,6 +43,7 @@ abstract class SatimConfig
 
     /**
      * The list of supported currencies.
+     *
      * @var array<non-empty-string, non-empty-string>
      */
     protected array $currencies = [
@@ -54,6 +56,7 @@ abstract class SatimConfig
      * Satim constructor.
      *
      * @param  array{username: non-empty-string, password: non-empty-string, terminal_id: non-empty-string}  $data  The configuration data for the Satim object.
+     *
      * @throws SatimMissingDataException|SatimInvalidArgumentException|SatimUnexpectedValueException
      */
     protected function initFromArray(array $data): void
@@ -62,19 +65,19 @@ abstract class SatimConfig
 
         // First validate that we have only the expected keys
         $unexpectedKeys = array_diff(array_keys($data), $requiredData);
-        if (!empty($unexpectedKeys)) {
-            throw new SatimInvalidArgumentException('Unexpected keys found: ' . implode(', ', $unexpectedKeys));
+        if (! empty($unexpectedKeys)) {
+            throw new SatimInvalidArgumentException('Unexpected keys found: '.implode(', ', $unexpectedKeys));
         }
 
         // Then validate that all required keys exist
         $missingKeys = array_diff($requiredData, array_keys($data));
-        if (!empty($missingKeys)) {
-            throw new SatimMissingDataException('Missing required data: ' . implode(', ', $missingKeys));
+        if (! empty($missingKeys)) {
+            throw new SatimMissingDataException('Missing required data: '.implode(', ', $missingKeys));
         }
 
         // Now validate each value
         foreach ($requiredData as $key) {
-            if (!is_string($data[$key])) {
+            if (! is_string($data[$key])) {
                 throw new SatimInvalidArgumentException("The value for {$key} must be a string.");
             }
 

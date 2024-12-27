@@ -24,9 +24,9 @@ class Satim extends SatimConfig
      * If the required data is missing, it will throw a SatimMissingDataException.
      *
      * @param  array{username: non-empty-string, password: non-empty-string, terminal_id: non-empty-string}  $data  The configuration data for the Satim client. This should contain the following keys:
-     *                       - username: The username for the Satim API.
-     *                       - password: The password for the Satim API.
-     *                       - terminal_id: The terminal ID for the Satim API.
+     *                                                                                                              - username: The username for the Satim API.
+     *                                                                                                              - password: The password for the Satim API.
+     *                                                                                                              - terminal_id: The terminal ID for the Satim API.
      * @param  HttpClientService|null  $httpClientService  The HTTP client service to use for making requests to the Satim API. If not provided, a new instance will be created.
      *
      * @throws SatimMissingDataException Thrown if the required data is missing.
