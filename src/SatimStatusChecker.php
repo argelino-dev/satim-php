@@ -2,7 +2,6 @@
 
 namespace PiteurStudio;
 
-use PiteurStudio\Exception\SatimInvalidDataException;
 use PiteurStudio\Exception\SatimMissingDataException;
 
 trait SatimStatusChecker
@@ -26,7 +25,6 @@ trait SatimStatusChecker
      *
      * @return string The order status error message
      *
-     * @throws SatimInvalidDataException
      * @throws SatimMissingDataException
      */
     public function getErrorMessage(): string
@@ -47,33 +45,15 @@ trait SatimStatusChecker
         return $this->getResponse()['params']['respCode_desc'] ?? ($this->getResponse()['actionCodeDescription'] ?? 'Payment failed');
     }
 
-    /**
-     * Ensure that the response data is available before performing any status checks.
-     *
-     * @throws SatimInvalidDataException If the response data is not available.
-     */
-    protected function ensureDataIsAvailable(): void
-    {
-        // Check that the response data is available
-        if (! isset($this->response_data)) {
-            // If the response data is not available, throw an exception
-            throw new SatimInvalidDataException(
-                'No data available: call confirm() or status() first.'
-            );
-        }
-    }
 
     /**
      * Check if the transaction was rejected.
      *
      * @return bool True if the transaction was rejected, false otherwise
      *
-     * @throws SatimInvalidDataException
      */
     public function isRejected(): bool
     {
-        $this->ensureDataIsAvailable();
-
         // Check that the response data contains the required parameters
         // and that the transaction was rejected
         return (isset($this->response_data['params']['respCode']) && $this->response_data['params']['respCode'] == '00')
@@ -89,15 +69,13 @@ trait SatimStatusChecker
      *
      * @return bool True if the transaction was successful, false otherwise.
      *
-     * @throws SatimInvalidDataException If the response data is not available.
+     * @throws SatimMissingDataException
      */
     public function isSuccessful(): bool
     {
-        $this->ensureDataIsAvailable();
-
         // Check if 'OrderStatus' is set in response data and is either '2' or '0'
-        return isset($this->response_data['OrderStatus'])
-            && ($this->response_data['OrderStatus'] == '2' || $this->response_data['OrderStatus'] == '0');
+        return isset($this->getResponse()['OrderStatus'])
+            && ($this->getResponse()['OrderStatus'] == '2' || $this->getResponse()['OrderStatus'] == '0');
     }
 
     /**
@@ -108,12 +86,10 @@ trait SatimStatusChecker
      *
      * @return bool True if the transaction failed, false otherwise.
      *
-     * @throws SatimInvalidDataException If the response data is not available.
+     * @throws SatimMissingDataException If the response data is not available.
      */
     public function isFailed(): bool
     {
-        $this->ensureDataIsAvailable();
-
         return ! $this->isSuccessful();
     }
 
@@ -125,12 +101,9 @@ trait SatimStatusChecker
      *
      * @return bool True if the transaction was refunded, false otherwise.
      *
-     * @throws SatimInvalidDataException If the response data is not available.
      */
     public function isRefunded(): bool
     {
-        $this->ensureDataIsAvailable();
-
         // Check if 'OrderStatus' is set in response data and is '4'
         return isset($this->response_data['OrderStatus'])
             && $this->response_data['OrderStatus'] == '4';
@@ -144,12 +117,9 @@ trait SatimStatusChecker
      *
      * @return bool True if the transaction was cancelled, false otherwise.
      *
-     * @throws SatimInvalidDataException If the response data is not available.
      */
     public function isCancelled(): bool
     {
-        $this->ensureDataIsAvailable();
-
         // Check if 'actionCode' is set in response data and is '10'
         return isset($this->response_data['actionCode'])
             && $this->response_data['actionCode'] == '10';
@@ -163,12 +133,9 @@ trait SatimStatusChecker
      *
      * @return bool True if the transaction expired, false otherwise.
      *
-     * @throws SatimInvalidDataException If the response data is not available.
      */
     public function isExpired(): bool
     {
-        $this->ensureDataIsAvailable();
-
         // Check if 'actionCode' is set in response data and equals '-2007'
         return isset($this->response_data['actionCode']) && $this->response_data['actionCode'] == '-2007';
     }
