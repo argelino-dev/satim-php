@@ -148,7 +148,7 @@ class HttpClientService
         // Check if the response contains an error code
         if (isset($response['ErrorCode']) && $response['ErrorCode'] === '5') {
 
-            if(isset($response['ErrorMessage']) && $response['ErrorMessage'] === 'Access denied'){
+            if (isset($response['ErrorMessage']) && $response['ErrorMessage'] === 'Access denied') {
                 throw new SatimInvalidCredentials('Invalid username or password or terminal ID');
             }
 

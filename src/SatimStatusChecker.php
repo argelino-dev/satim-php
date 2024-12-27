@@ -45,12 +45,10 @@ trait SatimStatusChecker
         return $this->getResponse()['params']['respCode_desc'] ?? ($this->getResponse()['actionCodeDescription'] ?? 'Payment failed');
     }
 
-
     /**
      * Check if the transaction was rejected.
      *
      * @return bool True if the transaction was rejected, false otherwise
-     *
      */
     public function isRejected(): bool
     {
@@ -100,7 +98,6 @@ trait SatimStatusChecker
      * the 'OrderStatus' value.
      *
      * @return bool True if the transaction was refunded, false otherwise.
-     *
      */
     public function isRefunded(): bool
     {
@@ -116,7 +113,6 @@ trait SatimStatusChecker
      * the 'actionCode' value in the response data.
      *
      * @return bool True if the transaction was cancelled, false otherwise.
-     *
      */
     public function isCancelled(): bool
     {
@@ -132,7 +128,6 @@ trait SatimStatusChecker
      * the 'actionCode' value in the response data.
      *
      * @return bool True if the transaction expired, false otherwise.
-     *
      */
     public function isExpired(): bool
     {

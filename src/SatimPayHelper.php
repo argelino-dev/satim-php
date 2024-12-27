@@ -139,7 +139,7 @@ trait SatimPayHelper
         // Retrieve the response data from the getResponse() method
         $responseData = $this->getResponse();
 
-        if(!isset($responseData['formUrl'])) {
+        if (! isset($responseData['formUrl'])) {
             throw new SatimMissingDataException(
                 'No payment form URL found. Call register() first to register the order and obtain the response data.'
             );
