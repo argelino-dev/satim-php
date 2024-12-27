@@ -58,11 +58,15 @@ trait SatimStatusChecker
      */
     public function isRejected(): bool
     {
+        if(isset($this->getResponse()['errorCode']) && $this->getResponse()['errorCode'] == '0'){
+            return false;
+        }
+
         if (str_contains('Payment is declined', $this->getResponse()['ErrorMessage'])) {
             return true;
         }
 
-        if ($this->getResponse()['actionCode'] == '2003') {
+        if (isset($this->getResponse()['actionCode']) && $this->getResponse()['actionCode'] == '2003') {
             return true;
         }
 
@@ -134,6 +138,10 @@ trait SatimStatusChecker
      */
     public function isCancelled(): bool
     {
+        if(isset($this->getResponse()['errorCode']) && $this->getResponse()['errorCode'] == '0'){
+            return false;
+        }
+
         if (str_contains('Payment is cancelled', $this->getResponse()['ErrorMessage'])) {
             return true;
         }
