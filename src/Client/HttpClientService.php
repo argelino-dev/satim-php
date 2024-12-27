@@ -2,6 +2,7 @@
 
 namespace PiteurStudio\Client;
 
+use PiteurStudio\Exception\SatimInvalidCredentials;
 use PiteurStudio\Exception\SatimUnexpectedResponseException;
 use Symfony\Component\HttpClient\Exception\TransportException;
 use Symfony\Component\HttpClient\HttpClient;
@@ -140,18 +141,23 @@ class HttpClientService
      *
      * @param  array<string,mixed>  $response  The API response to validate.
      *
-     * @throws SatimUnexpectedResponseException if the response contains an error code.
+     * @throws SatimUnexpectedResponseException|SatimInvalidCredentials if the response contains an error code.
      */
     private function validateApiResponse(array $response): void
     {
         // Check if the response contains an error code
-        if (isset($response['errorCode']) && $response['errorCode'] === '5') {
+        if (isset($response['ErrorCode']) && $response['ErrorCode'] === '5') {
+
+            if(isset($response['ErrorMessage']) && $response['ErrorMessage'] === 'Access denied'){
+                throw new SatimInvalidCredentials('Invalid username or password or terminal ID');
+            }
+
             // Get the error message from the response
-            $errorMessage = $response['errorMessage'] ?? 'Unknown error';
+            $errorMessage = $response['ErrorMessage'] ?? 'Unknown Error';
 
             // Throw a SatimUnexpectedResponseException with the error message
             throw new SatimUnexpectedResponseException(
-                'API Error { errorCode: '.$response['errorCode'].', errorMessage: '.$errorMessage.' }'
+                'API Error { ErrorCode: '.$response['ErrorCode'].', ErrorMessage: '.$errorMessage.' }'
             );
         }
     }
