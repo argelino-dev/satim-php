@@ -53,7 +53,7 @@ class HttpClientService
      * @param  array<string,mixed>  $data  The data to send with the request.
      * @return array<string,mixed> The response from the API.
      *
-     * @throws SatimUnexpectedResponseException If the response contains an error.
+     * @throws SatimUnexpectedResponseException|SatimInvalidCredentials If the response contains an error.
      */
     public function handleApiRequest(string $endpoint, array $data): array
     {
