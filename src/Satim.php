@@ -23,7 +23,7 @@ class Satim extends SatimConfig
      * This method will create a new Satim instance with the provided configuration data.
      * If the required data is missing, it will throw a SatimMissingDataException.
      *
-     * @param  array{username: string, password: string, terminal_id: string}  $data  The configuration data for the Satim client. This should contain the following keys:
+     * @param  array{username: non-empty-string, password: non-empty-string, terminal_id: non-empty-string}  $data  The configuration data for the Satim client. This should contain the following keys:
      *                       - username: The username for the Satim API.
      *                       - password: The password for the Satim API.
      *                       - terminal_id: The terminal ID for the Satim API.
