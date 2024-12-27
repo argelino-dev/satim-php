@@ -145,20 +145,35 @@ class HttpClientService
      */
     private function validateApiResponse(array $response): void
     {
-        // Check if the response contains an error code
-        if (isset($response['ErrorCode']) && $response['ErrorCode'] === '5') {
+        // Check if the response contains for common error codes
+        if (isset($response['ErrorCode'])) {
 
-            if (isset($response['ErrorMessage']) && $response['ErrorMessage'] === 'Access denied') {
-                throw new SatimInvalidCredentials('Invalid username or password or terminal ID');
+            // ErrorCode: '6' - ErrorMessage: 'Unknown order id'
+            if($response['ErrorCode'] === '6'){
+
+                if(isset($response['ErrorMessage']) && $response['ErrorMessage'] === 'Unknown order id'){
+                    throw new SatimInvalidCredentials('Invalid order ID');
+                }
+
             }
 
-            // Get the error message from the response
-            $errorMessage = $response['ErrorMessage'] ?? 'Unknown Error';
+            if($response['ErrorCode'] === '5'){
 
-            // Throw a SatimUnexpectedResponseException with the error message
-            throw new SatimUnexpectedResponseException(
-                'API Error { ErrorCode: '.$response['ErrorCode'].', ErrorMessage: '.$errorMessage.' }'
-            );
+                if(isset($response['ErrorMessage']) && $response['ErrorMessage'] === 'Access denied'){
+                    throw new SatimInvalidCredentials('Invalid username or password or terminal ID');
+                }
+
+                // Get the error message from the response
+                $errorMessage = $response['ErrorMessage'] ?? 'Unknown Error';
+
+                // Throw a SatimUnexpectedResponseException with the error message
+                throw new SatimUnexpectedResponseException(
+                    'API Error { ErrorCode: '.$response['ErrorCode'].', ErrorMessage: '.$errorMessage.' }'
+                );
+
+            }
+
+
         }
     }
 }
