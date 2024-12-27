@@ -8,26 +8,87 @@ use PiteurStudio\Exception\SatimUnexpectedValueException;
 
 abstract class SatimConfig
 {
+    /**
+     * The debug mode for the payment.
+     *
+     * @var bool
+     */
     protected bool $debug = true;
 
+    /**
+     * The username for the SATIM API.
+     *
+     * @var non-empty-string
+     */
     protected string $username;
 
+    /**
+     * The password for the SATIM API.
+     *
+     * @var non-empty-string
+     */
     protected string $password;
 
+    /**
+     * The terminal ID for the SATIM API.
+     *
+     * @var non-empty-string
+     */
     protected string $terminal_id;
 
+    /**
+     * The test mode for the payment.
+     *
+     * @var bool
+     */
     protected bool $test_mode = false;
 
+    /**
+     * The language for the payment.
+     *
+     * The language must be one of the following:
+     *
+     *  - FR (French)
+     *  - AR (Arabic)
+     *  - EN (English)
+     *
+     * @var non-empty-string
+     */
     protected string $language = 'FR';
 
+    /**
+     * The amount for the payment.
+     *
+     * @var positive-int|null
+     */
     protected ?int $amount = null;
 
+    /**
+     * The URL to redirect to if the payment fails.
+     *
+     * @var non-empty-string|null
+     */
     protected ?string $failUrl;
 
+    /**
+     * The URL to redirect to after the payment is processed.
+     *
+     * @var non-empty-string|null
+     */
     protected ?string $returnUrl = null;
 
+    /**
+     * The description for the payment.
+     *
+     * @var non-empty-string|null
+     */
     protected ?string $description = null;
 
+    /**
+     * The order number for the payment.
+     *
+     * @var int<1000000000,9999999999>|null
+     **/
     protected ?int $orderNumber = null;
 
     /**
@@ -37,8 +98,18 @@ abstract class SatimConfig
      */
     protected ?array $userDefinedFields = null;
 
+    /**
+     * The session timeout for the payment.
+     *
+     * @var int<600,86400>|null
+     **/
     protected ?int $sessionTimeoutSecs = null;
 
+    /**
+     * The currency for the payment.
+     *
+     * @var non-empty-string
+     */
     protected string $currency = '012';
 
     /**
@@ -94,7 +165,7 @@ abstract class SatimConfig
      *
      * The amount must be a positive integer.
      *
-     * @param  int  $amount  The amount of the payment in cents.
+     * @param  positive-int  $amount  The amount of the payment in cents.
      *
      * @throws SatimUnexpectedValueException If the amount is negative.
      */
@@ -115,7 +186,7 @@ abstract class SatimConfig
      *
      * The description must be less than 598 characters.
      *
-     * @param  string  $description  The description of the payment.
+     * @param  non-empty-string  $description  The description of the payment.
      *
      * @throws SatimUnexpectedValueException If the description is too long.
      */
@@ -136,7 +207,7 @@ abstract class SatimConfig
      * Satim planned to support Mastercard and Visa in the future.
      * https://bitakati.dz/fr/actualite/la-satim-certifiee-par-mastercard-et-visa-avant-la-fin-2017-n-3
      *
-     * @param  string  $currency  The currency code (e.g., 'DZD', 'USD', 'EUR').
+     * @param  non-empty-string  $currency  The currency code (e.g., 'DZD', 'USD', 'EUR').
      *
      * @throws SatimUnexpectedValueException If the currency is invalid.
      */
@@ -159,7 +230,7 @@ abstract class SatimConfig
      * The fail URL is the URL that the client will be redirected to
      * if the payment fails.
      *
-     * @param  string  $url  The URL to redirect to if the payment fails.
+     * @param  non-empty-string  $url  The URL to redirect to if the payment fails.
      *
      * @throws SatimInvalidArgumentException If the URL is invalid.
      */
@@ -180,7 +251,7 @@ abstract class SatimConfig
      * The return URL is the URL that the client will be redirected to
      * after the payment is processed.
      *
-     * @param  string  $url  The URL to redirect to after the payment is processed.
+     * @param  non-empty-string  $url  The URL to redirect to after the payment is processed.
      *
      * @throws SatimInvalidArgumentException If the URL is invalid.
      */
@@ -200,7 +271,7 @@ abstract class SatimConfig
      * The order number must be exactly 10 digits (Satim requirement).
      * You can use a random number or a unique identifier from your database.
      *
-     * @param  int  $orderNumber  The order number for the payment.
+     * @param  int<1000000000,9999999999>  $orderNumber  The order number for the payment.
      *
      * @throws SatimUnexpectedValueException If the order number is not exactly 10 digits.
      */
@@ -238,7 +309,7 @@ abstract class SatimConfig
      *  - AR (Arabic)
      *  - EN (English)
      *
-     * @param  string  $language  The language to use for the payment.
+     * @param  non-empty-string  $language  The language to use for the payment.
      *
      * @throws SatimUnexpectedValueException If the language is invalid.
      */
@@ -300,7 +371,7 @@ abstract class SatimConfig
      * This method sets the session timeout for the payment process.
      * The timeout must be between 600 seconds (10 minutes) and 86400 seconds (24 hours).
      *
-     * @param  int  $seconds  The session timeout in seconds.
+     * @param  int<600,86400>  $seconds  The session timeout in seconds.
      *
      * @throws SatimUnexpectedValueException If the timeout is not within the allowed range.
      */
