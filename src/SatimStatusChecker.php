@@ -7,8 +7,6 @@ use PiteurStudio\Exception\SatimMissingDataException;
 
 trait SatimStatusChecker
 {
-    protected ?array $confirmOrderResponse = null;
-
     /**
      * Get the order status success message
      *
