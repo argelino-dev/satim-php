@@ -36,9 +36,6 @@ jobs:
       - name: Validate composer.json
         run: composer validate
 
-      - name: PHPStan analyse
-        run: composer analyse
-
       - name: Setup problem matchers
         run: |
           echo "::add-matcher::${{ runner.tool_cache }}/php.json"
@@ -49,6 +46,9 @@ jobs:
 
       - name: List Installed Dependencies
         run: composer show -D
+
+      - name: PHPStan analyse
+        run: composer analyse
 
       - name: Execute tests
         run: vendor/bin/pest --ci
