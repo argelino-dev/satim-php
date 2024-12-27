@@ -7,9 +7,26 @@ use PiteurStudio\Exception\SatimMissingDataException;
 
 trait SatimPayHelper
 {
+    /**
+     * The response data from the register() method.
+     *
+     * @var array<string, mixed>|null
+     */
     private ?array $registerOrderResponse = null;
 
-    private ?array $response = null;
+    /**
+     * The response data from the confirm() method.
+     *
+     * @var array<string, mixed>|null
+     */
+    protected ?array $confirmOrderResponse = null;
+
+    /**
+     * The response data from the status() method.
+     *
+     * @var array<string, mixed>|null
+     */
+    protected ?array $statusOrderResponse = null;
 
     /**
      * Retrieves the response data for the registered order.
@@ -18,14 +35,14 @@ trait SatimPayHelper
      * The response data is stored when the registerOrder() method is called.
      * If registerOrder() was not called before calling this method, a SatimMissingDataException is thrown.
      *
-     * @return array The response data associated with the registered order.
+     * @return array<string, mixed> The response data associated with the registered order.
      *
      * @throws SatimMissingDataException If the register(), confirm(), refund(), or status() method  was not called first.
      */
     public function getResponse(): array
     {
 
-        if ($this->context == 'register') {
+        if($this->context == 'register'){
 
             if (empty($this->registerOrderResponse)) {
                 throw new SatimMissingDataException(
@@ -99,7 +116,6 @@ trait SatimPayHelper
      *
      * @throws SatimMissingDataException If the registerOrder() was not called first.
      */
-    #[NoReturn]
     public function redirect(): void
     {
         // Retrieve the URL from the getResponse() method
