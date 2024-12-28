@@ -1,6 +1,5 @@
 <?php
 
-
 use PiteurStudio\Exception\SatimInvalidArgumentException;
 use PiteurStudio\Satim;
 
@@ -13,6 +12,5 @@ it('cant not get status without orderId', function () {
     ]);
 
     $satim->status('');
-
 
 })->throws(SatimInvalidArgumentException::class);

@@ -58,7 +58,7 @@ trait SatimStatusChecker
      */
     public function isRejected(): bool
     {
-        if(isset($this->getResponse()['errorCode']) && $this->getResponse()['errorCode'] == '0'){
+        if (isset($this->getResponse()['errorCode']) && $this->getResponse()['errorCode'] == '0') {
             return false;
         }
 
@@ -138,7 +138,7 @@ trait SatimStatusChecker
      */
     public function isCancelled(): bool
     {
-        if(isset($this->getResponse()['errorCode']) && $this->getResponse()['errorCode'] == '0'){
+        if (isset($this->getResponse()['errorCode']) && $this->getResponse()['errorCode'] == '0') {
             return false;
         }
 

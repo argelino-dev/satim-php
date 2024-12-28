@@ -1,10 +1,9 @@
 <?php
 
-
 use PiteurStudio\Exception\SatimInvalidArgumentException;
 use PiteurStudio\Satim;
 
-it('cant not confirm without orderId' , function(){
+it('cant not confirm without orderId', function () {
 
     $satim = new Satim([
         'username' => '123456',
@@ -13,6 +12,5 @@ it('cant not confirm without orderId' , function(){
     ]);
 
     $satim->confirm('');
-
 
 })->throws(SatimInvalidArgumentException::class);

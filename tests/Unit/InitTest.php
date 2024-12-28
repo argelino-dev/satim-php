@@ -36,7 +36,7 @@ it('cant init without valid data ', function () {
     new Satim([
         'username' => 123,
         'password' => [],
-        'terminal_id' => New \Exception(),
+        'terminal_id' => new \Exception,
     ]);
 
 })->throws(SatimInvalidArgumentException::class);
