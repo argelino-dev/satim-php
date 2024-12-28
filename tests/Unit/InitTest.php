@@ -1,11 +1,12 @@
 <?php
 
+use PiteurStudio\Exception\SatimInvalidArgumentException;
 use PiteurStudio\Exception\SatimMissingDataException;
 use PiteurStudio\Satim;
 
 it('can not init without username', function () {
 
-    $satim = new Satim([
+    new Satim([
         'password' => '123456',
         'terminal_id' => '123456',
     ]);
@@ -14,7 +15,7 @@ it('can not init without username', function () {
 
 it('can not init without password', function () {
 
-    $satim = new Satim([
+    new Satim([
         'username' => '123456',
         'terminal_id' => '123456',
     ]);
@@ -23,12 +24,22 @@ it('can not init without password', function () {
 
 it('can not init without terminal_id', function () {
 
-    $satim = new Satim([
+    new Satim([
         'username' => '123456',
         'password' => '123456',
     ]);
 
 })->throws(SatimMissingDataException::class);
+
+it('cant init without valid data ', function () {
+
+    new Satim([
+        'username' => 123,
+        'password' => [],
+        'terminal_id' => New \Exception(),
+    ]);
+
+})->throws(SatimInvalidArgumentException::class);
 
 it('can init', function () {
 
