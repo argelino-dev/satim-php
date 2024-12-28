@@ -229,6 +229,10 @@ class Satim extends SatimConfig
         if (empty($orderId)) {
             throw new SatimInvalidArgumentException('Order ID is required for refund');
         }
+
+        if ($amount <= 0) {
+            throw new SatimInvalidArgumentException('Amount must be a positive integer');
+        }
         // Prepare the data for the refund request
         $data = [
             'userName' => $this->username,
