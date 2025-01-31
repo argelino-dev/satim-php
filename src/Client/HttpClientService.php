@@ -26,17 +26,14 @@ class HttpClientService
 
     private bool $verifySsl = false;
 
-    private bool $test_mode;
-
-    private HttpClientInterface $httpClient;
+    private readonly HttpClientInterface $httpClient;
 
     /**
      * @param  bool  $test_mode  Whether to use the test API or not.
      * @param  HttpClientInterface|null  $httpClient  Injected HTTP client for testing (optional).
      */
-    public function __construct(bool $test_mode = false, ?HttpClientInterface $httpClient = null)
+    public function __construct(private readonly bool $test_mode = false, ?HttpClientInterface $httpClient = null)
     {
-        $this->test_mode = $test_mode;
         $this->httpClient = $httpClient ?? new RetryableHttpClient(HttpClient::create($this->getClientOptions()), null, $this->maxRetries);
     }
 

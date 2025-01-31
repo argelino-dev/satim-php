@@ -64,7 +64,7 @@ abstract class SatimConfig
      *
      * @var non-empty-string|null
      */
-    protected ?string $failUrl;
+    protected ?string $failUrl = null;
 
     /**
      * The URL to redirect to after the payment is processed.
