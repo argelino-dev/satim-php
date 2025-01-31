@@ -6,7 +6,7 @@ use PiteurStudio\Exception\SatimUnexpectedResponseException;
 use PiteurStudio\Satim;
 use PiteurStudio\Tests\Helpers\MockHttpClientService;
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->mockHttpClient = new MockHttpClientService;
 
     $this->satim = new Satim([
@@ -16,16 +16,16 @@ beforeEach(function () {
     ], $this->mockHttpClient);
 });
 
-it('throws exception when returnUrl is missing', function () {
+it('throws exception when returnUrl is missing', function (): void {
     $this->satim->register();
 })->throws(SatimMissingDataException::class, 'Return URL missing. Call returnUrl() to set it.');
 
-it('throws exception when amount is missing', function () {
+it('throws exception when amount is missing', function (): void {
     $this->satim->returnUrl('https://example.com/return');
     $this->satim->register();
 })->throws(SatimMissingDataException::class, 'Amount missing. Call the amount() method to set it.');
 
-it('registers a payment successfully', function () {
+it('registers a payment successfully', function (): void {
     $this->mockHttpClient->addMockResponse('/register.do', [
         'errorCode' => '0',
         'orderId' => '1234567890',
@@ -42,7 +42,7 @@ it('registers a payment successfully', function () {
     expect($property->getValue($this->satim))->toBe(['errorCode' => '0', 'orderId' => '1234567890']);
 });
 
-it('throws exception if register API returns an error', function () {
+it('throws exception if register API returns an error', function (): void {
     $this->mockHttpClient->addMockResponse('/register.do', [
         'errorCode' => '1001',
         'errorMessage' => 'Invalid credentials',
@@ -53,7 +53,7 @@ it('throws exception if register API returns an error', function () {
     $this->satim->register();
 })->throws(SatimUnexpectedResponseException::class, 'registerPayment Error {errorCode: 1001 , errorMessage: Invalid credentials}');
 
-it('confirms a payment successfully', function () {
+it('confirms a payment successfully', function (): void {
     $this->mockHttpClient->addMockResponse('/confirmOrder.do', [
         'status' => 'confirmed',
     ]);
@@ -67,11 +67,11 @@ it('confirms a payment successfully', function () {
     expect($property->getValue($this->satim))->toBe(['status' => 'confirmed']);
 });
 
-it('throws exception when confirming with an empty order ID', function () {
+it('throws exception when confirming with an empty order ID', function (): void {
     $this->satim->confirm('');
 })->throws(SatimInvalidArgumentException::class, 'Order ID is required for confirmation');
 
-it('retrieves order status successfully', function () {
+it('retrieves order status successfully', function (): void {
     $this->mockHttpClient->addMockResponse('/getOrderStatus.do', [
         'status' => 'paid',
     ]);
@@ -85,11 +85,11 @@ it('retrieves order status successfully', function () {
     expect($property->getValue($this->satim))->toBe(['status' => 'paid']);
 });
 
-it('throws exception when retrieving status with an empty order ID', function () {
+it('throws exception when retrieving status with an empty order ID', function (): void {
     $this->satim->status('');
 })->throws(SatimInvalidArgumentException::class, 'Order ID is required for confirmation');
 
-it('processes a refund successfully', function () {
+it('processes a refund successfully', function (): void {
     $this->mockHttpClient->addMockResponse('/refund.do', [
         'refundStatus' => 'success',
     ]);
@@ -98,15 +98,15 @@ it('processes a refund successfully', function () {
     expect($response)->toBe(['refundStatus' => 'success']);
 });
 
-it('throws exception when refunding with an empty order ID', function () {
+it('throws exception when refunding with an empty order ID', function (): void {
     $this->satim->refund('', 500);
 })->throws(SatimInvalidArgumentException::class, 'Order ID is required for refund');
 
-it('throws exception when refunding with an invalid amount', function () {
+it('throws exception when refunding with an invalid amount', function (): void {
     $this->satim->refund('1234567890', -500);
 })->throws(SatimInvalidArgumentException::class, 'Amount must be a positive integer');
 
-it('adds user-defined fields to request data', function () {
+it('adds user-defined fields to request data', function (): void {
     $this->mockHttpClient->addMockResponse('/register.do', [
         'errorCode' => '0',
         'orderId' => '1234567890',
@@ -138,7 +138,7 @@ it('adds user-defined fields to request data', function () {
         ->and($jsonParams['custom_field_2'])->toBe('value2');
 });
 
-it('does not add user-defined fields if they are empty', function () {
+it('does not add user-defined fields if they are empty', function (): void {
     $this->mockHttpClient->addMockResponse('/register.do', [
         'errorCode' => '0',
         'orderId' => '1234567890',
@@ -163,7 +163,7 @@ it('does not add user-defined fields if they are empty', function () {
         ->and($jsonParams)->not()->toHaveKeys(['custom_field_1', 'custom_field_2']);
 });
 
-it('overrides existing keys if user-defined fields contain force_terminal_id', function () {
+it('overrides existing keys if user-defined fields contain force_terminal_id', function (): void {
     $this->mockHttpClient->addMockResponse('/register.do', [
         'errorCode' => '0',
         'orderId' => '1234567890',
@@ -192,7 +192,7 @@ it('overrides existing keys if user-defined fields contain force_terminal_id', f
         ->and($jsonParams['custom_field'])->toBe('some_value');
 });
 
-it('adds description to request data when set', function () {
+it('adds description to request data when set', function (): void {
     $this->mockHttpClient->addMockResponse('/register.do', [
         'errorCode' => '0',
         'orderId' => '1234567890',
@@ -216,7 +216,7 @@ it('adds description to request data when set', function () {
         ->and($requestData['description'])->toBe('Test payment description');
 });
 
-it('does not add description if not set', function () {
+it('does not add description if not set', function (): void {
     $this->mockHttpClient->addMockResponse('/register.do', [
         'errorCode' => '0',
         'orderId' => '1234567890',
@@ -237,7 +237,7 @@ it('does not add description if not set', function () {
     expect($requestData)->not()->toHaveKey('description');
 });
 
-it('adds session timeout to request data when set', function () {
+it('adds session timeout to request data when set', function (): void {
     $this->mockHttpClient->addMockResponse('/register.do', [
         'errorCode' => '0',
         'orderId' => '1234567890',
@@ -259,7 +259,7 @@ it('adds session timeout to request data when set', function () {
         ->and($requestData['sessionTimeoutSecs'])->toBe(3600);
 });
 
-it('does not add session timeout if not set', function () {
+it('does not add session timeout if not set', function (): void {
     $this->mockHttpClient->addMockResponse('/register.do', [
         'errorCode' => '0',
         'orderId' => '1234567890',

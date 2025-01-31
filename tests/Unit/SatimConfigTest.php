@@ -5,11 +5,11 @@ use PiteurStudio\Exception\SatimMissingDataException;
 use PiteurStudio\Exception\SatimUnexpectedValueException;
 use PiteurStudio\Tests\Helpers\SatimConfigTestClass;
 
-it('throws exception for missing required data', function () {
+it('throws exception for missing required data', function (): void {
     new SatimConfigTestClass([]);
 })->throws(SatimMissingDataException::class, 'Missing required data: username, password, terminal_id');
 
-it('throws exception for unexpected keys', function () {
+it('throws exception for unexpected keys', function (): void {
     new SatimConfigTestClass([
         'username' => 'test_user',
         'password' => 'test_pass',
@@ -18,7 +18,7 @@ it('throws exception for unexpected keys', function () {
     ]);
 })->throws(SatimInvalidArgumentException::class, 'Unexpected keys found: extra');
 
-it('throws exception for empty required fields', function () {
+it('throws exception for empty required fields', function (): void {
     new SatimConfigTestClass([
         'username' => '',
         'password' => 'test_pass',
@@ -26,7 +26,7 @@ it('throws exception for empty required fields', function () {
     ]);
 })->throws(SatimUnexpectedValueException::class, 'The value for username cannot be empty.');
 
-it('throws exception for non string fields', function () {
+it('throws exception for non string fields', function (): void {
     new SatimConfigTestClass([
         'username' => 123,
         'password' => 'test_pass',
@@ -34,7 +34,7 @@ it('throws exception for non string fields', function () {
     ]);
 })->throws(SatimInvalidArgumentException::class, 'The value for username must be a string.');
 
-it('successfully initializes with valid config', function () {
+it('successfully initializes with valid config', function (): void {
     $config = new SatimConfigTestClass([
         'username' => 'test_user',
         'password' => 'test_pass',
@@ -44,7 +44,7 @@ it('successfully initializes with valid config', function () {
     expect($config)->toBeInstanceOf(SatimConfigTestClass::class);
 });
 
-it('throws exception for negative amount', function () {
+it('throws exception for negative amount', function (): void {
     $config = new SatimConfigTestClass([
         'username' => 'test_user',
         'password' => 'test_pass',
@@ -54,7 +54,7 @@ it('throws exception for negative amount', function () {
     $config->amount(-100);
 })->throws(SatimUnexpectedValueException::class, 'Amount must be positive.');
 
-it('sets a valid amount', function () {
+it('sets a valid amount', function (): void {
     $config = new SatimConfigTestClass([
         'username' => 'test_user',
         'password' => 'test_pass',
@@ -70,7 +70,7 @@ it('sets a valid amount', function () {
     expect($property->getValue($config))->toBe(500);
 });
 
-it('throws exception for description exceeding 598 characters', function () {
+it('throws exception for description exceeding 598 characters', function (): void {
     $config = new SatimConfigTestClass([
         'username' => 'test_user',
         'password' => 'test_pass',
@@ -81,7 +81,7 @@ it('throws exception for description exceeding 598 characters', function () {
     $config->description($longDescription);
 })->throws(SatimUnexpectedValueException::class, 'Description must be less than 598 characters.');
 
-it('sets a valid description', function () {
+it('sets a valid description', function (): void {
     $config = new SatimConfigTestClass([
         'username' => 'test_user',
         'password' => 'test_pass',
@@ -97,7 +97,7 @@ it('sets a valid description', function () {
     expect($property->getValue($config))->toBe('test description');
 });
 
-it('sets a valid currency', function () {
+it('sets a valid currency', function (): void {
     $config = new SatimConfigTestClass([
         'username' => 'test_user',
         'password' => 'test_pass',
@@ -113,7 +113,7 @@ it('sets a valid currency', function () {
     expect($property->getValue($config))->toBe('840');
 });
 
-it('throws exception for invalid currency', function () {
+it('throws exception for invalid currency', function (): void {
     $config = new SatimConfigTestClass([
         'username' => 'test_user',
         'password' => 'test_pass',
@@ -123,7 +123,7 @@ it('throws exception for invalid currency', function () {
     $config->currency('GBP');
 })->throws(SatimUnexpectedValueException::class, 'Invalid currency: Allowed currencies are [DZD, USD, EUR].');
 
-it('throws exception for invalid fail URL', function () {
+it('throws exception for invalid fail URL', function (): void {
     $config = new SatimConfigTestClass([
         'username' => 'test_user',
         'password' => 'test_pass',
@@ -133,7 +133,7 @@ it('throws exception for invalid fail URL', function () {
     $config->failUrl('invalid-url');
 })->throws(SatimInvalidArgumentException::class, 'Invalid fail URL.');
 
-it('throws exception for invalid returnUrl', function () {
+it('throws exception for invalid returnUrl', function (): void {
     $config = new SatimConfigTestClass([
         'username' => 'test_user',
         'password' => 'test_pass',
@@ -143,7 +143,7 @@ it('throws exception for invalid returnUrl', function () {
     $config->returnUrl('invalid-url');
 })->throws(SatimInvalidArgumentException::class, 'Invalid return URL. The URL must be a valid URL.');
 
-it('sets a valid fail URL', function () {
+it('sets a valid fail URL', function (): void {
     $config = new SatimConfigTestClass([
         'username' => 'test_user',
         'password' => 'test_pass',
@@ -159,7 +159,7 @@ it('sets a valid fail URL', function () {
     expect($property->getValue($config))->toBe('https://example.com/fail');
 });
 
-it('throws exception for invalid order number', function () {
+it('throws exception for invalid order number', function (): void {
     $config = new SatimConfigTestClass([
         'username' => 'test_user',
         'password' => 'test_pass',
@@ -169,7 +169,7 @@ it('throws exception for invalid order number', function () {
     $config->orderNumber(123);
 })->throws(SatimUnexpectedValueException::class, 'Order number must be exactly 10 digits (Satim requirement).');
 
-it('sets a valid order number', function () {
+it('sets a valid order number', function (): void {
     $config = new SatimConfigTestClass([
         'username' => 'test_user',
         'password' => 'test_pass',
@@ -185,7 +185,7 @@ it('sets a valid order number', function () {
     expect($property->getValue($config))->toBe(1234567890);
 });
 
-it('sets a test_mode ', function () {
+it('sets a test_mode ', function (): void {
     $config = new SatimConfigTestClass([
         'username' => 'test_user',
         'password' => 'test_pass',
@@ -201,7 +201,7 @@ it('sets a test_mode ', function () {
     expect($property->getValue($config))->toBe(true);
 });
 
-it('throws exception for invalid language', function () {
+it('throws exception for invalid language', function (): void {
     $config = new SatimConfigTestClass([
         'username' => 'test_user',
         'password' => 'test_pass',
@@ -211,7 +211,7 @@ it('throws exception for invalid language', function () {
     $config->language('DE');
 })->throws(SatimUnexpectedValueException::class, 'Language must be FR, AR, or EN.');
 
-it('sets a valid language', function () {
+it('sets a valid language', function (): void {
     $config = new SatimConfigTestClass([
         'username' => 'test_user',
         'password' => 'test_pass',
@@ -227,7 +227,7 @@ it('sets a valid language', function () {
     expect($property->getValue($config))->toBe('EN');
 });
 
-it('throws exception for numeric user-defined field key', function () {
+it('throws exception for numeric user-defined field key', function (): void {
     $config = new SatimConfigTestClass([
         'username' => 'test_user',
         'password' => 'test_pass',
@@ -237,7 +237,7 @@ it('throws exception for numeric user-defined field key', function () {
     $config->userDefinedField('123', 'value');
 })->throws(SatimInvalidArgumentException::class, 'User defined field key must be a string.');
 
-it('sets user-defined fields', function () {
+it('sets user-defined fields', function (): void {
     $config = new SatimConfigTestClass([
         'username' => 'test_user',
         'password' => 'test_pass',
@@ -253,7 +253,7 @@ it('sets user-defined fields', function () {
     expect($property->getValue($config))->toBe(['key1' => 'value1']);
 });
 
-it('sets user-defineds fields', function () {
+it('sets user-defineds fields', function (): void {
     $config = new SatimConfigTestClass([
         'username' => 'test_user',
         'password' => 'test_pass',
@@ -275,7 +275,7 @@ it('sets user-defineds fields', function () {
     ]);
 });
 
-it('throws exception for invalid timeout', function () {
+it('throws exception for invalid timeout', function (): void {
     $config = new SatimConfigTestClass([
         'username' => 'test_user',
         'password' => 'test_pass',
@@ -285,7 +285,7 @@ it('throws exception for invalid timeout', function () {
     $config->timeout(500);
 })->throws(SatimUnexpectedValueException::class, 'Session timeout must be between 600 and 86400 seconds.');
 
-it('sets a valid timeout', function () {
+it('sets a valid timeout', function (): void {
     $config = new SatimConfigTestClass([
         'username' => 'test_user',
         'password' => 'test_pass',
