@@ -34,7 +34,7 @@ jobs:
           coverage: xdebug
 
       - name: Validate composer.json
-        run: composer validate
+        run: composer validate --strict
 
       - name: Setup problem matchers
         run: |
