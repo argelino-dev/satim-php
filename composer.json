@@ -33,6 +33,7 @@
         "mockery/mockery": "^1.6",
         "pestphp/pest": "^2.20 || ^3.0",
         "phpstan/phpstan": "^2.0",
+        "rector/rector": "^2.0",
         "spatie/ray": "^1.28"
     },
     "autoload": {
