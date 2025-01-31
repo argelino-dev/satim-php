@@ -1,9 +1,9 @@
 {
-    "name": "piteurstudio/php-satim",
+    "name": "piteurstudio/satim-php",
     "description": "PHP package to interact with Satim.dz API",
     "keywords": [
         "PiteurStudio",
-        "php-satim",
+        "satim-php",
         "php",
         "satim.dz",
         "Algeria",
