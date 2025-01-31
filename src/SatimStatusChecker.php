@@ -64,7 +64,7 @@ trait SatimStatusChecker
             return false;
         }
 
-        if (! empty($response['ErrorMessage']) && str_contains($response['ErrorMessage'], 'Payment is declined')) {
+        if (! empty($response['ErrorMessage']) && str_contains((string) $response['ErrorMessage'], 'Payment is declined')) {
             return true;
         }
 
@@ -154,7 +154,7 @@ trait SatimStatusChecker
             return false;
         }
 
-        if (! empty($this->getResponse()['ErrorMessage']) && str_contains($this->getResponse()['ErrorMessage'], 'Payment is cancelled')) {
+        if (! empty($this->getResponse()['ErrorMessage']) && str_contains((string) $this->getResponse()['ErrorMessage'], 'Payment is cancelled')) {
             return true;
         }
 

@@ -130,7 +130,7 @@ it('adds user-defined fields to request data', function (): void {
     $requestData = $method->invoke($this->satim);
 
     // Decode JSON `jsonParams`
-    $jsonParams = json_decode($requestData['jsonParams'], true);
+    $jsonParams = json_decode((string) $requestData['jsonParams'], true);
 
     expect($jsonParams)->toHaveKeys(['force_terminal_id', 'custom_field_1', 'custom_field_2'])
         ->and($jsonParams['force_terminal_id'])->toBe('123456')
@@ -157,7 +157,7 @@ it('does not add user-defined fields if they are empty', function (): void {
     $requestData = $method->invoke($this->satim);
 
     // Decode JSON `jsonParams`
-    $jsonParams = json_decode($requestData['jsonParams'], true);
+    $jsonParams = json_decode((string) $requestData['jsonParams'], true);
 
     expect($jsonParams)->toHaveKey('force_terminal_id')
         ->and($jsonParams)->not()->toHaveKeys(['custom_field_1', 'custom_field_2']);
@@ -185,7 +185,7 @@ it('overrides existing keys if user-defined fields contain force_terminal_id', f
     $requestData = $method->invoke($this->satim);
 
     // Decode JSON `jsonParams`
-    $jsonParams = json_decode($requestData['jsonParams'], true);
+    $jsonParams = json_decode((string) $requestData['jsonParams'], true);
 
     expect($jsonParams)->toHaveKey('force_terminal_id')
         ->and($jsonParams['force_terminal_id'])->toBe('OVERWRITTEN_VALUE')
