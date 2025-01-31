@@ -7,7 +7,7 @@ use PiteurStudio\Satim;
 use PiteurStudio\Tests\Helpers\MockHttpClientService;
 
 beforeEach(function () {
-    $this->mockHttpClient = new MockHttpClientService();
+    $this->mockHttpClient = new MockHttpClientService;
 
     $this->satim = new Satim([
         'username' => 'test_user',

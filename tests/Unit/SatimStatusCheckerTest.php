@@ -4,7 +4,7 @@ use PiteurStudio\Exception\SatimMissingDataException;
 use PiteurStudio\Tests\Helpers\SatimStatusCheckerTestClass;
 
 beforeEach(function () {
-    $this->helper = new SatimStatusCheckerTestClass();
+    $this->helper = new SatimStatusCheckerTestClass;
 });
 
 // ✅ Test: getSuccessMessage()
@@ -156,14 +156,12 @@ it('throws exception when isExpired() is called without response data', function
     $this->helper->isExpired();
 })->throws(SatimMissingDataException::class, 'No response data found.');
 
-
 // ✅ Test: If transaction is NOT successful, getSuccessMessage() should return getErrorMessage()
 it('returns error message when transaction is not successful', function () {
     $this->helper->setResponse(['OrderStatus' => '3']); // Not successful (should be 2 or 0)
 
     expect($this->helper->getSuccessMessage())->toBe($this->helper->getErrorMessage());
 });
-
 
 // ✅ Test: If success message is missing, return default success message
 it('returns default success message when response is missing', function () {
@@ -189,4 +187,3 @@ it('returns true if actionCode is 2003', function () {
 
     expect($this->helper->isRejected())->toBeTrue();
 });
-

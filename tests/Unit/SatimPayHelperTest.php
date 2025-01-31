@@ -4,10 +4,9 @@ use PiteurStudio\Exception\SatimMissingDataException;
 use PiteurStudio\Tests\Helpers\SatimPayHelperTestClass;
 
 beforeEach(function () {
-    $this->helper = new SatimPayHelperTestClass();
+    $this->helper = new SatimPayHelperTestClass;
     $this->helper->setContext(''); // Ensure context is always set
 });
-
 
 it('throws exception when statusOrderResponse is empty', function () {
     $this->helper->setContext('status'); // Ensure context is set to status
@@ -20,7 +19,6 @@ it('throws exception when confirmOrderResponse is empty', function () {
 
     $this->helper->getResponse();
 })->throws(SatimMissingDataException::class, 'No payment data found. Call confirm() first to confirm the order and obtain the response data.');
-
 
 it('throws exception when calling getResponse() without setting context', function () {
     $this->helper->getResponse();

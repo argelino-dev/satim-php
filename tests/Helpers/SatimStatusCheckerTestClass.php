@@ -2,8 +2,8 @@
 
 namespace PiteurStudio\Tests\Helpers;
 
-use PiteurStudio\SatimStatusChecker;
 use PiteurStudio\Exception\SatimMissingDataException;
+use PiteurStudio\SatimStatusChecker;
 
 class SatimStatusCheckerTestClass
 {
@@ -21,6 +21,7 @@ class SatimStatusCheckerTestClass
         if ($this->response_data === null) {
             throw new SatimMissingDataException('No response data found.');
         }
+
         return $this->response_data;
     }
 }

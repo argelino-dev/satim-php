@@ -7,8 +7,6 @@ use PiteurStudio\Exception\SatimUnexpectedResponseException;
 use Symfony\Component\HttpClient\Exception\TransportException;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
-use Symfony\Component\HttpClient\Exception\DecodingException;
-
 
 /**
  * ✅ Test: API URL switching
@@ -60,7 +58,6 @@ it('throws exception when network error occurs', function () {
 
     $client->handleApiRequest('/test', []);
 });
-
 
 /**
  * ✅ Test: API throws SatimUnexpectedResponseException for ClientException (4xx)

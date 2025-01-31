@@ -97,7 +97,6 @@ it('sets a valid description', function () {
     expect($property->getValue($config))->toBe('test description');
 });
 
-
 it('sets a valid currency', function () {
     $config = new SatimConfigTestClass([
         'username' => 'test_user',
