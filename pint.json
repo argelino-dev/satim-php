@@ -1,4 +1,6 @@
 {
     "preset": "laravel",
-    "lineEnding": "auto"
+    "rules": {
+        "lineEnding": "auto"
+    }
 }
