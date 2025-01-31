@@ -195,6 +195,8 @@ trait SatimPayHelper
      *
      * @throws SatimMissingDataException If the registerOrder() was not called first.
      */
+    // ( This method is not testable as it terminates the script execution )
+    // @codeCoverageIgnoreStart
     public function redirect(): void
     {
         // Retrieve the URL from the getResponse() method
@@ -206,6 +208,7 @@ trait SatimPayHelper
         // Terminate the script execution to prevent any further code execution
         exit;
     }
+    // @codeCoverageIgnoreEnd
 
     /**
      * Retrieves the URL of the payment form from the response data.

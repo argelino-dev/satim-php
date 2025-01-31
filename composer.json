@@ -4,6 +4,7 @@
     "keywords": [
         "PiteurStudio",
         "php-satim",
+        "php",
         "satim.dz",
         "Algeria",
         "edahabia",
@@ -25,13 +26,14 @@
     ],
     "require": {
         "php": "^8.1",
-        "symfony/http-client": "^6.0|^7.0"
+        "symfony/http-client": "^6.1 || ^7.0"
     },
     "require-dev": {
-        "laravel/pint": "^1.0",
+        "laravel/pint": "^1.20.0",
         "mockery/mockery": "^1.6",
-        "pestphp/pest": "^2.20|^3.0",
+        "pestphp/pest": "^2.20 || ^3.0",
         "phpstan/phpstan": "^2.0",
+        "rector/rector": "^2.0",
         "spatie/ray": "^1.28"
     },
     "autoload": {
@@ -45,9 +47,19 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/pest",
-            "test-coverage": "vendor/bin/pest --coverage",
-        "analyse": "vendor/bin/phpstan",
+        "lint": "pint",
+        "refactor": "rector",
+        "test:unit": "pest --coverage --min=100 --log-junit junit.xml",
+        "test:lint": "pint --test",
+        "test:refactor": "rector --dry-run",
+        "test:report": "pest --coverage --coverage-html coverage --min=100",
+        "test:types": "phpstan",
+        "test": [
+            "@test:unit",
+            "@test:lint",
+            "@test:types",
+            "@test:refactor"
+        ],
         "format": "vendor/bin/pint"
     },
     "config": {

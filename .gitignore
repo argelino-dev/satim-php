@@ -26,6 +26,7 @@ yarn-error.log
 
 # Misc
 phpunit.xml
+junit.xml
 psalm.xml
 testbench.yaml
 /docs

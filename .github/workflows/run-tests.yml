@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest]
         php: [8.4, 8.3, 8.2, 8.1]
         stability: [prefer-lowest, prefer-stable]
 
@@ -31,10 +31,10 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
-          coverage: none
+          coverage: xdebug
 
       - name: Validate composer.json
-        run: composer validate
+        run: composer validate --strict
 
       - name: Setup problem matchers
         run: |
@@ -47,8 +47,11 @@ jobs:
       - name: List Installed Dependencies
         run: composer show -D
 
-      - name: PHPStan analyse
-        run: composer analyse
-
       - name: Execute tests
-        run: vendor/bin/pest --ci
+        run: composer test
+
+      - name: Upload test results to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/test-results-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}

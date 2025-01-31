@@ -2,9 +2,10 @@
 
 ![Satim logo](images/satim.png)
 
-<img width="600" src="https://banners.beyondco.de/Satim.dz%20PHP%20Client.png?theme=light&packageManager=composer+require&packageName=piteurstudio%2Fsatim&pattern=architect&style=style_1&description=A+fully+open-source+PHP+package+for+seamless+integration+with+Satim.dz&md=1&showWatermark=1&fontSize=75px&images=https%3A%2F%2Fwww.php.net%2Fimages%2Flogos%2Fnew-php-logo.svg">
+<img width="600" src="https://banners.beyondco.de/Satim.dz%20PHP%20Client.png?theme=light&packageManager=composer+require&packageName=piteurstudio%2Fsatim&pattern=architect&style=style_1&description=A+fully+open-source+PHP+package+for+seamless+integration+with+Satim.dz&md=1&showWatermark=1&fontSize=75px&images=https%3A%2F%2Fwww.php.net%2Fimages%2Flogos%2Fnew-php-logo.svg" alt="Satim PHP Client">
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/piteurstudio/php-satim.svg?style=flat-square)](https://packagist.org/packages/piteurstudio/php-satim)
+[![codecov](https://codecov.io/gh/PiteurStudio/php-satim/graph/badge.svg?token=MXKQCQ4AGX)](https://codecov.io/gh/PiteurStudio/php-satim)
 [![Tests](https://img.shields.io/github/actions/workflow/status/piteurstudio/php-satim/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/piteurstudio/php-satim/actions/workflows/run-tests.yml)
 [![Total Downloads](https://img.shields.io/packagist/dt/piteurstudio/php-satim.svg?style=flat-square)](https://packagist.org/packages/piteurstudio/php-satim)
 

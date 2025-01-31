@@ -58,15 +58,27 @@ trait SatimStatusChecker
      */
     public function isRejected(): bool
     {
+        $response = $this->getResponse();
+
         if (isset($this->getResponse()['errorCode']) && $this->getResponse()['errorCode'] == '0') {
             return false;
         }
 
-        if (str_contains('Payment is declined', $this->getResponse()['ErrorMessage'])) {
+        if (! empty($response['ErrorMessage']) && str_contains($response['ErrorMessage'], 'Payment is declined')) {
             return true;
         }
 
         if (isset($this->getResponse()['actionCode']) && $this->getResponse()['actionCode'] == '2003') {
+            return true;
+        }
+
+        // Ensure refund cases are not considered rejected
+        if (isset($response['OrderStatus']) && $response['OrderStatus'] === '4') {
+            return false; // Explicitly prevent refunded transactions from being marked as rejected
+        }
+
+        // Mark OrderStatus = 3 as rejected (fix)
+        if (isset($response['OrderStatus']) && $response['OrderStatus'] === '3') {
             return true;
         }
 
@@ -142,7 +154,7 @@ trait SatimStatusChecker
             return false;
         }
 
-        if (str_contains('Payment is cancelled', $this->getResponse()['ErrorMessage'])) {
+        if (! empty($this->getResponse()['ErrorMessage']) && str_contains($this->getResponse()['ErrorMessage'], 'Payment is cancelled')) {
             return true;
         }
 
