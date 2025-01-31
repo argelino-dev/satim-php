@@ -1,9 +1,9 @@
 {
-    "name": "piteurstudio/php-satim",
+    "name": "piteurstudio/satim-php",
     "description": "PHP package to interact with Satim.dz API",
     "keywords": [
         "PiteurStudio",
-        "php-satim",
+        "satim-php",
         "php",
         "satim.dz",
         "Algeria",
@@ -49,7 +49,7 @@
     "scripts": {
         "lint": "pint",
         "refactor": "rector",
-        "test:unit": "pest --coverage --min=100 --log-junit junit.xml",
+        "test:unit": "pest --coverage --min=100 --log-junit junit.xml --coverage-clover coverage.xml",
         "test:lint": "pint --test",
         "test:refactor": "rector --dry-run",
         "test:report": "pest --coverage --coverage-html coverage --min=100",
