@@ -1,5 +1,3 @@
-# PHP Client for Satim.dz API
-
 ![Satim logo](images/satim.png)
 
 <img width="600" src="https://banners.beyondco.de/Satim.dz%20PHP%20Client.png?theme=light&packageManager=composer+require&packageName=piteurstudio%2Fsatim&pattern=architect&style=style_1&description=A+fully+open-source+PHP+package+for+seamless+integration+with+Satim.dz&md=1&showWatermark=1&fontSize=75px&images=https%3A%2F%2Fwww.php.net%2Fimages%2Flogos%2Fnew-php-logo.svg" alt="Satim PHP Client">
@@ -9,6 +7,7 @@
 [![Tests](https://img.shields.io/github/actions/workflow/status/piteurstudio/php-satim/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/piteurstudio/php-satim/actions/workflows/run-tests.yml)
 [![Total Downloads](https://img.shields.io/packagist/dt/piteurstudio/php-satim.svg?style=flat-square)](https://packagist.org/packages/piteurstudio/php-satim)
 
+# Satim.dz PHP Client
 
 A fully open-source PHP package for seamless integration with **Satim.dz**, the official interbank payment gateway in Algeria. 
 
@@ -24,7 +23,7 @@ This package enables merchants and developers to generate secure payment links a
 You can install the package via composer:
 
 ```bash
-composer require piteurstudio/satim
+composer require piteurstudio/satim-php
 ```
 
 ## Usage
@@ -171,6 +170,28 @@ We appreciate your feedback and contributions to help improve this package.
 
 Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
 
+---
+
+## Extra Notes
+
+Satim.dz system operates using the robust banking technologies provided by **BPC Group**.
+
+Note that many functions in BPC Payment System are restricted for public use by Satim.dz
+
+- the official [BPC Payment Documentation](https://dev.bpcbt.com/en/integration/api/rest/rest.html#api_overview).
+
+### Similar Packages
+
+The following packages provide similar functionality by interacting with Satim through third-party services, rather than directly integrating with Satim:
+
+- **[Chargily](https://github.com/orgs/Chargily/repositories?q=php)**
+- **[Slick Pay](https://github.com/orgs/Slick-Pay-Algeria/repositories)**
+- **[ALPAY](https://github.com/alpaydz?tab=repositories)**
+
+These packages may be useful depending on your use case. If you’ve developed a package that interacts with Satim via a third-party, feel free to submit a pull request to add it here.
+
+---
+
 ## Credits
 
 - [Nassim](https://github.com/n4ss1m) / [PiteurStudio](https://github.com/PiteurStudio)
@@ -186,18 +207,6 @@ Thank you!
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
 
----
-
-## Extra Notes
-
-Satim.dz system operates using the robust banking technologies provided by **BPC Group**.
-
-Note that many functions in BPC Payment System are restricted for public use by Satim.dz
-
-- the official [BPC Payment Documentation](https://dev.bpcbt.com/en/integration/api/rest/rest.html#api_overview).
-
-
 ## Disclaimer
 
-This package is not officially affiliated with or endorsed by **Satim.dz**. The Satim name, logo, and trademarks are the property of **Satim.dz**, Algeria's interbank electronic payment operator.
-
+This package is not officially affiliated with or endorsed by **Satim.dz** or any other third-party. The name, logo, and trademarks are the property of their respective owners.
