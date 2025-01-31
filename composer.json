@@ -49,10 +49,10 @@
     "scripts": {
         "lint": "pint",
         "refactor": "rector",
-        "test:unit": "pest",
+        "test:unit": "pest --coverage --min=100",
         "test:lint": "pint --test",
         "test:refactor": "rector --dry-run",
-        "test:coverage": "pest --coverage",
+        "test:report": "pest --coverage --coverage-html coverage --min=100",
         "test:types": "phpstan",
         "test": [
             "@test:unit",
