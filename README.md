@@ -1,6 +1,6 @@
 ![Satim logo](images/satim.png)
 
-<img width="600" src="https://banners.beyondco.de/Satim.dz%20PHP%20Client.png?theme=light&packageManager=composer+require&packageName=piteurstudio%2Fsatim&pattern=architect&style=style_1&description=A+fully+open-source+PHP+package+for+seamless+integration+with+Satim.dz&md=1&showWatermark=1&fontSize=75px&images=https%3A%2F%2Fwww.php.net%2Fimages%2Flogos%2Fnew-php-logo.svg" alt="Satim PHP Client">
+<img width="600" src="https://banners.beyondco.de/Satim.dz%20PHP%20Client.png?theme=light&packageManager=composer+require&packageName=piteurstudio%2Fsatim-php&pattern=architect&style=style_1&description=A+fully+open-source+PHP+package+for+seamless+integration+with+Satim.dz&md=1&showWatermark=1&fontSize=75px&images=https%3A%2F%2Fwww.php.net%2Fimages%2Flogos%2Fnew-php-logo.svg" alt="Satim PHP Client">
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/piteurstudio/satim-php.svg?style=flat-square)](https://packagist.org/packages/piteurstudio/satim-php)
 [![codecov](https://codecov.io/gh/PiteurStudio/satim-php/branch/main/graph/badge.svg?token=MXKQCQ4AGX)](https://codecov.io/gh/PiteurStudio/satim-php)
