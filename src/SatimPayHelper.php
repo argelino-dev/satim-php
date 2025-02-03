@@ -42,7 +42,6 @@ trait SatimPayHelper
     {
 
         if ($this->context == 'register') {
-
             if (empty($this->registerOrderResponse)) {
                 throw new SatimMissingDataException(
                     'No payment data found. Call register() first to register the order and obtain the response data.'
@@ -50,9 +49,9 @@ trait SatimPayHelper
             }
 
             return $this->registerOrderResponse;
+        }
 
-        } elseif ($this->context == 'confirm') {
-
+        if ($this->context == 'confirm') {
             if (empty($this->confirmOrderResponse)) {
                 throw new SatimMissingDataException(
                     'No payment data found. Call confirm() first to confirm the order and obtain the response data.'
@@ -60,9 +59,9 @@ trait SatimPayHelper
             }
 
             return $this->confirmOrderResponse;
+        }
 
-        } elseif ($this->context == 'refund') {
-
+        if ($this->context == 'refund') {
             if (empty($this->refundOrderResponse)) {
                 throw new SatimMissingDataException(
                     'No payment data found. Call refund() first to refund the order and obtain the response data.'
@@ -70,9 +69,9 @@ trait SatimPayHelper
             }
 
             return $this->refundOrderResponse;
+        }
 
-        } elseif ($this->context == 'status') {
-
+        if ($this->context == 'status') {
             if (empty($this->statusOrderResponse)) {
                 throw new SatimMissingDataException(
                     'No payment data found. Call status() first to get the order status and obtain the response data.'
@@ -80,11 +79,11 @@ trait SatimPayHelper
             }
 
             return $this->statusOrderResponse;
-        } else {
-            throw new SatimMissingDataException(
-                'No response data found. Call one of the methods first to obtain the response data.'
-            );
         }
+
+        throw new SatimMissingDataException(
+            'No response data found. Call one of the methods first to obtain the response data.'
+        );
     }
 
     /**
