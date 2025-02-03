@@ -367,7 +367,7 @@ abstract class SatimConfig
      * This method sets the session timeout for the payment process.
      * The timeout must be between 600 seconds (10 minutes) and 86400 seconds (24 hours).
      *
-     * @param  int<600,86400>  $seconds  The session timeout in seconds.
+     * @param  int  $seconds  The session timeout in seconds.
      *
      * @throws SatimUnexpectedValueException If the timeout is not within the allowed range.
      */
