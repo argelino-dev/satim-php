@@ -163,6 +163,7 @@ class Satim extends SatimConfig
         if ($orderId === '' || $orderId === '0') {
             throw new SatimInvalidArgumentException('Order ID is required for confirmation');
         }
+
         // Prepare the data for the confirmation request
         $data = [
             'userName' => $this->username,
@@ -195,6 +196,7 @@ class Satim extends SatimConfig
         if ($orderId === '' || $orderId === '0') {
             throw new SatimInvalidArgumentException('Order ID is required for confirmation');
         }
+
         // Prepare the data for the status request
         $data = [
             'userName' => $this->username,
@@ -233,6 +235,7 @@ class Satim extends SatimConfig
         if ($amount <= 0) {
             throw new SatimInvalidArgumentException('Amount must be a positive integer');
         }
+
         // Prepare the data for the refund request
         $data = [
             'userName' => $this->username,

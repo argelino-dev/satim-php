@@ -20,6 +20,6 @@ class MockHttpClientService extends HttpClientService
 
     public function handleApiRequest(string $endpoint, array $data): array
     {
-        return $this->mockResponses[$endpoint] ?? throw new \RuntimeException("Unexpected request: $endpoint");
+        return $this->mockResponses[$endpoint] ?? throw new \RuntimeException('Unexpected request: '.$endpoint);
     }
 }

@@ -208,6 +208,7 @@ trait SatimPayHelper
         // Terminate the script execution to prevent any further code execution
         exit;
     }
+
     // @codeCoverageIgnoreEnd
 
     /**

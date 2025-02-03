@@ -145,11 +145,11 @@ abstract class SatimConfig
         // Now validate each value
         foreach ($requiredData as $key) {
             if (! is_string($data[$key])) {
-                throw new SatimInvalidArgumentException("The value for {$key} must be a string.");
+                throw new SatimInvalidArgumentException(sprintf('The value for %s must be a string.', $key));
             }
 
             if (empty($data[$key])) {
-                throw new SatimUnexpectedValueException("The value for {$key} cannot be empty.");
+                throw new SatimUnexpectedValueException(sprintf('The value for %s cannot be empty.', $key));
             }
 
             $this->$key = $data[$key];

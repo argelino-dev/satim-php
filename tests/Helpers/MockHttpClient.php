@@ -17,7 +17,7 @@ class MockHttpClient implements HttpClientInterface
 
     public function request(string $method, string $url, array $options = []): ResponseInterface
     {
-        return $this->responses[$url] ?? throw new \RuntimeException("Unexpected request: $url");
+        return $this->responses[$url] ?? throw new \RuntimeException('Unexpected request: '.$url);
     }
 
     public function stream(iterable|ResponseInterface $responses, ?float $timeout = null): ResponseStreamInterface

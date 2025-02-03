@@ -13,7 +13,7 @@ return RectorConfig::configure()
     ->withSets([
         SetList::DEAD_CODE,
         SetList::CODE_QUALITY,
-        //        SetList::CODING_STYLE,
+        SetList::CODING_STYLE,
         //        SetList::TYPE_DECLARATION,
         //        SetList::PRIVATIZATION,
         //        SetList::NAMING,
