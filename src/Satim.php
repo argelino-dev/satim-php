@@ -153,14 +153,14 @@ class Satim extends SatimConfig
      * This method sends a request to the Satim API to confirm the payment
      * using the given order ID. The response is stored in the confirmOrderResponse property.
      *
-     * @param  non-empty-string  $orderId  The ID of the order to be confirmed.
+     * @param  string  $orderId  The ID of the order to be confirmed.
      * @return static The current instance for method chaining.
      *
      * @throws SatimUnexpectedResponseException|SatimInvalidCredentials Thrown if the API response is unexpected.
      */
     public function confirm(string $orderId): static
     {
-        if (empty($orderId)) {
+        if ($orderId === '' || $orderId === '0') {
             throw new SatimInvalidArgumentException('Order ID is required for confirmation');
         }
         // Prepare the data for the confirmation request
@@ -192,7 +192,7 @@ class Satim extends SatimConfig
      */
     public function status(string $orderId): static
     {
-        if (empty($orderId)) {
+        if ($orderId === '' || $orderId === '0') {
             throw new SatimInvalidArgumentException('Order ID is required for confirmation');
         }
         // Prepare the data for the status request
@@ -218,7 +218,7 @@ class Satim extends SatimConfig
      * The amount should be specified in the major currency unit and will be
      * converted to minor units in the request.
      *
-     * @param  non-empty-string  $orderId  The ID of the order to be refunded.
+     * @param  string  $orderId  The ID of the order to be refunded.
      * @param  positive-int  $amount  The amount to refund in major currency units.
      * @return array<string,mixed> The response from the Satim API.
      *
@@ -226,7 +226,7 @@ class Satim extends SatimConfig
      */
     public function refund(string $orderId, int $amount): array
     {
-        if (empty($orderId)) {
+        if ($orderId === '' || $orderId === '0') {
             throw new SatimInvalidArgumentException('Order ID is required for refund');
         }
 

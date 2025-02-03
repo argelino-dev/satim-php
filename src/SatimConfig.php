@@ -122,7 +122,7 @@ abstract class SatimConfig
     /**
      * Satim constructor.
      *
-     * @param  array{username: non-empty-string, password: non-empty-string, terminal_id: non-empty-string}  $data  The configuration data for the Satim object.
+     * @param  array{username: string, password: string, terminal_id: string}  $data  The configuration data for the Satim object.
      *
      * @throws SatimMissingDataException|SatimInvalidArgumentException|SatimUnexpectedValueException
      */
@@ -132,13 +132,13 @@ abstract class SatimConfig
 
         // First validate that we have only the expected keys
         $unexpectedKeys = array_diff(array_keys($data), $requiredData);
-        if (! empty($unexpectedKeys)) {
+        if ($unexpectedKeys !== []) {
             throw new SatimInvalidArgumentException('Unexpected keys found: '.implode(', ', $unexpectedKeys));
         }
 
         // Then validate that all required keys exist
         $missingKeys = array_diff($requiredData, array_keys($data));
-        if (! empty($missingKeys)) {
+        if ($missingKeys !== []) {
             throw new SatimMissingDataException('Missing required data: '.implode(', ', $missingKeys));
         }
 
