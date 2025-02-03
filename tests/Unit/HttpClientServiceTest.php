@@ -110,10 +110,10 @@ it('throws SatimUnexpectedResponseException for ServerException', function (): v
 function invokeMethod(object $object, string $methodName, array $parameters = []): mixed
 {
     $reflection = new ReflectionClass($object);
-    $method = $reflection->getMethod($methodName);
-    $method->setAccessible(true);
+    $reflectionMethod = $reflection->getMethod($methodName);
+    $reflectionMethod->setAccessible(true);
 
-    return $method->invokeArgs($object, $parameters);
+    return $reflectionMethod->invokeArgs($object, $parameters);
 }
 
 /**
