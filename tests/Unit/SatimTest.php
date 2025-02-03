@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use PiteurStudio\Exception\SatimInvalidArgumentException;
 use PiteurStudio\Exception\SatimMissingDataException;
 use PiteurStudio\Exception\SatimUnexpectedResponseException;

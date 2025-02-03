@@ -17,9 +17,9 @@ return RectorConfig::configure()
         SetList::TYPE_DECLARATION,
         SetList::PRIVATIZATION,
         SetList::NAMING,
-        //        SetList::RECTOR_PRESET,
+        SetList::RECTOR_PRESET,
         SetList::STRICT_BOOLEANS,
         SetList::EARLY_RETURN,
-        //        SetList::INSTANCEOF,
+        SetList::INSTANCEOF,
     ])
     ->withPhpSets();

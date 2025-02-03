@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use PiteurStudio\Exception\SatimMissingDataException;
 use PiteurStudio\Tests\Helpers\SatimPayHelperTestClass;
 
