@@ -14,7 +14,7 @@ return RectorConfig::configure()
         SetList::DEAD_CODE,
         SetList::CODE_QUALITY,
         SetList::CODING_STYLE,
-        //        SetList::TYPE_DECLARATION,
+        SetList::TYPE_DECLARATION,
         //        SetList::PRIVATIZATION,
         //        SetList::NAMING,
         //        SetList::RECTOR_PRESET,

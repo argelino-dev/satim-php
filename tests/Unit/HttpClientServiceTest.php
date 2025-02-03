@@ -107,7 +107,7 @@ it('throws SatimUnexpectedResponseException for ServerException', function (): v
 /**
  * ✅ Utility function to test private/protected methods
  */
-function invokeMethod(object $object, string $methodName, array $parameters = [])
+function invokeMethod(object $object, string $methodName, array $parameters = []): mixed
 {
     $reflection = new ReflectionClass($object);
     $method = $reflection->getMethod($methodName);
