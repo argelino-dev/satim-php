@@ -59,8 +59,7 @@
             "@test:lint",
             "@test:types",
             "@test:refactor"
-        ],
-        "format": "vendor/bin/pint"
+        ]
     },
     "config": {
         "sort-packages": true,

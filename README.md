@@ -1,11 +1,18 @@
-![Satim logo](images/satim.png)
+<p align="center"><img src="images/satim.png" alt="Satim logo"></p>
 
-<img width="600" src="https://banners.beyondco.de/Satim.dz%20PHP%20Client.png?theme=light&packageManager=composer+require&packageName=piteurstudio%2Fsatim-php&pattern=architect&style=style_1&description=A+fully+open-source+PHP+package+for+seamless+integration+with+Satim.dz&md=1&showWatermark=1&fontSize=75px&images=https%3A%2F%2Fwww.php.net%2Fimages%2Flogos%2Fnew-php-logo.svg" alt="Satim PHP Client">
+<p align="center">
+<img width="800" src="https://banners.beyondco.de/Satim.dz%20PHP%20Client.png?theme=light&packageManager=composer+require&packageName=piteurstudio%2Fsatim-php&pattern=architect&style=style_1&description=A+fully+open-source+PHP+package+for+seamless+integration+with+Satim.dz&md=1&showWatermark=1&fontSize=75px&images=https%3A%2F%2Fwww.php.net%2Fimages%2Flogos%2Fnew-php-logo.svg" alt="Satim PHP Client">
+</p>
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/piteurstudio/satim-php.svg?style=flat-square)](https://packagist.org/packages/piteurstudio/satim-php)
-[![codecov](https://codecov.io/gh/PiteurStudio/satim-php/branch/main/graph/badge.svg?token=MXKQCQ4AGX)](https://codecov.io/gh/PiteurStudio/satim-php)
-[![Tests](https://img.shields.io/github/actions/workflow/status/piteurstudio/php-satim/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/piteurstudio/php-satim/actions/workflows/run-tests.yml)
-[![Total Downloads](https://img.shields.io/packagist/dt/piteurstudio/satim-php.svg?style=flat-square)](https://packagist.org/packages/piteurstudio/satim-php)
+<p align="center">
+<a href="https://packagist.org/packages/piteurstudio/satim-php"><img src="http://poser.pugx.org/piteurstudio/satim-php/require/php" alt="PHP Version Require"></a>
+<a href="https://packagist.org/packages/piteurstudio/satim-php"><img src="https://img.shields.io/packagist/v/piteurstudio/satim-php.svg?style=flat" alt="Latest Version on Packagist"></a>
+<a href="https://codecov.io/gh/PiteurStudio/satim-php"><img src="https://codecov.io/gh/PiteurStudio/satim-php/branch/main/graph/badge.svg?token=MXKQCQ4AGX" alt="codecov"></a>
+<a href="https://github.com/PiteurStudio/satim-php/blob/main/phpstan.neon"><img src="https://img.shields.io/badge/PHPStan-max-blue.svg?style=flat" alt="phpstan"></a>
+<a href="https://github.com/piteurstudio/php-satim/actions/workflows/run-tests.yml"><img src="https://img.shields.io/github/actions/workflow/status/piteurstudio/php-satim/run-tests.yml?branch=main&amp;label=tests&amp;style=flat" alt="Tests"></a>
+<a href="https://packagist.org/packages/piteurstudio/satim-php"><img src="https://img.shields.io/packagist/dt/piteurstudio/satim-php.svg?style=flat" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/piteurstudio/satim-php"><img src="http://poser.pugx.org/piteurstudio/satim-php/license" alt="License"></a>
+</p>
 
 # Satim.dz PHP Client
 

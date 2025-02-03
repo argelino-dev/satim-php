@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use PiteurStudio\Exception\SatimInvalidArgumentException;
 use PiteurStudio\Exception\SatimMissingDataException;
 use PiteurStudio\Exception\SatimUnexpectedResponseException;
@@ -36,10 +38,10 @@ it('registers a payment successfully', function (): void {
     $this->satim->register();
 
     $reflector = new ReflectionClass($this->satim);
-    $property = $reflector->getProperty('registerOrderResponse');
-    $property->setAccessible(true);
+    $reflectionProperty = $reflector->getProperty('registerOrderResponse');
+    $reflectionProperty->setAccessible(true);
 
-    expect($property->getValue($this->satim))->toBe(['errorCode' => '0', 'orderId' => '1234567890']);
+    expect($reflectionProperty->getValue($this->satim))->toBe(['errorCode' => '0', 'orderId' => '1234567890']);
 });
 
 it('throws exception if register API returns an error', function (): void {
@@ -61,10 +63,10 @@ it('confirms a payment successfully', function (): void {
     $this->satim->confirm('1234567890');
 
     $reflector = new ReflectionClass($this->satim);
-    $property = $reflector->getProperty('confirmOrderResponse');
-    $property->setAccessible(true);
+    $reflectionProperty = $reflector->getProperty('confirmOrderResponse');
+    $reflectionProperty->setAccessible(true);
 
-    expect($property->getValue($this->satim))->toBe(['status' => 'confirmed']);
+    expect($reflectionProperty->getValue($this->satim))->toBe(['status' => 'confirmed']);
 });
 
 it('throws exception when confirming with an empty order ID', function (): void {
@@ -79,10 +81,10 @@ it('retrieves order status successfully', function (): void {
     $this->satim->status('1234567890');
 
     $reflector = new ReflectionClass($this->satim);
-    $property = $reflector->getProperty('statusOrderResponse');
-    $property->setAccessible(true);
+    $reflectionProperty = $reflector->getProperty('statusOrderResponse');
+    $reflectionProperty->setAccessible(true);
 
-    expect($property->getValue($this->satim))->toBe(['status' => 'paid']);
+    expect($reflectionProperty->getValue($this->satim))->toBe(['status' => 'paid']);
 });
 
 it('throws exception when retrieving status with an empty order ID', function (): void {
@@ -94,8 +96,15 @@ it('processes a refund successfully', function (): void {
         'refundStatus' => 'success',
     ]);
 
-    $response = $this->satim->refund('1234567890', 500);
-    expect($response)->toBe(['refundStatus' => 'success']);
+    $this->satim->refund('1234567890', 500);
+
+    $reflector = new ReflectionClass($this->satim);
+    $reflectionProperty = $reflector->getProperty('refundOrderResponse');
+    $reflectionProperty->setAccessible(true);
+
+    expect($reflectionProperty->getValue($this->satim))->toBe(['refundStatus' => 'success']);
+
+    //    expect($response)->toBe(['refundStatus' => 'success']);
 });
 
 it('throws exception when refunding with an empty order ID', function (): void {
@@ -124,10 +133,10 @@ it('adds user-defined fields to request data', function (): void {
 
     // Use reflection to access private `buildData()` method
     $reflector = new ReflectionClass($this->satim);
-    $method = $reflector->getMethod('buildData');
-    $method->setAccessible(true);
+    $reflectionMethod = $reflector->getMethod('buildData');
+    $reflectionMethod->setAccessible(true);
 
-    $requestData = $method->invoke($this->satim);
+    $requestData = $reflectionMethod->invoke($this->satim);
 
     // Decode JSON `jsonParams`
     $jsonParams = json_decode((string) $requestData['jsonParams'], true);
@@ -151,10 +160,10 @@ it('does not add user-defined fields if they are empty', function (): void {
     $this->satim->register();
 
     $reflector = new ReflectionClass($this->satim);
-    $method = $reflector->getMethod('buildData');
-    $method->setAccessible(true);
+    $reflectionMethod = $reflector->getMethod('buildData');
+    $reflectionMethod->setAccessible(true);
 
-    $requestData = $method->invoke($this->satim);
+    $requestData = $reflectionMethod->invoke($this->satim);
 
     // Decode JSON `jsonParams`
     $jsonParams = json_decode((string) $requestData['jsonParams'], true);
@@ -179,10 +188,10 @@ it('overrides existing keys if user-defined fields contain force_terminal_id', f
     $this->satim->register();
 
     $reflector = new ReflectionClass($this->satim);
-    $method = $reflector->getMethod('buildData');
-    $method->setAccessible(true);
+    $reflectionMethod = $reflector->getMethod('buildData');
+    $reflectionMethod->setAccessible(true);
 
-    $requestData = $method->invoke($this->satim);
+    $requestData = $reflectionMethod->invoke($this->satim);
 
     // Decode JSON `jsonParams`
     $jsonParams = json_decode((string) $requestData['jsonParams'], true);
@@ -207,10 +216,10 @@ it('adds description to request data when set', function (): void {
 
     // Use reflection to access private `buildData()` method
     $reflector = new ReflectionClass($this->satim);
-    $method = $reflector->getMethod('buildData');
-    $method->setAccessible(true);
+    $reflectionMethod = $reflector->getMethod('buildData');
+    $reflectionMethod->setAccessible(true);
 
-    $requestData = $method->invoke($this->satim);
+    $requestData = $reflectionMethod->invoke($this->satim);
 
     expect($requestData)->toHaveKey('description')
         ->and($requestData['description'])->toBe('Test payment description');
@@ -229,10 +238,10 @@ it('does not add description if not set', function (): void {
     $this->satim->register();
 
     $reflector = new ReflectionClass($this->satim);
-    $method = $reflector->getMethod('buildData');
-    $method->setAccessible(true);
+    $reflectionMethod = $reflector->getMethod('buildData');
+    $reflectionMethod->setAccessible(true);
 
-    $requestData = $method->invoke($this->satim);
+    $requestData = $reflectionMethod->invoke($this->satim);
 
     expect($requestData)->not()->toHaveKey('description');
 });
@@ -250,10 +259,10 @@ it('adds session timeout to request data when set', function (): void {
     $this->satim->register();
 
     $reflector = new ReflectionClass($this->satim);
-    $method = $reflector->getMethod('buildData');
-    $method->setAccessible(true);
+    $reflectionMethod = $reflector->getMethod('buildData');
+    $reflectionMethod->setAccessible(true);
 
-    $requestData = $method->invoke($this->satim);
+    $requestData = $reflectionMethod->invoke($this->satim);
 
     expect($requestData)->toHaveKey('sessionTimeoutSecs')
         ->and($requestData['sessionTimeoutSecs'])->toBe(3600);
@@ -272,10 +281,10 @@ it('does not add session timeout if not set', function (): void {
     $this->satim->register();
 
     $reflector = new ReflectionClass($this->satim);
-    $method = $reflector->getMethod('buildData');
-    $method->setAccessible(true);
+    $reflectionMethod = $reflector->getMethod('buildData');
+    $reflectionMethod->setAccessible(true);
 
-    $requestData = $method->invoke($this->satim);
+    $requestData = $reflectionMethod->invoke($this->satim);
 
     expect($requestData)->not()->toHaveKey('sessionTimeoutSecs');
 });

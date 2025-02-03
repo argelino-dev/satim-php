@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use PiteurStudio\Exception\SatimInvalidArgumentException;
 use PiteurStudio\Exception\SatimMissingDataException;
 use PiteurStudio\Exception\SatimUnexpectedValueException;
@@ -64,10 +66,10 @@ it('sets a valid amount', function (): void {
     $config->amount(500);
 
     $reflector = new ReflectionClass($config);
-    $property = $reflector->getProperty('amount');
-    $property->setAccessible(true);
+    $reflectionProperty = $reflector->getProperty('amount');
+    $reflectionProperty->setAccessible(true);
 
-    expect($property->getValue($config))->toBe(500);
+    expect($reflectionProperty->getValue($config))->toBe(500);
 });
 
 it('throws exception for description exceeding 598 characters', function (): void {
@@ -91,10 +93,10 @@ it('sets a valid description', function (): void {
     $config->description('test description');
 
     $reflector = new ReflectionClass($config);
-    $property = $reflector->getProperty('description');
-    $property->setAccessible(true);
+    $reflectionProperty = $reflector->getProperty('description');
+    $reflectionProperty->setAccessible(true);
 
-    expect($property->getValue($config))->toBe('test description');
+    expect($reflectionProperty->getValue($config))->toBe('test description');
 });
 
 it('sets a valid currency', function (): void {
@@ -107,10 +109,10 @@ it('sets a valid currency', function (): void {
     $config->currency('USD');
 
     $reflector = new ReflectionClass($config);
-    $property = $reflector->getProperty('currency');
-    $property->setAccessible(true);
+    $reflectionProperty = $reflector->getProperty('currency');
+    $reflectionProperty->setAccessible(true);
 
-    expect($property->getValue($config))->toBe('840');
+    expect($reflectionProperty->getValue($config))->toBe('840');
 });
 
 it('throws exception for invalid currency', function (): void {
@@ -153,10 +155,10 @@ it('sets a valid fail URL', function (): void {
     $config->failUrl('https://example.com/fail');
 
     $reflector = new ReflectionClass($config);
-    $property = $reflector->getProperty('failUrl');
-    $property->setAccessible(true);
+    $reflectionProperty = $reflector->getProperty('failUrl');
+    $reflectionProperty->setAccessible(true);
 
-    expect($property->getValue($config))->toBe('https://example.com/fail');
+    expect($reflectionProperty->getValue($config))->toBe('https://example.com/fail');
 });
 
 it('throws exception for invalid order number', function (): void {
@@ -179,10 +181,10 @@ it('sets a valid order number', function (): void {
     $config->orderNumber(1234567890);
 
     $reflector = new ReflectionClass($config);
-    $property = $reflector->getProperty('orderNumber');
-    $property->setAccessible(true);
+    $reflectionProperty = $reflector->getProperty('orderNumber');
+    $reflectionProperty->setAccessible(true);
 
-    expect($property->getValue($config))->toBe(1234567890);
+    expect($reflectionProperty->getValue($config))->toBe(1234567890);
 });
 
 it('sets a test_mode ', function (): void {
@@ -195,10 +197,10 @@ it('sets a test_mode ', function (): void {
     $config->testMode(true);
 
     $reflector = new ReflectionClass($config);
-    $property = $reflector->getProperty('test_mode');
-    $property->setAccessible(true);
+    $reflectionProperty = $reflector->getProperty('test_mode');
+    $reflectionProperty->setAccessible(true);
 
-    expect($property->getValue($config))->toBe(true);
+    expect($reflectionProperty->getValue($config))->toBe(true);
 });
 
 it('throws exception for invalid language', function (): void {
@@ -221,10 +223,10 @@ it('sets a valid language', function (): void {
     $config->language('EN');
 
     $reflector = new ReflectionClass($config);
-    $property = $reflector->getProperty('language');
-    $property->setAccessible(true);
+    $reflectionProperty = $reflector->getProperty('language');
+    $reflectionProperty->setAccessible(true);
 
-    expect($property->getValue($config))->toBe('EN');
+    expect($reflectionProperty->getValue($config))->toBe('EN');
 });
 
 it('throws exception for numeric user-defined field key', function (): void {
@@ -247,10 +249,10 @@ it('sets user-defined fields', function (): void {
     $config->userDefinedField('key1', 'value1');
 
     $reflector = new ReflectionClass($config);
-    $property = $reflector->getProperty('userDefinedFields');
-    $property->setAccessible(true);
+    $reflectionProperty = $reflector->getProperty('userDefinedFields');
+    $reflectionProperty->setAccessible(true);
 
-    expect($property->getValue($config))->toBe(['key1' => 'value1']);
+    expect($reflectionProperty->getValue($config))->toBe(['key1' => 'value1']);
 });
 
 it('sets user-defineds fields', function (): void {
@@ -266,10 +268,10 @@ it('sets user-defineds fields', function (): void {
     ]);
 
     $reflector = new ReflectionClass($config);
-    $property = $reflector->getProperty('userDefinedFields');
-    $property->setAccessible(true);
+    $reflectionProperty = $reflector->getProperty('userDefinedFields');
+    $reflectionProperty->setAccessible(true);
 
-    expect($property->getValue($config))->toBe([
+    expect($reflectionProperty->getValue($config))->toBe([
         'key1' => 'value1',
         'key2' => 'value2',
     ]);
@@ -295,8 +297,8 @@ it('sets a valid timeout', function (): void {
     $config->timeout(3600);
 
     $reflector = new ReflectionClass($config);
-    $property = $reflector->getProperty('sessionTimeoutSecs');
-    $property->setAccessible(true);
+    $reflectionProperty = $reflector->getProperty('sessionTimeoutSecs');
+    $reflectionProperty->setAccessible(true);
 
-    expect($property->getValue($config))->toBe(3600);
+    expect($reflectionProperty->getValue($config))->toBe(3600);
 });

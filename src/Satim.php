@@ -47,17 +47,17 @@ class Satim extends SatimConfig
     private function validateData(): void
     {
         // Check if the return URL is set, throw an exception if missing
-        if (! $this->returnUrl) {
+        if ($this->returnUrl === null || $this->returnUrl === '' || $this->returnUrl === '0') {
             throw new SatimMissingDataException('Return URL missing. Call returnUrl() to set it.');
         }
 
         // Check if the order number is set; if not, generate a random one
-        if (! $this->orderNumber) {
+        if ($this->orderNumber === null || $this->orderNumber === 0) {
             $this->orderNumber(mt_rand(1000000000, 9999999999));
         }
 
         // Check if the amount is set, throw an exception if missing
-        if (! $this->amount) {
+        if ($this->amount === null || $this->amount === 0) {
             throw new SatimMissingDataException('Amount missing. Call the amount() method to set it.');
         }
 
@@ -79,7 +79,7 @@ class Satim extends SatimConfig
         ];
 
         // If user-defined fields are set, add them to the additional data
-        if ($this->userDefinedFields) {
+        if ($this->userDefinedFields !== null && $this->userDefinedFields !== []) {
             $additionalData = array_merge($additionalData, $this->userDefinedFields);
         }
 
@@ -97,12 +97,12 @@ class Satim extends SatimConfig
         ];
 
         // If a description is set, add it to the request data
-        if ($this->description) {
+        if ($this->description !== null && $this->description !== '' && $this->description !== '0') {
             $data['description'] = $this->description;
         }
 
         // If a session timeout is set, add it to the request data
-        if ($this->sessionTimeoutSecs) {
+        if ($this->sessionTimeoutSecs !== null && $this->sessionTimeoutSecs !== 0) {
             $data['sessionTimeoutSecs'] = $this->sessionTimeoutSecs;
         }
 
@@ -133,9 +133,11 @@ class Satim extends SatimConfig
         // Check the response and throw an exception if the error code is not 0
         if ($result['errorCode'] !== '0') {
 
-            $errorMessage = $result['errorMessage'] ?? 'Unknown error';
+            $errorMessage = $result['errorMessage'] && is_string($result['errorMessage']) ? $result['errorMessage'] : 'Unknown error';
 
-            throw new SatimUnexpectedResponseException('registerPayment Error {errorCode: '.$result['errorCode'].' , errorMessage: '.$errorMessage.'}');
+            $errorCode = $result['errorCode'] && is_string($result['errorCode']) ? $result['errorCode'] : 'Unknown error';
+
+            throw new SatimUnexpectedResponseException('registerPayment Error {errorCode: '.$errorCode.' , errorMessage: '.$errorMessage.'}');
         }
 
         // Store the response data
@@ -153,16 +155,17 @@ class Satim extends SatimConfig
      * This method sends a request to the Satim API to confirm the payment
      * using the given order ID. The response is stored in the confirmOrderResponse property.
      *
-     * @param  non-empty-string  $orderId  The ID of the order to be confirmed.
+     * @param  string  $orderId  The ID of the order to be confirmed.
      * @return static The current instance for method chaining.
      *
      * @throws SatimUnexpectedResponseException|SatimInvalidCredentials Thrown if the API response is unexpected.
      */
     public function confirm(string $orderId): static
     {
-        if (empty($orderId)) {
+        if ($orderId === '' || $orderId === '0') {
             throw new SatimInvalidArgumentException('Order ID is required for confirmation');
         }
+
         // Prepare the data for the confirmation request
         $data = [
             'userName' => $this->username,
@@ -192,9 +195,10 @@ class Satim extends SatimConfig
      */
     public function status(string $orderId): static
     {
-        if (empty($orderId)) {
+        if ($orderId === '' || $orderId === '0') {
             throw new SatimInvalidArgumentException('Order ID is required for confirmation');
         }
+
         // Prepare the data for the status request
         $data = [
             'userName' => $this->username,
@@ -218,21 +222,22 @@ class Satim extends SatimConfig
      * The amount should be specified in the major currency unit and will be
      * converted to minor units in the request.
      *
-     * @param  non-empty-string  $orderId  The ID of the order to be refunded.
+     * @param  string  $orderId  The ID of the order to be refunded.
      * @param  positive-int  $amount  The amount to refund in major currency units.
-     * @return array<string,mixed> The response from the Satim API.
      *
-     * @throws SatimUnexpectedResponseException|SatimInvalidCredentials Thrown if the API response is unexpected.
+     * @throws SatimInvalidCredentials Thrown if the API response is unexpected.
+     * @throws SatimUnexpectedResponseException Thrown if the API response is unexpected.
      */
-    public function refund(string $orderId, int $amount): array
+    public function refund(string $orderId, int $amount): static
     {
-        if (empty($orderId)) {
+        if ($orderId === '' || $orderId === '0') {
             throw new SatimInvalidArgumentException('Order ID is required for refund');
         }
 
         if ($amount <= 0) {
             throw new SatimInvalidArgumentException('Amount must be a positive integer');
         }
+
         // Prepare the data for the refund request
         $data = [
             'userName' => $this->username,
@@ -244,6 +249,8 @@ class Satim extends SatimConfig
 
         $this->context = 'refund';
 
-        return $this->httpClientService->handleApiRequest('/refund.do', $data);
+        $this->refundOrderResponse = $this->httpClientService->handleApiRequest('/refund.do', $data);
+
+        return $this;
     }
 }

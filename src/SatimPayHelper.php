@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PiteurStudio;
 
 use PiteurStudio\Exception\SatimMissingDataException;
@@ -28,6 +30,13 @@ trait SatimPayHelper
     protected ?array $statusOrderResponse = null;
 
     /**
+     * The response data from the refund() method.
+     *
+     * @var array<string, mixed>|null
+     */
+    protected ?array $refundOrderResponse = null;
+
+    /**
      * Retrieves the response data for the registered order.
      *
      * This method retrieves the response data associated with the registered order.
@@ -42,7 +51,6 @@ trait SatimPayHelper
     {
 
         if ($this->context == 'register') {
-
             if (empty($this->registerOrderResponse)) {
                 throw new SatimMissingDataException(
                     'No payment data found. Call register() first to register the order and obtain the response data.'
@@ -50,9 +58,9 @@ trait SatimPayHelper
             }
 
             return $this->registerOrderResponse;
+        }
 
-        } elseif ($this->context == 'confirm') {
-
+        if ($this->context == 'confirm') {
             if (empty($this->confirmOrderResponse)) {
                 throw new SatimMissingDataException(
                     'No payment data found. Call confirm() first to confirm the order and obtain the response data.'
@@ -60,9 +68,9 @@ trait SatimPayHelper
             }
 
             return $this->confirmOrderResponse;
+        }
 
-        } elseif ($this->context == 'refund') {
-
+        if ($this->context == 'refund') {
             if (empty($this->refundOrderResponse)) {
                 throw new SatimMissingDataException(
                     'No payment data found. Call refund() first to refund the order and obtain the response data.'
@@ -70,9 +78,9 @@ trait SatimPayHelper
             }
 
             return $this->refundOrderResponse;
+        }
 
-        } elseif ($this->context == 'status') {
-
+        if ($this->context == 'status') {
             if (empty($this->statusOrderResponse)) {
                 throw new SatimMissingDataException(
                     'No payment data found. Call status() first to get the order status and obtain the response data.'
@@ -80,11 +88,11 @@ trait SatimPayHelper
             }
 
             return $this->statusOrderResponse;
-        } else {
-            throw new SatimMissingDataException(
-                'No response data found. Call one of the methods first to obtain the response data.'
-            );
         }
+
+        throw new SatimMissingDataException(
+            'No response data found. Call one of the methods first to obtain the response data.'
+        );
     }
 
     /**
@@ -100,6 +108,7 @@ trait SatimPayHelper
     public function getOrderId(): string
     {
         // Retrieve the response data from the getResponse() method
+        /** @var array<string, string> $responseData */
         $responseData = $this->getResponse();
 
         // Extract the order ID from the response data
@@ -109,13 +118,14 @@ trait SatimPayHelper
     /**
      * Retrieve the IP address of the user from the response data.
      *
-     * @return non-empty-string|null The IP address of the user extracted from the response data.
+     * @return string|null The IP address of the user extracted from the response data.
      *
      * @throws SatimMissingDataException
      */
     public function getIpAddress(): ?string
     {
         // Retrieve the response data from the getResponse() method
+        /** @var array<string, string> $responseData */
         $responseData = $this->getResponse();
 
         // Extract the order ID from the response data
@@ -125,13 +135,14 @@ trait SatimPayHelper
     /**
      * Retrieve the cardholder name from the response data.
      *
-     * @return non-empty-string|null The IP address of the user extracted from the response data.
+     * @return string|null The IP address of the user extracted from the response data.
      *
      * @throws SatimMissingDataException
      */
     public function getCardHolderName(): ?string
     {
         // Retrieve the response data from the getResponse() method
+        /** @var array<string, string> $responseData */
         $responseData = $this->getResponse();
 
         // Extract the order ID from the response data
@@ -141,13 +152,14 @@ trait SatimPayHelper
     /**
      * Retrieve the card expiry date from the response data.
      *
-     * @return non-empty-string|null The card expiry date extracted from the response data.
+     * @return string|null The card expiry date extracted from the response data.
      *
      * @throws SatimMissingDataException
      */
     public function getCardExpiry(): ?string
     {
         // Retrieve the response data from the getResponse() method
+        /** @var array<string, string> $responseData */
         $responseData = $this->getResponse();
 
         // Extract the order ID from the response data
@@ -157,13 +169,14 @@ trait SatimPayHelper
     /**
      * Retrieve the card PAN from the response data.
      *
-     * @return non-empty-string|null The card PAN extracted from the response data.
+     * @return string|null The card PAN extracted from the response data.
      *
      * @throws SatimMissingDataException
      */
     public function getCardPan(): ?string
     {
         // Retrieve the response data from the getResponse() method
+        /** @var array<string, string> $responseData */
         $responseData = $this->getResponse();
 
         // Extract the order ID from the response data
@@ -173,13 +186,14 @@ trait SatimPayHelper
     /**
      * Retrieve the approval code from the response data.
      *
-     * @return non-empty-string|null The approval code extracted from the response data.
+     * @return string|null The approval code extracted from the response data.
      *
      * @throws SatimMissingDataException
      */
     public function getApprovalCode(): ?string
     {
         // Retrieve the response data from the getResponse() method
+        /** @var array<string, string> $responseData */
         $responseData = $this->getResponse();
 
         // Extract the order ID from the response data
@@ -208,6 +222,7 @@ trait SatimPayHelper
         // Terminate the script execution to prevent any further code execution
         exit;
     }
+
     // @codeCoverageIgnoreEnd
 
     /**
@@ -220,6 +235,7 @@ trait SatimPayHelper
     public function getUrl(): string
     {
         // Retrieve the response data from the getResponse() method
+        /** @var array<string, string> $responseData */
         $responseData = $this->getResponse();
 
         if (! isset($responseData['formUrl'])) {

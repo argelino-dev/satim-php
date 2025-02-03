@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PiteurStudio;
 
 use PiteurStudio\Exception\SatimInvalidArgumentException;
@@ -61,22 +63,16 @@ abstract class SatimConfig
 
     /**
      * The URL to redirect to if the payment fails.
-     *
-     * @var non-empty-string|null
      */
     protected ?string $failUrl = null;
 
     /**
      * The URL to redirect to after the payment is processed.
-     *
-     * @var non-empty-string|null
      */
     protected ?string $returnUrl = null;
 
     /**
      * The description for the payment.
-     *
-     * @var non-empty-string|null
      */
     protected ?string $description = null;
 
@@ -96,8 +92,6 @@ abstract class SatimConfig
 
     /**
      * The session timeout for the payment.
-     *
-     * @var int<600,86400>|null
      **/
     protected ?int $sessionTimeoutSecs = null;
 
@@ -122,7 +116,7 @@ abstract class SatimConfig
     /**
      * Satim constructor.
      *
-     * @param  array{username: non-empty-string, password: non-empty-string, terminal_id: non-empty-string}  $data  The configuration data for the Satim object.
+     * @param  array{username: string, password: string, terminal_id: string}  $data  The configuration data for the Satim object.
      *
      * @throws SatimMissingDataException|SatimInvalidArgumentException|SatimUnexpectedValueException
      */
@@ -132,24 +126,24 @@ abstract class SatimConfig
 
         // First validate that we have only the expected keys
         $unexpectedKeys = array_diff(array_keys($data), $requiredData);
-        if (! empty($unexpectedKeys)) {
+        if ($unexpectedKeys !== []) {
             throw new SatimInvalidArgumentException('Unexpected keys found: '.implode(', ', $unexpectedKeys));
         }
 
         // Then validate that all required keys exist
         $missingKeys = array_diff($requiredData, array_keys($data));
-        if (! empty($missingKeys)) {
+        if ($missingKeys !== []) {
             throw new SatimMissingDataException('Missing required data: '.implode(', ', $missingKeys));
         }
 
         // Now validate each value
         foreach ($requiredData as $key) {
             if (! is_string($data[$key])) {
-                throw new SatimInvalidArgumentException("The value for {$key} must be a string.");
+                throw new SatimInvalidArgumentException(sprintf('The value for %s must be a string.', $key));
             }
 
             if (empty($data[$key])) {
-                throw new SatimUnexpectedValueException("The value for {$key} cannot be empty.");
+                throw new SatimUnexpectedValueException(sprintf('The value for %s cannot be empty.', $key));
             }
 
             $this->$key = $data[$key];
@@ -367,7 +361,7 @@ abstract class SatimConfig
      * This method sets the session timeout for the payment process.
      * The timeout must be between 600 seconds (10 minutes) and 86400 seconds (24 hours).
      *
-     * @param  int<600,86400>  $seconds  The session timeout in seconds.
+     * @param  int  $seconds  The session timeout in seconds.
      *
      * @throws SatimUnexpectedValueException If the timeout is not within the allowed range.
      */

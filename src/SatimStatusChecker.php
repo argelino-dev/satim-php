@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PiteurStudio;
 
 use PiteurStudio\Exception\SatimMissingDataException;
@@ -19,9 +21,12 @@ trait SatimStatusChecker
             return $this->getErrorMessage();
         }
 
+        /** @var array<string, string> $responseData */
+        $responseData = $this->getResponse();
+
         // Try to get the success message from the confirmOrderResponse
         // If it doesn't exist or is empty, return a default success message
-        return $this->getResponse()['params']['respCode_desc'] ?? ($this->getResponse()['actionCodeDescription'] ?? 'Payment was successful');
+        return $responseData['params']['respCode_desc'] ?? ($responseData['actionCodeDescription'] ?? 'Payment was successful');
     }
 
     /**
@@ -44,9 +49,12 @@ trait SatimStatusChecker
             return 'Payment was refunded';
         }
 
+        /** @var array<string, string> $responseData */
+        $responseData = $this->getResponse();
+
         // Otherwise, try to get the error message from the confirmOrderResponse
         // If it doesn't exist or is empty, return a default error message
-        return $this->getResponse()['params']['respCode_desc'] ?? ($this->getResponse()['actionCodeDescription'] ?? 'Payment failed');
+        return $responseData['params']['respCode_desc'] ?? ($responseData['actionCodeDescription'] ?? 'Payment failed');
     }
 
     /**
@@ -58,17 +66,18 @@ trait SatimStatusChecker
      */
     public function isRejected(): bool
     {
+        /** @var array<string, string> $response */
         $response = $this->getResponse();
 
-        if (isset($this->getResponse()['errorCode']) && $this->getResponse()['errorCode'] == '0') {
+        if (isset($response['errorCode']) && $response['errorCode'] === '0') {
             return false;
         }
 
-        if (! empty($response['ErrorMessage']) && str_contains((string) $response['ErrorMessage'], 'Payment is declined')) {
+        if (! empty($response['ErrorMessage']) && str_contains($response['ErrorMessage'], 'Payment is declined')) {
             return true;
         }
 
-        if (isset($this->getResponse()['actionCode']) && $this->getResponse()['actionCode'] == '2003') {
+        if (isset($response['actionCode']) && $response['actionCode'] === '2003') {
             return true;
         }
 
@@ -84,9 +93,9 @@ trait SatimStatusChecker
 
         // Check that the response data contains the required parameters
         // and that the transaction was rejected
-        return (isset($this->response_data['params']['respCode']) && $this->response_data['params']['respCode'] == '00')
-            && $this->response_data['ErrorCode'] == '0'
-            && $this->response_data['OrderStatus'] == '3';
+        return (isset($response['params']['respCode']) && $response['params']['respCode'] == '00')
+            && $response['ErrorCode'] === '0'
+            && $response['OrderStatus'] === '3';
     }
 
     /**
@@ -150,17 +159,20 @@ trait SatimStatusChecker
      */
     public function isCancelled(): bool
     {
-        if (isset($this->getResponse()['errorCode']) && $this->getResponse()['errorCode'] == '0') {
+        /** @var array<string, string> $response */
+        $response = $this->getResponse();
+
+        if (isset($response['errorCode']) && $response['errorCode'] === '0') {
             return false;
         }
 
-        if (! empty($this->getResponse()['ErrorMessage']) && str_contains((string) $this->getResponse()['ErrorMessage'], 'Payment is cancelled')) {
+        if (! empty($response['ErrorMessage']) && str_contains($response['ErrorMessage'], 'Payment is cancelled')) {
             return true;
         }
 
         // Check if 'actionCode' is set in response data and is '10'
-        return isset($this->getResponse()['actionCode'])
-            && $this->getResponse()['actionCode'] == '10';
+        return isset($response['actionCode'])
+            && $response['actionCode'] === '10';
     }
 
     /**

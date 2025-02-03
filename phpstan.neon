@@ -3,10 +3,6 @@ parameters:
     paths:
         - src/
 
-    # Level 10 is the highest level
-    level: 8
+    level: max
 
     treatPhpDocTypesAsCertain: false
-
-#    ignoreErrors:
-#        - '#Call to an undefined method Spatie\\Image\\Drivers\\ImageDriver::keepOriginalImageFormat#'
