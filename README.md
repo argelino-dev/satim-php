@@ -5,12 +5,13 @@
 </p>
 
 <p align="center">
-<a href="https://php.net"><img src="https://img.shields.io/badge/PHP-8.1-777BB4?logo=php" alt="PHP 8.1"></a>
+<a href="https://packagist.org/packages/piteurstudio/satim-php"><img src="http://poser.pugx.org/piteurstudio/satim-php/require/php" alt="PHP Version Require"></a>
 <a href="https://packagist.org/packages/piteurstudio/satim-php"><img src="https://img.shields.io/packagist/v/piteurstudio/satim-php.svg?style=flat" alt="Latest Version on Packagist"></a>
 <a href="https://codecov.io/gh/PiteurStudio/satim-php"><img src="https://codecov.io/gh/PiteurStudio/satim-php/branch/main/graph/badge.svg?token=MXKQCQ4AGX" alt="codecov"></a>
 <a href="https://github.com/PiteurStudio/satim-php/blob/main/phpstan.neon"><img src="https://img.shields.io/badge/PHPStan-level%208-blue.svg?style=flat" alt="phpstan"></a>
 <a href="https://github.com/piteurstudio/php-satim/actions/workflows/run-tests.yml"><img src="https://img.shields.io/github/actions/workflow/status/piteurstudio/php-satim/run-tests.yml?branch=main&amp;label=tests&amp;style=flat" alt="Tests"></a>
 <a href="https://packagist.org/packages/piteurstudio/satim-php"><img src="https://img.shields.io/packagist/dt/piteurstudio/satim-php.svg?style=flat" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/piteurstudio/satim-php"><img src="http://poser.pugx.org/piteurstudio/satim-php/license" alt="License"></a>
 </p>
 
 # Satim.dz PHP Client
