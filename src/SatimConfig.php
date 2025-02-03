@@ -61,22 +61,16 @@ abstract class SatimConfig
 
     /**
      * The URL to redirect to if the payment fails.
-     *
-     * @var non-empty-string|null
      */
     protected ?string $failUrl = null;
 
     /**
      * The URL to redirect to after the payment is processed.
-     *
-     * @var non-empty-string|null
      */
     protected ?string $returnUrl = null;
 
     /**
      * The description for the payment.
-     *
-     * @var non-empty-string|null
      */
     protected ?string $description = null;
 
@@ -96,8 +90,6 @@ abstract class SatimConfig
 
     /**
      * The session timeout for the payment.
-     *
-     * @var int<600,86400>|null
      **/
     protected ?int $sessionTimeoutSecs = null;
 

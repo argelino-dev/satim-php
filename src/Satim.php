@@ -47,17 +47,17 @@ class Satim extends SatimConfig
     private function validateData(): void
     {
         // Check if the return URL is set, throw an exception if missing
-        if (! $this->returnUrl) {
+        if ($this->returnUrl === null || $this->returnUrl === '' || $this->returnUrl === '0') {
             throw new SatimMissingDataException('Return URL missing. Call returnUrl() to set it.');
         }
 
         // Check if the order number is set; if not, generate a random one
-        if (! $this->orderNumber) {
+        if ($this->orderNumber === null || $this->orderNumber === 0) {
             $this->orderNumber(mt_rand(1000000000, 9999999999));
         }
 
         // Check if the amount is set, throw an exception if missing
-        if (! $this->amount) {
+        if ($this->amount === null || $this->amount === 0) {
             throw new SatimMissingDataException('Amount missing. Call the amount() method to set it.');
         }
 
@@ -79,7 +79,7 @@ class Satim extends SatimConfig
         ];
 
         // If user-defined fields are set, add them to the additional data
-        if ($this->userDefinedFields) {
+        if ($this->userDefinedFields !== null && $this->userDefinedFields !== []) {
             $additionalData = array_merge($additionalData, $this->userDefinedFields);
         }
 
@@ -97,12 +97,12 @@ class Satim extends SatimConfig
         ];
 
         // If a description is set, add it to the request data
-        if ($this->description) {
+        if ($this->description !== null && $this->description !== '' && $this->description !== '0') {
             $data['description'] = $this->description;
         }
 
         // If a session timeout is set, add it to the request data
-        if ($this->sessionTimeoutSecs) {
+        if ($this->sessionTimeoutSecs !== null && $this->sessionTimeoutSecs !== 0) {
             $data['sessionTimeoutSecs'] = $this->sessionTimeoutSecs;
         }
 

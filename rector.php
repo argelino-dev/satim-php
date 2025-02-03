@@ -18,7 +18,7 @@ return RectorConfig::configure()
         SetList::PRIVATIZATION,
         SetList::NAMING,
         //        SetList::RECTOR_PRESET,
-        //        SetList::STRICT_BOOLEANS,
+        SetList::STRICT_BOOLEANS,
         //        SetList::EARLY_RETURN,
         //        SetList::INSTANCEOF,
     ])
