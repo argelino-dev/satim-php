@@ -87,7 +87,10 @@ class HttpClientService
         try {
             $response = $this->httpClient->request('POST', $url, ['body' => $data]);
 
-            return $response->toArray(); // This will throw exceptions if the response is invalid
+            /** @var array<string, mixed> $responseData */
+            $responseData = $response->toArray(); // This will throw exceptions if the response is invalid
+
+            return $responseData;
         } catch (DecodingExceptionInterface|ClientExceptionInterface|RedirectionExceptionInterface|ServerExceptionInterface $e) {
             throw new SatimUnexpectedResponseException('API Error: '.$e->getMessage(), 0, $e);
         } catch (TransportExceptionInterface $e) {
@@ -114,11 +117,11 @@ class HttpClientService
      *
      * @param  array<string,mixed>  $response  The API response to validate.
      *
-     * @throws SatimUnexpectedResponseException|SatimInvalidCredentials If the response contains an error.
+     * @throws SatimInvalidCredentials If the response contains an error.
      */
     private function validateApiResponse(array $response): void
     {
-        if (isset($response['ErrorCode'])) {
+        if (isset($response['ErrorCode']) && is_string($response['ErrorCode'])) {
             if ($response['ErrorCode'] === '6' && $response['ErrorMessage'] === 'Unknown order id') {
                 throw new SatimInvalidArgumentException('Invalid order ID');
             }
@@ -127,7 +130,7 @@ class HttpClientService
                 throw new SatimInvalidCredentials('Invalid username or password or terminal ID');
             }
 
-            throw new SatimUnexpectedResponseException('API Error { ErrorCode: '.$response['ErrorCode'].', ErrorMessage: '.($response['ErrorMessage'] ?? 'Unknown Error').' }');
+            //            throw new SatimUnexpectedResponseException('API Error { ErrorCode: '.$response['ErrorCode'].', ErrorMessage: '.(isset($response['ErrorMessage']) && is_string($response['ErrorMessage']) ? $response['ErrorMessage'] : 'Unknown Error').' }');
         }
     }
 }

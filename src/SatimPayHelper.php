@@ -30,6 +30,13 @@ trait SatimPayHelper
     protected ?array $statusOrderResponse = null;
 
     /**
+     * The response data from the refund() method.
+     *
+     * @var array<string, mixed>|null
+     */
+    protected ?array $refundOrderResponse = null;
+
+    /**
      * Retrieves the response data for the registered order.
      *
      * This method retrieves the response data associated with the registered order.
@@ -101,6 +108,7 @@ trait SatimPayHelper
     public function getOrderId(): string
     {
         // Retrieve the response data from the getResponse() method
+        /** @var array<string, string> $responseData */
         $responseData = $this->getResponse();
 
         // Extract the order ID from the response data
@@ -110,13 +118,14 @@ trait SatimPayHelper
     /**
      * Retrieve the IP address of the user from the response data.
      *
-     * @return non-empty-string|null The IP address of the user extracted from the response data.
+     * @return string|null The IP address of the user extracted from the response data.
      *
      * @throws SatimMissingDataException
      */
     public function getIpAddress(): ?string
     {
         // Retrieve the response data from the getResponse() method
+        /** @var array<string, string> $responseData */
         $responseData = $this->getResponse();
 
         // Extract the order ID from the response data
@@ -126,13 +135,14 @@ trait SatimPayHelper
     /**
      * Retrieve the cardholder name from the response data.
      *
-     * @return non-empty-string|null The IP address of the user extracted from the response data.
+     * @return string|null The IP address of the user extracted from the response data.
      *
      * @throws SatimMissingDataException
      */
     public function getCardHolderName(): ?string
     {
         // Retrieve the response data from the getResponse() method
+        /** @var array<string, string> $responseData */
         $responseData = $this->getResponse();
 
         // Extract the order ID from the response data
@@ -142,13 +152,14 @@ trait SatimPayHelper
     /**
      * Retrieve the card expiry date from the response data.
      *
-     * @return non-empty-string|null The card expiry date extracted from the response data.
+     * @return string|null The card expiry date extracted from the response data.
      *
      * @throws SatimMissingDataException
      */
     public function getCardExpiry(): ?string
     {
         // Retrieve the response data from the getResponse() method
+        /** @var array<string, string> $responseData */
         $responseData = $this->getResponse();
 
         // Extract the order ID from the response data
@@ -158,13 +169,14 @@ trait SatimPayHelper
     /**
      * Retrieve the card PAN from the response data.
      *
-     * @return non-empty-string|null The card PAN extracted from the response data.
+     * @return string|null The card PAN extracted from the response data.
      *
      * @throws SatimMissingDataException
      */
     public function getCardPan(): ?string
     {
         // Retrieve the response data from the getResponse() method
+        /** @var array<string, string> $responseData */
         $responseData = $this->getResponse();
 
         // Extract the order ID from the response data
@@ -174,13 +186,14 @@ trait SatimPayHelper
     /**
      * Retrieve the approval code from the response data.
      *
-     * @return non-empty-string|null The approval code extracted from the response data.
+     * @return string|null The approval code extracted from the response data.
      *
      * @throws SatimMissingDataException
      */
     public function getApprovalCode(): ?string
     {
         // Retrieve the response data from the getResponse() method
+        /** @var array<string, string> $responseData */
         $responseData = $this->getResponse();
 
         // Extract the order ID from the response data
@@ -222,6 +235,7 @@ trait SatimPayHelper
     public function getUrl(): string
     {
         // Retrieve the response data from the getResponse() method
+        /** @var array<string, string> $responseData */
         $responseData = $this->getResponse();
 
         if (! isset($responseData['formUrl'])) {

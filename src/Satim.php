@@ -133,9 +133,11 @@ class Satim extends SatimConfig
         // Check the response and throw an exception if the error code is not 0
         if ($result['errorCode'] !== '0') {
 
-            $errorMessage = $result['errorMessage'] ?? 'Unknown error';
+            $errorMessage = $result['errorMessage'] && is_string($result['errorMessage']) ? $result['errorMessage'] : 'Unknown error';
 
-            throw new SatimUnexpectedResponseException('registerPayment Error {errorCode: '.$result['errorCode'].' , errorMessage: '.$errorMessage.'}');
+            $errorCode = $result['errorCode'] && is_string($result['errorCode']) ? $result['errorCode'] : 'Unknown error';
+
+            throw new SatimUnexpectedResponseException('registerPayment Error {errorCode: '.$errorCode.' , errorMessage: '.$errorMessage.'}');
         }
 
         // Store the response data
@@ -222,11 +224,11 @@ class Satim extends SatimConfig
      *
      * @param  string  $orderId  The ID of the order to be refunded.
      * @param  positive-int  $amount  The amount to refund in major currency units.
-     * @return array<string,mixed> The response from the Satim API.
      *
-     * @throws SatimUnexpectedResponseException|SatimInvalidCredentials Thrown if the API response is unexpected.
+     * @throws SatimInvalidCredentials Thrown if the API response is unexpected.
+     * @throws SatimUnexpectedResponseException Thrown if the API response is unexpected.
      */
-    public function refund(string $orderId, int $amount): array
+    public function refund(string $orderId, int $amount): static
     {
         if ($orderId === '' || $orderId === '0') {
             throw new SatimInvalidArgumentException('Order ID is required for refund');
@@ -247,6 +249,8 @@ class Satim extends SatimConfig
 
         $this->context = 'refund';
 
-        return $this->httpClientService->handleApiRequest('/refund.do', $data);
+        $this->refundOrderResponse = $this->httpClientService->handleApiRequest('/refund.do', $data);
+
+        return $this;
     }
 }

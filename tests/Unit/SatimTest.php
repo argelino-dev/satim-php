@@ -96,8 +96,15 @@ it('processes a refund successfully', function (): void {
         'refundStatus' => 'success',
     ]);
 
-    $response = $this->satim->refund('1234567890', 500);
-    expect($response)->toBe(['refundStatus' => 'success']);
+    $this->satim->refund('1234567890', 500);
+
+    $reflector = new ReflectionClass($this->satim);
+    $reflectionProperty = $reflector->getProperty('refundOrderResponse');
+    $reflectionProperty->setAccessible(true);
+
+    expect($reflectionProperty->getValue($this->satim))->toBe(['refundStatus' => 'success']);
+
+    //    expect($response)->toBe(['refundStatus' => 'success']);
 });
 
 it('throws exception when refunding with an empty order ID', function (): void {
