@@ -204,11 +204,13 @@ These packages may be useful depending on your use case. If you’ve developed a
 - [Nassim](https://github.com/n4ss1m) / [PiteurStudio](https://github.com/PiteurStudio)
 - [All Contributors](../../contributors)
 
-## ⭐ Support Us
+## ⭐ Support
 
 If you find this package helpful, please consider giving it a ⭐ on GitHub!
 Your support encourages us to keep improving the project.
 Thank you!
+
+[![Stargazers repo roster for @PiteurStudio/satim-php](https://reporoster.com/stars/dark/PiteurStudio/satim-php)](https://github.com/PiteurStudio/satim-php/stargazers)
 
 ## License
 
