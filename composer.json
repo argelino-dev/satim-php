@@ -1,8 +1,8 @@
 {
-    "name": "piteurstudio/satim-php",
+    "name": "argelino-dev/satim-php",
     "description": "PHP package to interact with Satim.dz API",
     "keywords": [
-        "PiteurStudio",
+        "argelino-dev",
         "satim-php",
         "php",
         "satim.dz",
@@ -10,7 +10,7 @@
         "edahabia",
         "algerie poste"
     ],
-    "homepage": "https://github.com/piteurstudio/php-satim",
+    "homepage": "https://github.com/argelino-dev/php-satim",
     "license": "MIT",
     "authors": [
         {
