@@ -38,12 +38,12 @@
     },
     "autoload": {
         "psr-4": {
-            "PiteurStudio\\": "src"
+            "argelino-dev\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "PiteurStudio\\Tests\\": "tests"
+            "argelino-dev\\Tests\\": "tests"
         }
     },
     "scripts": {
