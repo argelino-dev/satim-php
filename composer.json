@@ -1,5 +1,6 @@
 {
     "name": "argelino-dev/satim-php",
+    "version": "1.0.0",
     "description": "PHP package to interact with Satim.dz API",
     "keywords": [
         "argelino-dev",
