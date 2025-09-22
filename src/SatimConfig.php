@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PiteurStudio;
 
+use PiteurStudio\Client\HttpClientService;
 use PiteurStudio\Exception\SatimInvalidArgumentException;
 use PiteurStudio\Exception\SatimMissingDataException;
 use PiteurStudio\Exception\SatimUnexpectedValueException;
@@ -79,9 +80,8 @@ abstract class SatimConfig
     /**
      * The order number for the payment.
      *
-     * @var int<1000000000,9999999999>|null
      **/
-    protected ?int $orderNumber = null;
+    protected ?string $orderNumber = null;
 
     /**
      * The user defined fields for the payment.
@@ -258,17 +258,16 @@ abstract class SatimConfig
 
     /**
      * Set the order number for the payment.
-     * The order number must be exactly 10 digits (Satim requirement).
+     * The order number must be equal 10 digits or less (Satim requirement).
      * You can use a random number or a unique identifier from your database.
      *
-     * @param  int<1000000000,9999999999>  $orderNumber  The order number for the payment.
      *
      * @throws SatimUnexpectedValueException If the order number is not exactly 10 digits.
      */
-    public function orderNumber(int $orderNumber): static
+    public function orderNumber($orderNumber): static
     {
 
-        if (strlen((string) $orderNumber) !== 10) {
+        if (strlen((string) $orderNumber) > 10) {
 
             throw new SatimUnexpectedValueException('Order number must be exactly 10 digits (Satim requirement).');
         }
@@ -286,6 +285,7 @@ abstract class SatimConfig
     public function testMode(bool $isEnabled): static
     {
         $this->test_mode = $isEnabled;
+        $this->httpClientService = new HttpClientService($this->test_mode);
 
         return $this;
     }

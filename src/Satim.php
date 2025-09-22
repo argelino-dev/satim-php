@@ -131,7 +131,7 @@ class Satim extends SatimConfig
         $result = $this->httpClientService->handleApiRequest('/register.do', $data);
 
         // Check the response and throw an exception if the error code is not 0
-        if ($result['errorCode'] !== '0') {
+        if ($result['errorCode'] != '0') {
 
             $errorMessage = $result['errorMessage'] && is_string($result['errorMessage']) ? $result['errorMessage'] : 'Unknown error';
 

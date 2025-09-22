@@ -20,7 +20,7 @@ class HttpClientService
 {
     private const API_URL = 'https://cib.satim.dz/payment/rest';
 
-    private const TEST_API_URL = 'https://test.satim.dz/payment/rest';
+    private const TEST_API_URL = 'https://test2.satim.dz/payment/rest';
 
     private int $timeout = 10;
 
